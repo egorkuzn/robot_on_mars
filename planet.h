@@ -1,6 +1,9 @@
 #pragma once
+#include <iostream>
 #include <vector>
+#include <string>
 #include <curses.h>
+#include <cstdlib>
 #include "surface.h"
 #include "data.h"
 #include "robot.h"
@@ -12,9 +15,11 @@ namespace planet{
             std::vector<robot> robots;
             Surface ground;
             Data server; 
-            size_t manual;
-            bool get_command(void);
+            bool getCommand(void);
         private:
-            void menu();            
+            UI consol;
+            size_t manual = 0;
+            bool menu(void);   
+            void takeRobotsStep(void);         
     };
 }

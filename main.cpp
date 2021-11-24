@@ -4,7 +4,7 @@
 int main(){
     planet::Planet Mars;
     while(true){
-        if(!Mars.get_command())
+        if(!Mars.getCommand())
             break;
     }
     return 0;

@@ -1,27 +1,46 @@
 #include "planet.h"
-#define KEY_Esc 27
-
 
 namespace planet{
-    bool Planet::get_command(void){
-        char Key = getch();
+    bool Planet::menu(void){
+        consol.clear();
+        consol.readCmd()
+        if(consol.cmd == "manual"){
+            consol.readNum("robot");
+            if(consol.isInRange(robots.size())){
+                robots[manual].manualOff;
+                manual = consol.num;      
+                robots[manual].manualOn; 
+            }
+            else 
+                consol.outNoRobot();     
+        } else if (consol.cmd == "scan"){
+            consol.readNum("steps");
+            robots[manual].scanOn(consol.Num);
+        } else if (consol.cmd == "auto"){
+            robots[manual].autoOn();
+        }
+    }
+
+    bool Planet::getCommand(void){
+        int Key = consol.getKey();
+        takeRobotsStep();
         switch (Key)
         {
         case 'u':
-            return robots[manual].moveUp();
+            return robots[manual].moveUp(consol);
         case 's':
-            return robots[manual].moveDown();
+            return robots[manual].moveDown(consol);
         case 'a':
-            return robots[manual].moveLeft();
+            return robots[manual].moveLeft(consol);
         case 'd':
-            return robots[manual].moveRight();
+            return robots[manual].moveRight(consol);
         case 'f':
-            return robots[manual].scan();
+            return robots[manual].scan(consol);
         case 'e':
-            return robots[manual].grab();
+            return robots[manual].grab(consol);
         case 'q':
             return menu();
-        case KEY_Esc:
+        case -1:
             return false;
         default:
             break;
