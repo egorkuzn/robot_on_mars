@@ -5,7 +5,7 @@
 #include "ui.h"
 
 namespace planet{
-    class CollectorMode{
+    class CMode: public ManualMode, public ScanMode, public AutoMode{
         scan
         grab
         moveUp
@@ -17,10 +17,11 @@ namespace planet{
         autoOn
     };
 
-    class Collector: public Robot, public CollectorMode{
+    class Collector: public Robot, public CMode{
         public:
-        mode;
-        
+        void changeMode(UI& consol);
+        CMode mode;
+
         private:
 
     };
