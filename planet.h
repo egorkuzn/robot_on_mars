@@ -1,21 +1,23 @@
 #pragma once
 #include <iostream>
-#include <vector>
 #include <string>
 #include <curses.h>
 #include <cstdlib>
+#include "ui.h"
 #include "surface.h"
 #include "data.h"
-#include "robot.h"
+#include "collector.h"
+#include "sapper.h"
 #include "planet.cpp"
 
 namespace planet{
     class Planet{
         public:
-            std::vector<robot> robots;
+            vectorC collectors;
+            vectorS suppers;
             Surface ground;
             Data server; 
-            bool getCommand(void);
+            bool getCommand(UI& consol = 0);
         private:
             UI consol;
             size_t manual = 0;

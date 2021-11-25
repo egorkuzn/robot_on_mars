@@ -1,49 +1,31 @@
 #include "planet.h"
 
 namespace planet{
-    bool Planet::menu(void){
-        consol.clear();
-        consol.readCmd()
-        if(consol.cmd == "manual"){
-            consol.readNum("robot");
-            if(consol.isInRange(robots.size())){
-                robots[manual].manualOff;
-                manual = consol.num;      
-                robots[manual].manualOn; 
+    bool Planet::menu(Keys Key){
+        if(Key == Key::U){
+            consol.clear();
+            consol.readCmd()
+            if(consol.cmd == "collector"){
+                consol.readCmd();
+                collectors.cmd(consol.cmd(), consol);
+            } else if(consol.cmd == "supper"){
+                consol.readCmd();
+                suppers.cmd(consol.cmd(), consol);
+            } else{
+                consol.outBadCmd();
+                while(Key != Keys::Enter)
+                    Key = consol.getKey();
             }
-            else 
-                consol.outNoRobot();     
-        } else if (consol.cmd == "scan"){
-            consol.readNum("steps");
-            robots[manual].scanOn(consol.Num);
-        } else if (consol.cmd == "auto"){
-            robots[manual].autoOn();
         }
     }
 
-    bool Planet::getCommand(void){
-        int Key = consol.getKey();
+    bool Planet::getCommand(UI& consol = 0){
+        Keys Key = consol.getKey();
         takeRobotsStep();
-        switch (Key)
-        {
-        case 'u':
-            return robots[manual].moveUp(consol);
-        case 's':
-            return robots[manual].moveDown(consol);
-        case 'a':
-            return robots[manual].moveLeft(consol);
-        case 'd':
-            return robots[manual].moveRight(consol);
-        case 'f':
-            return robots[manual].scan(consol);
-        case 'e':
-            return robots[manual].grab(consol);
-        case 'q':
-            return menu();
-        case -1:
+        if(Key == Keys::Esc)
             return false;
-        default:
-            break;
-        }
+        collectors.man(Key);
+        menu(Key);
+        return true;
     }
 }
