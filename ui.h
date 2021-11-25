@@ -1,5 +1,7 @@
 #pragma once
+
 #include "ncurses.h"
+#include "string"
 
 namespace planet{
     enum class Keys{
@@ -11,12 +13,16 @@ namespace planet{
         E,
         F,
         Esc,
-    }
+    };
 
     class UI{
         public:
             UI();
             UI& operator=(u_char type);
-        private:
+            void readCmd(void);
+            Key getKey(void);
+            std::string cmd;
+            uint getNum(void);
+            void outBadCmd(void);
     };
 }

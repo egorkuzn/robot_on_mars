@@ -3,7 +3,6 @@
 namespace planet{
     bool Planet::menu(Keys Key){
         if(Key == Key::U){
-            console.clear();
             console.readCmd()
             if(console.cmd == "collector")
                 collectors.cmd(console);
@@ -14,13 +13,18 @@ namespace planet{
         }
     }
 
+    void takeRobotsStep(void){
+        collectors.refresh(consol);
+        suppers.refresh(consol);
+    }    
+
     bool Planet::getCommand(UI& console = 0){
         Keys Key = console.getKey();
-        takeRobotsStep(surface, console);
         if(Key == Keys::Esc)
             return false;
         collectors.man(Key);
         menu(Key);
+        takeRobotsStep(surface, console);
         return true;
     }
 }

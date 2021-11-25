@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "robot.h"
 #include "ui.h"
 
@@ -18,7 +19,8 @@ namespace planet{
 
     class Collector: public Robot, public CollectorMode{
         public:
-        cmd(const std::string)
+        mode;
+        
         private:
 
     };
@@ -27,6 +29,7 @@ namespace planet{
         public:
             void man(Keys Key);
             void cmd(UI& console);
+            void refresh(UI& consol);
         private:
             size_t manId = 0;
     };

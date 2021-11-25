@@ -1,7 +1,17 @@
 #pragma once
 
+#include <vector>
 #include "robot.h"
 
 namespace planet{
-    vectorS{};
+    class Supper: public Robot{
+
+    };
+     
+    class vectorS: public std::vector<Supper>{
+        public:
+            void refresh(UI& consol);
+        private:
+
+    };
 }
