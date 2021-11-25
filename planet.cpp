@@ -3,25 +3,20 @@
 namespace planet{
     bool Planet::menu(Keys Key){
         if(Key == Key::U){
-            consol.clear();
-            consol.readCmd()
-            if(consol.cmd == "collector"){
-                consol.readCmd();
-                collectors.cmd(consol.cmd(), consol);
-            } else if(consol.cmd == "supper"){
-                consol.readCmd();
-                suppers.cmd(consol.cmd(), consol);
-            } else{
-                consol.outBadCmd();
-                while(Key != Keys::Enter)
-                    Key = consol.getKey();
-            }
+            console.clear();
+            console.readCmd()
+            if(console.cmd == "collector")
+                collectors.cmd(console);
+            else if(console.cmd == "supper")
+                suppers.cmd(console);
+            else
+                console.outBadCmd();            
         }
     }
 
-    bool Planet::getCommand(UI& consol = 0){
-        Keys Key = consol.getKey();
-        takeRobotsStep();
+    bool Planet::getCommand(UI& console = 0){
+        Keys Key = console.getKey();
+        takeRobotsStep(surface, console);
         if(Key == Keys::Esc)
             return false;
         collectors.man(Key);

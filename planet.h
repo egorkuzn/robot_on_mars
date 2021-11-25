@@ -17,9 +17,9 @@ namespace planet{
             vectorS suppers;
             Surface ground;
             Data server; 
-            bool getCommand(UI& consol = 0);
+            bool getCommand(UI& console = 0);
         private:
-            UI consol;
+            UI console;
             size_t manual = 0;
             bool menu(void);   
             void takeRobotsStep(void);         

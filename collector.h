@@ -1,8 +1,7 @@
 #pragma once
 
 #include "robot.h"
-
-
+#include "ui.h"
 
 namespace planet{
     class CollectorMode{
@@ -19,12 +18,16 @@ namespace planet{
 
     class Collector: public Robot, public CollectorMode{
         public:
-        cmd
+        cmd(const std::string)
         private:
 
     };
 
-    class vectorC: public std::vector{
-
-    }
+    class vectorC: public std::vector<Collector>{
+        public:
+            void man(Keys Key);
+            void cmd(UI& console);
+        private:
+            size_t manId = 0;
+    };
 }
