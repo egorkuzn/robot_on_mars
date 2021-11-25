@@ -5,7 +5,14 @@
 #include "ui.h"
 
 namespace planet{
+    enum CModeT{
+        AUTO,
+        MAN,
+        SCAN
+    }
+
     class CMode: public ManualMode, public ScanMode, public AutoMode{
+        fill
         scan
         grab
         moveUp
@@ -17,11 +24,10 @@ namespace planet{
         autoOn
     };
 
-    class Collector: public Robot, public CMode{
+    class Collector: public Robot{
         public:
-        void changeMode(UI& consol);
         CMode mode;
-
+        void cmd(Keys Key)
         private:
 
     };
