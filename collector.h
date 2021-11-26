@@ -27,16 +27,14 @@ namespace planet{
     class Collector: public Robot{
         public:
         CMode mode;
-        void cmd(Keys Key)
-        private:
-
+        void cmd(UI& console);
     };
 
     class vectorC: public std::vector<Collector>{
         public:
-            void man(Keys Key);
+            void man(UI& console);
             void cmd(UI& console);
-            void refresh(UI& consol);
+            void refresh(UI& console);
         private:
             size_t manId = 0;
     };

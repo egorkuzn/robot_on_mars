@@ -1,14 +1,33 @@
 #include "collector.h"
 
-namespace palnet{
-    void Collector::cmd(Keys Key){
-        switch(Key){
-            case Keys::W
-            // сделать для остальных клавиш
+namespace planet{
+    void Collector::cmd(UI& console){
+        switch(console.Key){
+            case Keys::Q:
+                break;
+            case Keys::W:
+                this->move(Direction::UP, console);
+                break;
+            case Keys::S:
+                this->move(Direction::DOWN, console);
+                break;
+            case Keys::A:
+                this->move(Direction::LEFT, console);
+                break;
+            case Keys::D:
+                this->move(Direction::RIGHT, console);
+                break;
+            case Keys::F:
+                this->scan();
+                break;
+            case Keys::E:
+                this->grab();
+                break;
+            default
         }
     }
-    void vectorC::man(Keys Key){
-        (*this)[manId].cmd(Key);        
+    void vectorC::man(UI& console){
+        (*this)[manId].cmd(console.Key);        
     }
 
     void vectorC::cmd(UI& console){

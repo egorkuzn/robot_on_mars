@@ -12,6 +12,7 @@ namespace planet{
         Q,
         E,
         F,
+        W,
         Esc,
     };
 
@@ -20,7 +21,8 @@ namespace planet{
             UI();
             UI& operator=(u_char type);
             void readCmd(void);
-            Key getKey(void);
+            Keys getKey(void);
+            Keys Key;
             std::string cmd;
             uint getNum(void);
             void outBadCmd(void);

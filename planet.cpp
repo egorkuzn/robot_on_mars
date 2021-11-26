@@ -1,8 +1,8 @@
 #include "planet.h"
 
 namespace planet{
-    bool Planet::menu(Keys Key){
-        if(Key == Key::U){
+    void Planet::menu(UI& console){
+        if(console.Key == Keys::U){
             console.readCmd()
             if(console.cmd == "collector")
                 collectors.cmd(console);
@@ -19,11 +19,11 @@ namespace planet{
     }    
 
     bool Planet::getCommand(UI& console = 0){
-        Keys Key = console.getKey();
-        if(Key == Keys::Esc)
+        console.getKey();
+        if(console.Key == Keys::Esc)
             return false;
-        collectors.man(Key);
-        menu(Key);
+        collectors.man(console);
+        menu(console);
         takeRobotsStep(surface, console);
         return true;
     }

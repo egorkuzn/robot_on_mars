@@ -21,7 +21,7 @@ namespace planet{
         private:
             UI console;
             size_t manual = 0;
-            bool menu(void);   
+            void menu(UI& console);   
             void takeRobotsStep(void);         
     };
 }
