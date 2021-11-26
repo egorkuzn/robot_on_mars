@@ -21,6 +21,8 @@ namespace planet{
     class Robot: public Movement{
         public: 
             void move(Direction way, UI& console);
-            void scan();
+            void scan(UI& consol, data& server);
+            size_t x;
+            size_t y;
     };
 }

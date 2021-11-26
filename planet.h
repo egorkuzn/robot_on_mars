@@ -13,10 +13,11 @@
 namespace planet{
     class Planet{
         public:
+            Planet();
             vectorC collectors;
             vectorS suppers;
-            Surface ground;
-            Data server; 
+            surface ground;
+            data server; 
             bool getCommand(UI& console = 0);
         private:
             UI console;

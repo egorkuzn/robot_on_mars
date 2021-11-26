@@ -28,6 +28,7 @@ namespace planet{
         public:
         CMode mode;
         void cmd(UI& console);
+        void refresh();
     };
 
     class vectorC: public std::vector<Collector>{

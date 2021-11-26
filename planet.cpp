@@ -1,6 +1,9 @@
 #include "planet.h"
 
 namespace planet{
+    Planet::Planet():{
+    }
+
     void Planet::menu(UI& console){
         if(console.Key == Keys::U){
             console.readCmd()
@@ -16,6 +19,7 @@ namespace planet{
     void takeRobotsStep(void){
         collectors.refresh(consol);
         suppers.refresh(consol);
+        server.refresh();
     }    
 
     bool Planet::getCommand(UI& console = 0){

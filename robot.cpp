@@ -18,5 +18,7 @@ namespace planet{
         }
     }
 
-    void 
+    void Robot::scan(UI& console){   
+        server.send(consol.area, x, y);
+    }
 }
