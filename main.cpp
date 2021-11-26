@@ -1,4 +1,3 @@
-#include <iostream>
 #include "planet.h"
 
 int main(){

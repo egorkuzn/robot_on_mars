@@ -18,11 +18,11 @@ namespace planet{
             vectorS suppers;
             surface ground;
             data server; 
-            bool getCommand(UI& console = 0);
+            bool getCommand(data& server);
         private:
             UI console;
             size_t manual = 0;
-            void menu(UI& console);   
+            void menu(data& server);   
             void takeRobotsStep(void);         
     };
 }

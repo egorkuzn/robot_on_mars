@@ -4,31 +4,31 @@ namespace planet{
     Planet::Planet():{
     }
 
-    void Planet::menu(UI& console){
-        if(console.Key == Keys::U){
-            console.readCmd()
+    void Planet::menu(data& server){
+        if(server.console.Key == Keys::U){
+            server.console.readCmd()
             if(console.cmd == "collector")
-                collectors.cmd(console);
+                collectors.cmd(server);
             else if(console.cmd == "supper")
-                suppers.cmd(console);
+                suppers.cmd(server);
             else
-                console.outBadCmd();            
+                server.console.outBadCmd();            
         }
     }
 
     void takeRobotsStep(void){
-        collectors.refresh(consol);
-        suppers.refresh(consol);
+        collectors.refresh(server);
+        suppers.refresh(server);
         server.refresh();
     }    
 
-    bool Planet::getCommand(UI& console = 0){
-        console.getKey();
-        if(console.Key == Keys::Esc)
+    bool Planet::getCommand(void){
+        server.console.getKey();
+        if(server.console.Key == Keys::Esc)
             return false;
-        collectors.man(console);
-        menu(console);
-        takeRobotsStep(surface, console);
+        collectors.man(server);
+        menu(server);
+        takeRobotsStep(server);
         return true;
     }
 }
