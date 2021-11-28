@@ -1,9 +1,16 @@
 #pragma once
 
+#include <vector>
+
 namespace planet{
     class data{
+        public:
+        data();
         send();
         get();
-        map;        
+        mapMask;  
+        void error(char* msg);  
+        private:   
+        UI* consol = nullptr; 
     }
 }

@@ -1,24 +1,24 @@
 #include "robot.h"
 
 namespace planet{
-    void Robot::move(Direction way, UI& console){
+    void Robot::move(Direction way, surface& ground, data& server){
         switch(way){
             case Direction::UP:
-                moveUp(console);
+                moveUp(server);
                 break;
             case Direction::DOWN:
-                moveDown(console);
+                moveDown(server);
                 break;
             case Direction::LEFT:
-                moveLeft(console);
+                moveLeft(server);
                 break;
             case Direction::RIGHT:
-                moveRight(console);
+                moveRight(server);
                 break;            
         }
     }
 
-    void Robot::scan(UI& console){   
-        server.send(consol.area, x, y);
+    void Robot::scan(surface& ground, data& server){   
+        server.send(x, y);
     }
 }
