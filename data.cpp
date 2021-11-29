@@ -4,9 +4,11 @@ namespace planet{
     data::data(){
         consol = new UI;        
     }
-    send(){
+
+    void send(size_t x, size_t y){
         
     }
+
     void error(char* msg){
         consol.error(msg);        
     }
