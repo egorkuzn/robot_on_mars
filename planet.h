@@ -14,15 +14,14 @@ namespace planet{
     class Planet{
         public:
             Planet();
-            vectorC collectors;
-            vectorS suppers;
             surface ground;
+            vectorC collectors(ground);
+            vectorS suppers(ground);
             data server; 
-            bool getCommand(data& server);
+            bool getCommand(void);
         private:
-            UI console;
             size_t manual = 0;
-            void menu(data& server);   
+            void menu(void);   
             void takeRobotsStep(void);         
     };
 }

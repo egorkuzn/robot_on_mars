@@ -12,27 +12,27 @@ namespace planet{
         }
     }
 
-    void Collector::cmd(data& server){
+    void Collector::cmd(surface& ground, data& server){
         switch(console.Key){
             case Keys::Q:
                 break;
             case Keys::W:
-                this->move(Direction::UP, server);
+                this->move(Direction::UP, ground, server);
                 break;
             case Keys::S:
-                this->move(Direction::DOWN, server);
+                this->move(Direction::DOWN, ground, server);
                 break;
             case Keys::A:
-                this->move(Direction::LEFT, server);
+                this->move(Direction::LEFT, ground, server);
                 break;
             case Keys::D:
-                this->move(Direction::RIGHT, server);
+                this->move(Direction::RIGHT, ground, server);
                 break;
             case Keys::F:
-                this->scan(server);
+                this->scan(ground, server);
                 break;
             case Keys::E:
-                this->grab(server);
+                this->grab(ground, server);
                 break;
             default:
                 break;
@@ -43,29 +43,29 @@ namespace planet{
         server.send(id, mode.action);
     }
 
-    void vectorC::man(data& server){
-        (*this)[manId].cmd(console.Key);        
+    void vectorC::man(){
+        (*this)[manId].cmd(ground, console.Key);        
     }
 
-    void vectorC::cmd(data& server){
-        console.readCmd();
-        if(consol.cmd == ("auto"))
+    void vectorC::cmd(){
+        server.readCmd();
+        if(server.cmd == ("auto"))
             (*this)[manId].genCMode(CModeT::AUTO, server);
-        if(consol.cmd == ("scan"))
+        if(server.cmd == ("scan"))
             (*this)[manId].genCMode(CModeT::SCAN, server);
-        else if(consol.cmd == "switch"){
+        else if(server.cmd == "switch"){
             (*this)[manId].genCMode(CModeT::AUTO, server);
-            manId = consol.getNum();
+            manId = server.getNum();
             (*this)[manId].genCMode(CModeT::MAN, server);
         }
-        else if(consol.cmd == "add")
+        else if(server.cmd == "add")
             this->push_back();
         else 
-            consol.outBadCmd();
+            server.outBadCmd();
     }
 
-    void vectorC::refresh(data& server){
+    void vectorC::refresh(){
         for(Collector & elem : *this)
-            elem.func(server);
+            elem.func(ground, server);
     }
 }

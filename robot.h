@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ui.h"
+#include "surface.h"
 
 namespace planet{
     enum class Direction{
@@ -12,17 +13,21 @@ namespace planet{
 
     class Movement{
         public:
-            void moveUp(UI& console);
-            void moveDown(UI& console);
-            void moveLeft(UI& console);
-            void moveRight(UI& console);
+            void moveUp(surface& ground, data& server);
+            void moveDown(surface& ground, data& server);
+            void moveLeft(surface& ground, data& server);
+            void moveRight(surface& ground, data& server);
     };
 
     class Robot: public Movement{
         public: 
-            void move(Direction way, UI& console);
-            void scan(UI& consol, data& server);
+            void move(Direction way);
+            void changeServer(data& server) : server(server){}
+            void scan();
             size_t x;
             size_t y;
+        protected:
+            surface& ground;
+            data& server;
     };
 }

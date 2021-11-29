@@ -3,12 +3,13 @@
 #include "item.h"
 
 namespace planet{
-    class Surface{
+    class surface{
         public:
-        Surface(data* server,
+        surface(){}
+        surface(data* server,
                 size_t high = 1000,
                 size_t width = 1000) : server(server), high(high), width(width);
-        ~Surface(){}
+        ~surface(){}
         void genItems(void);
         void genTerrain(void);
         vectorItems matrix;

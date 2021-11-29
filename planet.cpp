@@ -1,34 +1,32 @@
 #include "planet.h"
 
 namespace planet{
-    Planet::Planet():{
-    }
+    Planet::Planet(){}
 
-    void Planet::menu(data& server){
-        if(server.console.Key == Keys::U){
-            server.console.readCmd()
-            if(console.cmd == "collector")
-                collectors.cmd(server);
+    void Planet::menu(void){
+        if(server.Key == Keys::U){
+            server.readCmd()
+            if(server.cmd == "collector")
+                collectors.cmd(ground, server);
             else if(console.cmd == "supper")
-                suppers.cmd(server);
+                suppers.cmd(ground, server);
             else
-                server.console.outBadCmd();            
+                server.outBadCmd();            
         }
     }
 
     void takeRobotsStep(void){
         collectors.refresh(server);
         suppers.refresh(server);
-        server.refresh();
     }    
 
     bool Planet::getCommand(void){
-        server.console.getKey();
-        if(server.console.Key == Keys::Esc)
+        server.getKey();
+        if(server.Key() == Keys::Esc)
             return false;
         collectors.man(server);
-        menu(server);
-        takeRobotsStep(server);
+        menu();
+        takeRobotsStep();
         return true;
     }
 }
