@@ -1,6 +1,5 @@
 #pragma once
 
-#include "data.h"
 #include "cstdlib"
 
 namespace planet{

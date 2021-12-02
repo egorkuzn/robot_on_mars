@@ -40,7 +40,7 @@ namespace planet{
     }
 
     void Collector::refresh(data& server){
-        server.send(id, mode.action);
+        server.send(this, mode.action);
     }
 
     void vectorC::man(){

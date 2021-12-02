@@ -2,11 +2,19 @@
 
 namespace planet{
     data::data(){
-        consol = new UI;        
+        console = new UI;        
     }
 
-    void send(size_t x, size_t y){
+    void send(Collector* machine, toDoType action){
         
+    }
+
+    void getKey(){
+        savedKey = consol.getKey();
+    }
+
+    Keys Key(){
+        return savedKey;
     }
 
     void error(char* msg){

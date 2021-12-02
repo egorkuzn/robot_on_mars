@@ -14,6 +14,7 @@ namespace planet{
         F,
         W,
         Esc,
+        EMPTY
     };
 
     class UI{
