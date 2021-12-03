@@ -11,18 +11,20 @@ namespace planet{
         public:
             CMode mode;
             void cmd();
+            void grab();
             void refresh();
-            void genCMode();            
+            void genCMode(CModeT type);                    
     };
 
     class vectorC: public std::vector<Collector>{
         public:
-            vectorC(vectorItems& ground, data& server);
+            vectorC(std::vector<vectorItems>& ground, data& server) :
+                ground(ground), server(server){}
             void man();
             void cmd();
             void refresh();
         private:
-            vectorItems& ground; 
+            std::vector<vectorItems>& ground;
             data& server;
             size_t manId = 0;
     };

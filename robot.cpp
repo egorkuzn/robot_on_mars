@@ -18,7 +18,19 @@ namespace planet{
     }
 
     void Robot::moveDown(){
+        y = (y + ground.size() - 1) % ground.size();
+        if(ground[y][x] == (ROCK || BOMB))
+            server.send(x, y, id, robotStatus::DIE);   
+        else
+            server.send(x, y, id);
+    }
 
+    void Robot::moveDown(){
+        y = (y + ground.size() + 1) % ground.size();
+        if(ground[y][x] == (ROCK || BOMB))
+            server.send(x, y, id, robotStatus::DIE);   
+        else
+            server.send(x, y, id);
     }
 
     Robot::Robot(std::vector<vectorItems>& ground, data& server) : ground(ground), server(server){
@@ -32,6 +44,15 @@ namespace planet{
         }    
     } 
 
+    Robot::Robot(const Robot& other){
+        this->x = other.x;
+        this->y = other.y;
+        this->id = other.id;
+        this->status = other.status;
+        this->server = other.server;
+        this->ground = other.ground;
+    }
+    
     void Robot::move(Direction way){
         switch(way){
             case Direction::UP:

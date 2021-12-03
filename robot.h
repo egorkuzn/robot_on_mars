@@ -18,14 +18,16 @@ namespace planet{
             Robot(std::vector<vectorItems>& ground, data& server);
             void move(Direction way);
             // void changeServer(data& new_server); // future feature
+            ~Robot(){}
+            Robot(const Robot& other);
             void scan();
             size_t x;
             size_t y;
             size_t id;
             robotStatus status = robotStatus::LIVE;
-        protected:
             std::vector<vectorItems>& ground;
             data& server;
+        private:
             void moveUp();
             void moveDown();
             void moveLeft();

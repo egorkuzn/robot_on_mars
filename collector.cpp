@@ -1,7 +1,7 @@
 #include "collector.h"
 
 namespace planet{
-    void Collector::genCMode(CModeT type, data& server){
+    void Collector::genCMode(CModeT type){
         switch(type){
             case CModeT::AUTO:
                 mode = ManualMode(server);
@@ -12,60 +12,69 @@ namespace planet{
         }
     }
 
-    void Collector::cmd(surface& ground, data& server){
+    void Collector::grab(){
+        if(ground[y][x] == Item::APPLE){
+            server.incAppleCount();
+            server.send(x, y, Item::EMPTY);
+        }
+    }
+
+    void Collector::cmd(){
         switch(server.Key()){
-            case Keys::Q:
+            case graphics::Keys::Q:
                 break;
-            case Keys::W:
-                this->move(Direction::UP, ground, server);
+            case graphics::Keys::W:
+                this->move(Direction::UP);
                 break;
-            case Keys::S:
-                this->move(Direction::DOWN, ground, server);
+            case graphics::Keys::S:
+                this->move(Direction::DOWN);
                 break;
-            case Keys::A:
-                this->move(Direction::LEFT, ground, server);
+            case graphics::Keys::A:
+                this->move(Direction::LEFT);
                 break;
-            case Keys::D:
-                this->move(Direction::RIGHT, ground, server);
+            case graphics::Keys::D:
+                this->move(Direction::RIGHT);
                 break;
-            case Keys::F:
-                this->scan(ground, server);
+            case graphics::Keys::F:
+                this->scan();
                 break;
-            case Keys::E:
-                this->grab(ground, server);
+            case graphics::Keys::E:
+                this->grab();
                 break;
             default:
                 break;
         }
     }
 
-    void Collector::refresh(data& server){
-        server.send(this, mode.action);
+    void Collector::refresh(){
+        mode.func();
     }
 
     void vectorC::man(){
-        (*this)[manId].cmd(ground, console.Key);        
+        (*this)[manId].cmd();        
     }
 
     void vectorC::cmd(){
         server.readCmd();
-        if(server.cmd == ("auto"))
-            (*this)[manId].genCMode(CModeT::AUTO, server);
-        if(server.cmd == ("scan"))
-            (*this)[manId].genCMode(CModeT::SCAN, server);
-        else if(server.cmd == "switch"){
-            (*this)[manId].genCMode(CModeT::AUTO, server);
+        if(server.cmd() == "auto")
+            (*this)[manId].genCMode(CModeT::AUTO);
+        else if(server.cmd() == "scan")
+            (*this)[manId].genCMode(CModeT::SCAN);
+        else if(server.cmd() == "switch"){
+            (*this)[manId].genCMode(CModeT::AUTO);
             manId = server.getNum();
-            (*this)[manId].genCMode(CModeT::MAN, server);
+            (*this)[manId].genCMode(CModeT::MAN);
         }
-        else if(server.cmd == "add")
-            this->push_back();
+        else if(server.cmd() == "add"){            
+            Collector tmp(ground, server); // big question
+            this->push_back(tmp);
+        }
         else 
             server.outBadCmd();
     }
 
     void vectorC::refresh(){
         for(Collector & elem : *this)
-            elem.func(ground, server);
+            elem.refresh();
     }
 }
