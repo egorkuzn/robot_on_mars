@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "surface.h"
+#include "item.h"
 #include "robot.h"
 #include "cmode.h"
 #include "data.h"
@@ -17,12 +17,12 @@ namespace planet{
 
     class vectorC: public std::vector<Collector>{
         public:
-            vectorC(surface& ground, data& server) : ground(ground), server(server);
+            vectorC(vectorItems& ground, data& server);
             void man();
             void cmd();
             void refresh();
         private:
-            surface& ground; 
+            vectorItems& ground; 
             data& server;
             size_t manId = 0;
     };

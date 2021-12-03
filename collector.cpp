@@ -13,7 +13,7 @@ namespace planet{
     }
 
     void Collector::cmd(surface& ground, data& server){
-        switch(console.Key){
+        switch(server.Key()){
             case Keys::Q:
                 break;
             case Keys::W:

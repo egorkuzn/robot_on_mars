@@ -1,7 +1,9 @@
 #pragma once
 
 #include "ui.h"
-#include "surface.h"
+#include "item.h"
+#include "data.h"
+#include <vector>
 
 namespace planet{
     enum class Direction{
@@ -11,23 +13,22 @@ namespace planet{
         RIGHT
     };
 
-    class Movement{
-        public:
-            void moveUp(surface& ground, data& server);
-            void moveDown(surface& ground, data& server);
-            void moveLeft(surface& ground, data& server);
-            void moveRight(surface& ground, data& server);
-    };
-
-    class Robot: public Movement{
+    class Robot{
         public: 
+            Robot(std::vector<vectorItems>& ground, data& server);
             void move(Direction way);
-            void changeServer(data& server) : server(server){}
+            // void changeServer(data& new_server); // future feature
             void scan();
             size_t x;
             size_t y;
+            size_t id;
+            robotStatus status = robotStatus::LIVE;
         protected:
-            surface& ground;
+            std::vector<vectorItems>& ground;
             data& server;
+            void moveUp();
+            void moveDown();
+            void moveLeft();
+            void moveRight();
     };
 }

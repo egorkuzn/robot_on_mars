@@ -4,7 +4,7 @@
 #include <curses.h>
 #include <cstdlib>
 #include "ui.h"
-#include "surface.h"
+#include "item.h"
 #include "data.h"
 #include "collector.h"
 #include "sapper.h"
@@ -14,10 +14,10 @@ namespace planet{
     class Planet{
         public:
             Planet();
-            surface ground;
-            vectorC collectors(ground);
-            vectorS suppers(ground);
+            vectorItems ground;
             data server; 
+            vectorC collectors(ground, server);
+            vectorS suppers(ground, server);
             bool getCommand(void);
         private:
             size_t manual = 0;

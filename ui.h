@@ -1,9 +1,16 @@
 #pragma once
 
-#include "ncurses.h"
-#include "string"
+#include <locale.h>
+#include <unistd.h>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <termios.h>
+#include <sys/ioctl.h>
+#include "item.h"
+#include "getch.h"
 
-namespace planet{
+namespace graphics{
     enum class Keys{
         U,
         S,
@@ -20,12 +27,38 @@ namespace planet{
     class UI{
         public:
             UI();
-            UI& operator=(u_char type);
-            void readCmd(void);
-            Keys getKey(void);
-            Keys Key;
-            std::string cmd;
-            uint getNum(void);
-            void outBadCmd(void);
+            ~UI();
+            operator bool() const;
+            void display(); 
+            void refreshW();
+            void clearLiveStr();
+            bool isChanged();
+            Keys getKey();
+            std::string readCmd(char* constex);
+            int getNum(char* context);
+            void error(char* context);
+            void moveMapUp();
+            void moveMapDown();
+            void moveMapLeft();
+            void moveMapRight();
+        private:
+            void backDel(std::string str);
+            void frontDel(std::string str);
+            void genDisplayedMatrix();
+            Keys reactionOnKeyboard(int ch);
+            void sleepcp(int milliseconds);
+            bool status = true;
+            size_t high = 7;
+            size_t width = 25;
+            int x = 12;
+            int y = 3;
+            std::vector<std::string> displayedMatrix;
+            std::vector<bool> matrixMask;
+            std::string liveStr;
     };
 }
+/*
+🟥 - unvisited point
+🟫 - visited point
+🤖 - robot
+*/
