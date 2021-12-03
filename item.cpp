@@ -14,11 +14,11 @@ namespace planet{
         baseArr[index / 4] += elem << (3 - index % 4) * 2;
     }
 
-    size_t capacity() const{
+    size_t vectorItems::capacity() const{
         return sizeVector;
     }
 
-    size_t cardinality() const{
+    size_t vectorItems::cardinality() const{
         return sizeBaseArr;
     }
 
@@ -38,7 +38,7 @@ namespace planet{
 
     vectorItems::ItemRef vectorItems::operator[](const size_t index){
         while (index >= this->sizeVector)
-            this->push_back(Item::EMPTY);
+            this->push_back(Item::ROCK);
         return ItemRef(index, *this);
     }
 
@@ -75,15 +75,29 @@ namespace planet{
         return *this;
     }
 
-    void randItem(size_t high, size_t width){
-        size_t randh = rand() % high;
-        size_t randw = rand() % width;
-        (*this)[randh * width + randw] = Item(rand() % 3);
+    void vectorItems::randItem(){        
+        (*this)[rand() % length] = Item(rand() % 2 + 1);
     }
 
-    void randRock(size_t high, size_t width){
-        size_t randh = rand() % high;
-        size_t randw = rand() % width;
-        (*this)[randh * width + randw] = Item(3);
+    void vectorItems::randEmpty(){
+        (*this)[rand() % length] = EMPTY;
     }
+
+    vectorItems::vectorItems(size_t length) : length(length){
+        (*this)[length - 1]; // firstly: filling vector by rocks
+        genTerrain(); // then gen empty places
+        genItems(); // add bombs and apples
+    }
+
+    void vectorItems::genItems(void){
+        size_t chances = length / 20;
+        for(chances; chances > 0; --chances)
+            (*this).randItem();
+    }
+
+    void vectorItems::genTerrain(void){
+        size_t chances = length / 1.5;
+        for(chances; chances > 0; --chances)
+            (*this).randEmpty();
+    }    
 }

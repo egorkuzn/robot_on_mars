@@ -1,6 +1,7 @@
 #pragma once
 
 #include "robot.h"
+#include "item.h"
 #include <vector>
 #include <string>
 #include "ui.h"
@@ -20,7 +21,8 @@ namespace planet{
         int getNum();
         Keys Key();
         void outBadCmd;
-        mapMask;  
+        std::vector<vectorItems> updatedMap;
+        std::vector<std::vector<bool>> updatedMapMask;
         void error(char* msg);  
         private:   
         UI* console = nullptr;

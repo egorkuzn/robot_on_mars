@@ -12,7 +12,7 @@ namespace planet{
 
     class vectorItems{
         public:
-        vectorItems(){}
+        vectorItems(size_t length);
         ~vectorItems();
         size_t capacity() const;
         size_t cardinality() const;
@@ -32,10 +32,13 @@ namespace planet{
         vectorItems& operator=(const vectorItems& other);
         vectorItems(const vectorItems& other);
         ItemRef operator[](size_t index);
-        void randItem(size_t high, size_t width);
-        void randRock(size_t high, size_t width);
         private:
+        void randItem();
+        void randEmpty();
+        void genItems();
+        void genTerrain();
         unsigned char* baseArr = nullptr;
+        size_t length;
         size_t sizeBaseArr = 0;
         size_t sizeVector = 0;
         void Push();
