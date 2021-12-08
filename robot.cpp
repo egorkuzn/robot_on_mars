@@ -48,7 +48,6 @@ namespace planet{
         this->x = other.x;
         this->y = other.y;
         this->id = other.id;
-        this->status = other.status;
         this->server = other.server;
         this->ground = other.ground;
     }

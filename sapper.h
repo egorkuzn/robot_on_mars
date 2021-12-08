@@ -6,21 +6,21 @@
 #include "item.h"
 
 namespace planet{
-    class Supper: public Robot{
-        Supper(std::vector<vectorItems>& ground, data& server): Robot(ground, server){}
+    class Sapper: public Robot{
+        Sapper(std::vector<vectorItems>& ground, planet::data& server): Robot(ground, server){}
         void refresh();
         void on();
         void off();
     };
      
-    class vectorS: public std::vector<Supper>{
+    class vectorS: public std::vector<Sapper>{
         public:
-            vectorS(std::vector<vectorItems>& ground, data& server) : 
+            vectorS(std::vector<vectorItems>& ground, planet::data& server) : 
                 ground(ground), server(server){}
             void cmd();
             void refresh();
         private:
             std::vector<vectorItems>& ground;
-            data& server;
+            planet::data& server;
     };
 }

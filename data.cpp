@@ -2,17 +2,26 @@
 
 namespace planet{
     data::data(){
-        console = new UI;        
+        console = new graphics::UI; 
+        //инициализация матрицы
+        //инициализация маски      
+        console -> importUpdatedMatrix(updatedMap);
+        console -> importUpdatedMaskMatrix(updatedMapMask); 
     }
 
     uint8_t data:: isNotFirst(size_t value, char ort){
         if(xyRobots.size())
             return 1;
         if(ort == 'y')
-            baseY = xyRobots[0][0];        
+            baseY = rand() % value;        
         if(ort == 'x')
-            baseX = xyRobots[0][1];        
+            baseX = rand() % value;        
         return 0;
+    }
+
+    void data::incAppleCount(){
+        ++appleCount;
+        console -> displayAppleCount(appleCount);
     }
 
     size_t data::xOfFirstLanding(){
@@ -28,17 +37,19 @@ namespace planet{
             xyRobots[0][0] = baseY;
             xyRobots[0][1] = baseX;
         }
+        ++liveCount;
+        console -> displayRobotCount(liveCount);
         xyRobots.resize(xyRobots.size() + 1);
         isRobotLive.resize(isRobotLive.size() + 1);
         return xyRobots.size() - 1;
     }
 
     int data::getNum(){
-        return console.getNum();
+        return console -> getNum();
     }
 
     void data::readCmd(){
-        commandLine = console.readCmd();
+        commandLine = console -> readCmd();
     }
 
     std::string data::cmd(){
@@ -50,6 +61,9 @@ namespace planet{
         xyRobots[id][1] = x + xOfFirstLanding();
         if(status == robotStatus::DIE){
             isRobotLive[id] = false;
+            ++dieCount;
+            --liveCount;
+            console -> displayDieCount(dieCount);
             return;
         }
         if(!updatedMapMask[xyRobots[id][0]][xyRobots[id][1]]){
@@ -59,19 +73,19 @@ namespace planet{
     }
 
     void data::send(size_t x, size_t y, Item item){
-        updatedMap[xyRobots[id][0]][xyRobots[id][1]] = item;
-        updatedMapMask[xyRobots[id][0]][xyRobots[id][1]] = true;
+        updatedMap[y][x] = item;
+        updatedMapMask[y][x] = true;
     }
 
     void data::getKey(){
-        savedKey = consol.getKey();
+        savedKey = console -> getKey();
     }
 
-    Keys data::Key(){
+    graphics::Keys data::Key(){
         return savedKey;
     }
 
     void data::error(char* msg){
-        consol.error(msg);        
+        console -> error(msg);        
     }
 }

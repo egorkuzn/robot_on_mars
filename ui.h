@@ -31,30 +31,43 @@ namespace graphics{
             operator bool() const;
             void display(); 
             void refreshW();
-            void clearLiveStr();
             bool isChanged();
             Keys getKey();
-            std::string readCmd(char* constex);
-            int getNum(char* context);
+            std::string readCmd(char* constex = nullptr);
+            int getNum(char* context = nullptr);
             void error(char* context);
+            void displayAppleCount(size_t value);
+            void displayRobotCount(size_t value);
+            void displayDieCount(size_t count);  
+            void importUpdatedMatrix(std::vector<planet::vectorItems>& updatedMap);
+            void importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMapMask); 
+        private:
+            void clearLiveStr();
             void moveMapUp();
             void moveMapDown();
             void moveMapLeft();
             void moveMapRight();
-        private:
-            void backDel(std::string str);
-            void frontDel(std::string str);
+            void backDel(std::string& str);
+            void frontDel(std::string& str);
             void genDisplayedMatrix();
-            Keys reactionOnKeyboard(int ch);
             void sleepcp(int milliseconds);
+            void refreshStatusBar();
+            size_t maxX();
+            size_t maxY();
+            Keys reactionOnKeyboard(int ch);
             bool status = true;
             size_t high = 7;
             size_t width = 25;
+            size_t appleCount = 0;
+            size_t liveCount = 0;
+            size_t dieCount = 0;
             int x = 12;
             int y = 3;
             std::vector<std::string> displayedMatrix;
-            std::vector<bool> matrixMask;
+            std::vector<std::vector<bool>>& matrixMask;
+            std::vector<planet::vectorItems>& externMatrix;
             std::string liveStr;
+            std::string statusBar;
     };
 }
 /*

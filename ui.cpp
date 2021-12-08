@@ -156,12 +156,19 @@ namespace graphics{
     }
 
     void UI::backDel(std::string& str){
-        for(uint8_t i = 0; i < 5; ++i)
-            str.push_back();
+        str.erase(str.end() - 4, str.end());
     }
 
     void UI::frontDel(std::string& str){
-        
+        str.erase(str.begin(), str.begin() + 4);
+    }
+
+    size_t UI::maxX(){
+        return externMatrix[0].capacity();
+    }
+
+    size_t UI::maxY(){
+        return externMatrix.capacity();
     }
 
     void UI::moveMapDown(){
@@ -171,8 +178,8 @@ namespace graphics{
         displayedMatrix[high - 1] = "";
 
         for(uint8_t i = 0; i < width; ++i){
-            if(matrixMask[(y + high) % maxY][(x + i) % maxX])
-                displayedMatrix[high - 1] += externMatrix[(y + high) % maxY][(x + i) % maxX];
+            if(matrixMask[(y + high) % maxY()][(x + i) % maxX()])
+                displayedMatrix[high - 1] += externMatrix[(y + high) % maxY()][(x + i) % maxX()];
             else 
                 displayedMatrix[high - 1] += "🟥"; 
         }
@@ -182,8 +189,8 @@ namespace graphics{
         displayedMatrix[0] = "";
 
         for(uint8_t i = 0; i < width; ++i){
-            if(matrixMask[y][(x + i) % maxX])
-                displayedMatrix[0] += externMatrix[y][(x + i) % maxX];
+            if(matrixMask[y][(x + i) % maxX()])
+                displayedMatrix[0] += externMatrix[y][(x + i) % maxX()];
             else 
                 displayedMatrix[0] += "🟥"; 
         }
@@ -195,8 +202,8 @@ namespace graphics{
     void UI::moveMapRight(){
         for(uint8_t i = 0; i < high; ++i){
             frontDel(displayedMatrix[i]);
-            if(matrixMask[(y + i) % maxY][(x + width) % maxX])
-                displayedMatrix[i] += externMatrix[(y + i) % maxY][(x + width) % maxX];
+            if(matrixMask[(y + i) % maxY()][(x + width) % maxX()])
+                displayedMatrix[i] += externMatrix[(y + i) % maxY()][(x + width) % maxX()];
             else 
                 displayedMatrix[i] += "🟥"; 
         }        
@@ -206,11 +213,39 @@ namespace graphics{
         for(uint8_t i = 0; i < high; ++i){
             backDel(displayedMatrix[i]);
             std::string symb;
-            if(matrixMask[(y + i) % maxY][x])
-                symb = externMatrix[(y + i) % maxY][(x + width) % maxX];
+            if(matrixMask[(y + i) % maxY()][x])
+                symb = externMatrix[(y + i) % maxY()][(x + width) % maxX()];
             else 
                 symb = "🟥";
             displayedMatrix[i] = symb + displayedMatrix[i]; 
         }
     }
+
+    void UI::refreshStatusBar(){
+        statusBar = "🍏 x" + std::to_string(appleCount) + "   🤖 x" +
+         std::to_string(liveCount) + "   💀 x" + std::to_string(dieCount);
+    }
+
+    void UI::displayAppleCount(size_t value){
+        appleCount = value;
+        refreshStatusBar();
+    }
+
+    void UI::displayRobotCount(size_t value){
+        liveCount = value;
+        refreshStatusBar();
+    }
+
+    void UI::displayDieCount(size_t value){
+        liveCount -= value - dieCount;
+        dieCount = value;
+        refreshStatusBar();
+    }
+
+    void UI::importUpdatedMatrix(std::vector<planet::vectorItems>& updatedMap)
+         : externMatrix(updatedMap){}
+
+    void UI::importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMaskMap)
+         : matrixMask(updatedMaskMap){}
+
 }
