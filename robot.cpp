@@ -34,10 +34,10 @@ namespace planet{
     }
 
     Robot::Robot(std::vector<vectorItems>& ground, data& server) : ground(ground), server(server){
-        x = (rand() % ground[0].capacity()) * (size_t)server.isFirst(); // x from landing of first robot
-        y = rand() % ground.size() * (size_t)server.isFirst();  // y from landing of first robot 
+        x = (rand() % ground[0].capacity()) * (size_t)server.isNotFirst(ground[0].capacity(), 'x'); // x from landing of first robot
+        y = rand() % ground.size() * (size_t)server.isNotFirst(ground.size(), 'y');  // y from landing of first robot 
         id = server.getId();
-        server.send(x, y, ground[y + server.dyFromFirstLanding(y)][x + server.dxFromFirstLanding(x)]);
+        server.send(x, y, ground[y + server.yOfFirstLanding()][x + server.xOfFirstLanding()]);
         if(ground[y][x] == (ROCK || BOMB)){
             server.send(x, y, id, robotStatus::DIE);  
 

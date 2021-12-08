@@ -14,8 +14,8 @@ namespace planet{
     };
 
     class Robot{
-        public: 
             Robot(std::vector<vectorItems>& ground, data& server);
+        public: 
             void move(Direction way);
             // void changeServer(data& new_server); // future feature
             ~Robot(){}
@@ -24,7 +24,6 @@ namespace planet{
             size_t x;
             size_t y;
             size_t id;
-            robotStatus status = robotStatus::LIVE;
             std::vector<vectorItems>& ground;
             data& server;
         private:

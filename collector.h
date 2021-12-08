@@ -7,8 +7,9 @@
 #include "data.h"
 
 namespace planet{
-    class Collector: public Robot{
+    class Collector: private Robot{
         public:
+            Collector(std::vector<vectorItems>& ground, data& server): Robot(ground, server){}
             CMode mode;
             void cmd();
             void grab();

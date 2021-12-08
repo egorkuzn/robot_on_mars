@@ -10,7 +10,4 @@ namespace planet{
         return;
     }
 
-    AutoMode::AutoMode(data& server) {
-        
-    }
 }

@@ -5,13 +5,11 @@
 
 namespace planet{
     class Supper: public Robot{
-
+        Supper: 
     };
      
     class vectorS: public std::vector<Supper>{
         public:
-            void refresh(UI& consol);
-        private:
 
     };
 }

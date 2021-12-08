@@ -66,7 +66,7 @@ namespace planet{
             (*this)[manId].genCMode(CModeT::MAN);
         }
         else if(server.cmd() == "add"){            
-            Collector tmp(ground, server); // big question
+            Collector tmp(ground, server);
             this->push_back(tmp);
         }
         else 
