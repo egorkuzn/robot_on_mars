@@ -25,6 +25,7 @@ namespace planet{
         if(server.Key() == graphics::Keys::Esc)
             return false;
         collectors.man();
+        collectors.accumulatedCmds();
         menu();
         takeRobotsStep();
         return true;

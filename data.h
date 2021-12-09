@@ -30,6 +30,7 @@ namespace planet
         void setFocus(size_t id);
         void incAppleCount();
         void setFocus(size_t id);
+        void cmdToScanArea(size_t id);
         void getKey();
         int getNum();
         size_t getId();
