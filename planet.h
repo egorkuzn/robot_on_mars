@@ -14,7 +14,7 @@ namespace planet{
     class Planet{
         public:
             Planet();
-            vectorItems ground;
+            std::vector<vectorItems> ground;
             data server; 
             vectorC collectors(ground, server);
             vectorS suppers(ground, server);

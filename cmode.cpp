@@ -1,6 +1,22 @@
 #include "cmode.h"
 
 namespace planet{
+    bool CMode::isUnknownArea(){
+
+    }
+
+    void CMode::goInRandWay(){
+
+    }
+
+    void CMode::scan(){
+
+    }
+
+    void CMode::cmdToScanArea(){
+        
+    }
+
     ManualMode::ManualMode(size_t& x,
                             size_t& y,
                             size_t& id,
@@ -40,9 +56,9 @@ namespace planet{
         if(isAnyAppleFound())
             collectClosedApple();
         else if(isUnknownArea())
-            server.cmdToScanArea(id);
+            cmdToScanArea();
         else
-            server.goInRandWay(id);
+            goInRandWay();
     }
 
 

@@ -11,6 +11,8 @@ namespace planet{
         void refresh();
         void on();
         void off();
+        void work();
+        bool isOn = false;
     };
      
     class vectorS: public std::vector<Sapper>{

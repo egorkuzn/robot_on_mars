@@ -1,6 +1,9 @@
 #include "sapper.h"
 
 namespace planet{
+    void Sapper::work(){
+        
+    }
     void Sapper::on(){
 
     }
@@ -9,10 +12,16 @@ namespace planet{
 
     }
 
+    void Sapper::func(){
+        if(isOn)
+            work();
+    }
+
     void vectorS::cmd(){
         server.readCmd();
         if(server.cmd() == "add"){
-            \\добавить робота
+            Sapper tmp;
+            (*this).push_back(tmp); 
         }
         else if(server.cmd() == "canche mode")
             (*this)[server.getNum()].changeMode();

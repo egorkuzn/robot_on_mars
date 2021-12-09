@@ -13,9 +13,10 @@ namespace planet{
         public:
             virtual void func();
         protected:
-            goInRandWay();
-            isUnknownArea();
-            scan();
+            void goInRandWay();
+            void cmdToScanArea();
+            bool isUnknownArea();
+            void scan();
             size_t& x;
             size_t& y;
             size_t& id;
