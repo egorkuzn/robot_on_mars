@@ -4,11 +4,11 @@ namespace planet{
     void Collector::genCMode(CModeT type){
         switch(type){
             case CModeT::AUTO:
-                mode = ManualMode(server);
+                mode = ManualMode(x, y, id, server);
             case CModeT::MAN:
-                mode = AutoMode(server);
+                mode = AutoMode(x, y, id, server);
             case CModeT::SCAN:
-                mode = ScanMode(server);                        
+                mode = ScanMode(x, y, id, server);                        
         }
     }
 

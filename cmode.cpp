@@ -1,33 +1,49 @@
 #include "cmode.h"
 
 namespace planet{
-    ManualMode::ManualMode(data& server){
+    ManualMode::ManualMode(size_t& x,
+                            size_t& y,
+                            size_t& id,
+                            data& server){
         server.setFocus(id);
-        func(server);
+        func();
     }
 
-    void ManualMode::func(data& server){
+    void ManualMode::func(){
         return;
     }
 
-    ScanMode::ScanMode(data& server){
+    ScanMode::ScanMode(size_t& x,
+                      size_t& y,
+                      size_t& id,
+                      data& server){
         server.send(x, y, id);
-        func(server);
+        func();
     }
 
-    void ScanMode::func(data& server){
+    void ScanMode::func(){
         if(isUnknownArea())
             scan();        
         else
             goInRandWay();        
     }
 
-    AutoMode::AutoMode(data& server){
+    AutoMode::AutoMode(size_t& x,
+                      size_t& y,
+                      size_t& id,
+                      data& server){
+
+
+    }
+
+    void AutoMode::func(){
         if(isAnyAppleFound())
             collectClosedApple();
         else if(isUnknownArea())
-            scan();
+            server.cmdToScanArea(id);
         else
-            goInRandWay();
+            server.goInRandWay(id);
     }
+
+
 }

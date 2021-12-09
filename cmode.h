@@ -11,41 +11,38 @@ namespace planet{
 
     class CMode{
         public:
-            virtual void func(size_t x,
-                             size_t y,
-                             size_t id,
-                             data& server);
+            virtual void func();
         protected:
-            size_t x = 0;
-            size_t y = 0;
-            size_t id = 0;
+            size_t& x;
+            size_t& y;
+            size_t& id;
             data& server;
     };
 
     class ManualMode: public CMode{
         public:
-            ManualMode(data& server);
-            void func(size_t x,
-                      size_t y,
-                      size_t id,
-                      data& server) override;
+            ManualMode(size_t& x,
+                    size_t& y,
+                    size_t& id,
+                    data& server);
+            void func() override;
     };
 
     class AutoMode: public CMode{
         public:
-            AutoMode(data& server);
-            void func(size_t x,
-                      size_t y,
-                      size_t id,
-                      data& server) override;
+            AutoMode(size_t& x,
+                    size_t& y,
+                    size_t& id,
+                    data& server);
+            void func() override;
     };
 
     class ScanMode: public CMode{
         public:
-            ScanMode(data& server);
-            void func(size_t x,
-                      size_t y,
-                      size_t id,
-                      data& server) override;
+            ScanMode(size_t& x,
+                    size_t& y,
+                    size_t& id,
+                    data& server);
+            void func() override;
     };
 }
