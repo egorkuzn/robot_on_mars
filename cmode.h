@@ -39,8 +39,10 @@ namespace planet{
                     size_t& id,
                     data& server);
             void func() override;
+        private:
             bool isAnyAppleFound();
-            void collectClosedApple();
+            void collectNearestApple();
+            std::vector<Direction> way;
     };
 
     class ScanMode: public CMode{

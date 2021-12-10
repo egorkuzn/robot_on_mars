@@ -52,9 +52,16 @@ namespace planet{
 
     }
 
+    void AutoMode::collectNearestApple(){
+        if(!way.capacity())
+            way = server.takeNearestWay(id, BOMB);
+        server.addInAccumulator(id, move, *way.end());
+        way.pop_back();
+    }
+
     void AutoMode::func(){
         if(isAnyAppleFound())
-            collectClosedApple();
+            collectNearestApple();
         else if(isUnknownArea())
             cmdToScanArea();
         else

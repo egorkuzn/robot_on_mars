@@ -9,7 +9,9 @@ namespace planet
 {
     enum class toDoType
     {
-
+        MOVE,
+        GRAB,
+        SCAN,
     };
 
     enum class robotStatus
@@ -31,6 +33,9 @@ namespace planet
         void incAppleCount();
         void setFocus(size_t id);
         void cmdToScanArea(size_t id);
+        void addInAccumulator(size_t id, toDoType doSmth, Direction course);
+        std::vector<> collectorsAccumulator; // наверное map лучше прикрутить
+        std::vector<Direction> takeNearestWay(size_t id, Item thing);
         void getKey();
         int getNum();
         size_t getId();

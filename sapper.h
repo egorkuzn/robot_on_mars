@@ -7,10 +7,14 @@
 
 namespace planet{
     class Sapper: public Robot{
+    public:
         Sapper(std::vector<vectorItems>& ground, planet::data& server): Robot(ground, server){}
         void refresh();
         void on();
         void off();
+        void changeMode();
+    private:
+        std::vector<Direction> way;
         void work();
         bool isOn = false;
     };

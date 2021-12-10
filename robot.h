@@ -10,7 +10,8 @@ namespace planet{
         UP,
         DOWN,
         LEFT,
-        RIGHT
+        RIGHT,
+        NONE
     };
 
     class Robot{

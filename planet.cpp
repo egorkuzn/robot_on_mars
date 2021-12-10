@@ -8,7 +8,7 @@ namespace planet{
             server.readCmd();
             if(server.cmd() == "collector")
                 collectors.cmd();
-            else if(console.cmd() == "supper")
+            else if(console.cmd() == "sapper")
                 suppers.cmd();
             else
                 server.outBadCmd();            
@@ -25,7 +25,6 @@ namespace planet{
         if(server.Key() == graphics::Keys::Esc)
             return false;
         collectors.man();
-        collectors.accumulatedCmds();
         menu();
         takeRobotsStep();
         return true;

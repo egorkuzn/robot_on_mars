@@ -74,6 +74,7 @@ namespace planet{
     }
 
     void vectorC::refresh(){
+        
         for(Collector & elem : *this)
             elem.refresh();
     }
