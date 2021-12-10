@@ -4,11 +4,11 @@ namespace planet{
     void Collector::genCMode(CModeT type){
         switch(type){
             case CModeT::AUTO:
-                mode = ManualMode(x, y, id, server);
+                mode = new ManualMode(x, y, id, server);
             case CModeT::MAN:
-                mode = AutoMode(x, y, id, server);
+                mode = new AutoMode(x, y, id, server);
             case CModeT::SCAN:
-                mode = ScanMode(x, y, id, server);                        
+                mode = new ScanMode(x, y, id, server);                        
         }
     }
 
@@ -47,7 +47,7 @@ namespace planet{
     }
 
     void Collector::refresh(){
-        mode.func();
+        mode -> func();
     }
 
     void vectorC::man(){
@@ -73,8 +73,22 @@ namespace planet{
             server.outBadCmd();
     }
 
+    void vectorC::doAction(size_t id, toDoType toDo, Direction where){
+        switch (toDo)
+        {
+        case toDoType::MOVE :
+            (*this)[id].move(where);
+        case toDoType::GRAB :
+            (*this)[id].grab();
+        case toDoType::SCAN :
+            (*this)[id].scan();
+        }
+    }
+
     void vectorC::refresh(){
-        
+        for(auto& [id, toDo, where] : server.collectorsTasks)
+            doAction(id, toDo, where);
+        server.colletorsTasks.clear();      
         for(Collector & elem : *this)
             elem.refresh();
     }

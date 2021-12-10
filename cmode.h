@@ -11,6 +11,7 @@ namespace planet{
 
     class CMode{
         public:
+            CMode() = default;
             virtual void func();
         protected:
             void goInRandWay();

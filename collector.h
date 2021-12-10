@@ -10,23 +10,24 @@ namespace planet{
     class Collector: private Robot{
         public:
             Collector(std::vector<vectorItems>& ground, data& server): Robot(ground, server){}
-            CMode mode;
             void cmd();
             void grab();
-            void refresh();
-            void genCMode(CModeT type);                    
+            void refresh();            
+            void genCMode(CModeT type);  
+            CMode* mode = nullptr;                  
     };
 
     class vectorC: public std::vector<Collector>{
         public:
-            vectorC(std::vector<vectorItems>& ground, data& server) :
+            vectorC(std::vector<vectorItems>& ground, planet::data& server) :
                 ground(ground), server(server){}
             void man();
             void cmd();
             void refresh();
         private:
+            void doAction(size_t id, toDoType toDo, Direction where);
             std::vector<vectorItems>& ground;
-            data& server;
+            planet::data& server;
             size_t manId = 0;
     };
 }

@@ -3,6 +3,8 @@
 #include "item.h"
 #include <vector>
 #include <string>
+#include <map>
+#include <list>
 #include "ui.h"
 
 namespace planet
@@ -20,6 +22,8 @@ namespace planet
         DIE
     };
 
+    typedef std::map <size_t , toDoType, Direction> actions;
+
     class data
     {
     public:
@@ -34,7 +38,7 @@ namespace planet
         void setFocus(size_t id);
         void cmdToScanArea(size_t id);
         void addInAccumulator(size_t id, toDoType doSmth, Direction course);
-        std::vector<> collectorsAccumulator; // наверное map лучше прикрутить
+        std::map <size_t , toDoType, Direction> collectorsTasks;
         std::vector<Direction> takeNearestWay(size_t id, Item thing);
         void getKey();
         int getNum();

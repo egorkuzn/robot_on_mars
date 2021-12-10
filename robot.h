@@ -15,13 +15,13 @@ namespace planet{
     };
 
     class Robot{
-            Robot(std::vector<vectorItems>& ground, data& server);
         public: 
+            Robot(std::vector<vectorItems>& ground, data& server);
             void move(Direction way);
             // void changeServer(data& new_server); // future feature
             ~Robot(){}
             Robot(const Robot& other);
-            void scan();
+            void scan();            
             size_t x;
             size_t y;
             size_t id;
