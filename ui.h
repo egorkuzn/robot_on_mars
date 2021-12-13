@@ -30,12 +30,12 @@ namespace graphics{
             ~UI();
             operator bool() const;
             void display(); 
-            void refreshW();
             bool isChanged();
             Keys getKey();
             std::string readCmd(char* constex = nullptr);
             int getNum(char* context = nullptr);
             void error(char* context);
+            void changeCentre(size_t x0, size_t y0);
             void displayAppleCount(size_t value);
             void displayRobotCount(size_t value);
             void displayDieCount(size_t count);  
@@ -43,13 +43,8 @@ namespace graphics{
             void importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMapMask); 
         private:
             void clearLiveStr();
-            void moveMapUp();
-            void moveMapDown();
-            void moveMapLeft();
-            void moveMapRight();
             void backDel(std::string& str);
             void frontDel(std::string& str);
-            void genDisplayedMatrix();
             void sleepcp(int milliseconds);
             void refreshStatusBar();
             size_t maxX();

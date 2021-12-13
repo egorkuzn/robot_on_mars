@@ -14,7 +14,7 @@ namespace planet{
 
     void Collector::grab(){
         if(ground[y][x] == Item::APPLE){
-            server.incAppleCount();
+            server.incAppleCount(x, y);
             server.send(x, y, Item::EMPTY);
         }
     }
@@ -86,9 +86,9 @@ namespace planet{
     }
 
     void vectorC::refresh(){
-        for(auto& [id, toDo, where] : server.collectorsTasks)
+        for(auto [id, toDo, where] : server.collectorsTasks)
             doAction(id, toDo, where);
-        server.colletorsTasks.clear();      
+        server.collectorsTasks.clear();      
         for(Collector & elem : *this)
             elem.refresh();
     }

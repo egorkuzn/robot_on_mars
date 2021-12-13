@@ -9,6 +9,14 @@
 
 namespace planet
 {
+    enum class Direction{
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        NONE
+    };
+
     enum class toDoType
     {
         MOVE,
@@ -22,7 +30,11 @@ namespace planet
         DIE
     };
 
-    typedef std::map <size_t , toDoType, Direction> actions;
+    struct action{
+        size_t id;
+        toDoType toDo;
+        Direction where;
+    };
 
     class data
     {
@@ -37,9 +49,12 @@ namespace planet
         void incAppleCount();
         void setFocus(size_t id);
         void cmdToScanArea(size_t id);
-        void addInAccumulator(size_t id, toDoType doSmth, Direction course);
-        std::map <size_t , toDoType, Direction> collectorsTasks;
+        void addInAccumulator(size_t id, toDoType toDo, Direction where = Direction::NONE);
+        std::vector <action> collectorsTasks;
         std::vector<Direction> takeNearestWay(size_t id, Item thing);
+        bool availibleToGo(size_t x, size_t y);
+        bool isUnknownPoint(size_t x, size_t y);
+        bool isAnyAppleFound(size_t id);
         void getKey();
         int getNum();
         size_t getId();

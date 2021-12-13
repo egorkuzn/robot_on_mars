@@ -1,12 +1,16 @@
 #include "sapper.h"
 
 namespace planet{
+    Sapper::Sapper(std::vector<vectorItems>& ground,
+                                planet::data& server): Robot(ground, server){}
+
     void Sapper::work(){
         if(!way.capacity())
             way = server.takeNearestWay(id, BOMB);
         move(*way.end());
         way.pop_back();
     }
+
     void Sapper::on(){
         isOn = true;
     }
@@ -27,7 +31,7 @@ namespace planet{
     void vectorS::cmd(){
         server.readCmd();
         if(server.cmd() == "add"){
-            Sapper tmp;
+            Sapper tmp(ground, server);
             (*this).push_back(tmp); 
         }
         else if(server.cmd() == "change mode")
@@ -36,6 +40,6 @@ namespace planet{
 
     void vectorS::refresh(){
         for(Sapper & elem : *this)
-            elem.refresh();
+            elem.func();
     }
 }

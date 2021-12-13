@@ -11,11 +11,13 @@ namespace planet{
 
     class CMode{
         public:
-            CMode() = default;
+            CMode(size_t& x,
+                size_t& y,
+                size_t& id,
+                data& server);
             virtual void func();
         protected:
             void goInRandWay();
-            void cmdToScanArea();
             bool isUnknownArea();
             void scan();
             size_t& x;

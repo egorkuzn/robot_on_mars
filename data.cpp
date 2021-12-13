@@ -75,6 +75,7 @@ namespace planet{
     void data::send(size_t x, size_t y, Item item){
         updatedMap[y][x] = item;
         updatedMapMask[y][x] = true;
+        
     }
 
     void data::getKey(){
@@ -87,5 +88,32 @@ namespace planet{
 
     void data::error(char* msg){
         console -> error(msg);        
+    }
+
+    void data::addInAccumulator(size_t id, toDoType toDo, Direction where = Direction::NONE){
+        action* newAction = new action;
+        newAction -> toDo = toDo;
+        newAction -> id = id;
+        newAction -> where = where;
+        collectorsTasks.push_back(*newAction);
+        delete newAction;
+    }
+
+    void data::setFocus(size_t id){
+        console->changeCentre(xyRobots[id][1], xyRobots[id][0]);
+    }
+
+    bool data::availibleToGo(size_t x, size_t y){
+        bool result = updatedMap[y][x] != (ROCK || BOMB);
+        result &= updatedMapMask[y][x];
+        return result;
+    }
+
+    bool data::isUnknownPoint(size_t x, size_t y){
+        return !updatedMapMask[y][x];
+    }
+
+    bool data::isAnyAppleFound(size_t id){
+        //проходимся бфс 
     }
 }

@@ -8,8 +8,8 @@
 namespace planet{
     class Sapper: public Robot{
     public:
-        Sapper(std::vector<vectorItems>& ground, planet::data& server): Robot(ground, server){}
-        void refresh();
+        Sapper(std::vector<vectorItems>& ground, planet::data& server);
+        void func();
         void on();
         void off();
         void changeMode();

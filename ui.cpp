@@ -31,8 +31,9 @@ namespace graphics{
     }
 
     void UI::display(){
-        refreshW();
+        windowRefresh();
         system("clear");
+        
         for(std::string& elem : displayedMatrix)
             std::cout << elem << std::endl;
         std::cout << liveStr << std::endl;
@@ -40,8 +41,7 @@ namespace graphics{
 
     UI::UI(){
         system("clear");
-        genDisplayedMatrix();
-        display();
+        window();
     }
 
     UI::~UI(){
@@ -155,71 +155,6 @@ namespace graphics{
         return num;
     }
 
-    void UI::backDel(std::string& str){
-        str.erase(str.end() - 4, str.end());
-    }
-
-    void UI::frontDel(std::string& str){
-        str.erase(str.begin(), str.begin() + 4);
-    }
-
-    size_t UI::maxX(){
-        return externMatrix[0].capacity();
-    }
-
-    size_t UI::maxY(){
-        return externMatrix.capacity();
-    }
-
-    void UI::moveMapDown(){
-        for(uint8_t i = 0; i < high - 1; ++i)
-            displayedMatrix[i] = displayedMatrix[i + 1];        
-
-        displayedMatrix[high - 1] = "";
-
-        for(uint8_t i = 0; i < width; ++i){
-            if(matrixMask[(y + high) % maxY()][(x + i) % maxX()])
-                displayedMatrix[high - 1] += externMatrix[(y + high) % maxY()][(x + i) % maxX()];
-            else 
-                displayedMatrix[high - 1] += "🟥"; 
-        }
-    }
-
-    void UI::moveMapDown(){
-        displayedMatrix[0] = "";
-
-        for(uint8_t i = 0; i < width; ++i){
-            if(matrixMask[y][(x + i) % maxX()])
-                displayedMatrix[0] += externMatrix[y][(x + i) % maxX()];
-            else 
-                displayedMatrix[0] += "🟥"; 
-        }
-
-        for(uint8_t i = 1; i < high; ++i)
-            displayedMatrix[i] = displayedMatrix[i - 1];        
-    }
-
-    void UI::moveMapRight(){
-        for(uint8_t i = 0; i < high; ++i){
-            frontDel(displayedMatrix[i]);
-            if(matrixMask[(y + i) % maxY()][(x + width) % maxX()])
-                displayedMatrix[i] += externMatrix[(y + i) % maxY()][(x + width) % maxX()];
-            else 
-                displayedMatrix[i] += "🟥"; 
-        }        
-    }
-    
-    void UI::moveMapLeft(){
-        for(uint8_t i = 0; i < high; ++i){
-            backDel(displayedMatrix[i]);
-            std::string symb;
-            if(matrixMask[(y + i) % maxY()][x])
-                symb = externMatrix[(y + i) % maxY()][(x + width) % maxX()];
-            else 
-                symb = "🟥";
-            displayedMatrix[i] = symb + displayedMatrix[i]; 
-        }
-    }
 
     void UI::refreshStatusBar(){
         statusBar = "🍏 x" + std::to_string(appleCount) + "   🤖 x" +
@@ -248,4 +183,5 @@ namespace graphics{
     void UI::importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMaskMap)
          : matrixMask(updatedMaskMap){}
 
+    void UI::changeCentre(size_t x, size_t y) : x(x), y(y){}
 }

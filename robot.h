@@ -6,14 +6,6 @@
 #include <vector>
 
 namespace planet{
-    enum class Direction{
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        NONE
-    };
-
     class Robot{
         public: 
             Robot(std::vector<vectorItems>& ground, data& server);
