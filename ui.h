@@ -42,7 +42,10 @@ namespace graphics{
             void importUpdatedMatrix(std::vector<planet::vectorItems>& updatedMap);
             void importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMapMask); 
         private:
+            void window();
+            void windowRefresh();
             void clearLiveStr();
+            void emojiTranslator(std::string& symb, planet::Item item);
             void backDel(std::string& str);
             void frontDel(std::string& str);
             void sleepcp(int milliseconds);

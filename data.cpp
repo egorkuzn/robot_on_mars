@@ -116,4 +116,5 @@ namespace planet{
     bool data::isAnyAppleFound(size_t id){
         //проходимся бфс 
     }
+
 }

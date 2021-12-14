@@ -1,33 +1,38 @@
 #include "ui.h"
 
+#define DEFAULT_SYMB "🟥"
+
+//        setlocale(LC_CTYPE, "");
+
+
 namespace graphics{
-    void UI::genDisplayedMatrix(){
-        setlocale(LC_CTYPE, "");
-        displayedMatrix.resize(high);
-        int counter = 0;
-        for(std::string& elem : displayedMatrix){
-            for(int i = 0; i < width; ++i)
-                if((i == 12) && (counter == 3))
-                    elem += "🤖";
+    void UI::window(){
+        displayedMatrix.resize(high + 1);    
+        std::string symb;    
+        size_t x0 = x - width/2; 
+        size_t y0 = y - high/2;
+        displayedMatrix[0] = statusBar;
+        for(size_t i = y0; i > 0; --i)
+            for(size_t j = 0; j < width; ++j ){                
+                if(matrixMask[y - i][x0 + j])
+                    emojiTranslator(symb, externMatrix[y - i][x0 + j]);
                 else
-                    elem += "🟥";
-            ++counter;
-        }        
+                    symb = DEFAULT_SYMB;
+                displayedMatrix[i] += symb;
+            }
+        // y with robot
+        for(size_t i = y0; i <= high; ++i)
+            for(size_t j = 0; j < width; ++j ){                
+                if(matrixMask[y - i][x0 + j])
+                    emojiTranslator(symb, externMatrix[y + i][x0 + j]);
+                else
+                    symb = DEFAULT_SYMB;
+                displayedMatrix[i] += symb;
+            }
     }
 
-    void UI::refreshW(){
-        int counter = 0;
-        ++x;
-        ++y;
-        for(std::string& elem : displayedMatrix){
-            elem = "";            
-            for(int i = 0; i < width; ++i)
-                if((i == 25 - x  % 25) && (counter == y % 7))
-                    elem += "🤖";
-                else
-                    elem += "🟥";
-            ++counter;
-        }        
+    void UI::windowRefresh(){
+
     }
 
     void UI::display(){
@@ -177,11 +182,16 @@ namespace graphics{
         refreshStatusBar();
     }
 
-    void UI::importUpdatedMatrix(std::vector<planet::vectorItems>& updatedMap)
-         : externMatrix(updatedMap){}
+    void UI::importUpdatedMatrix(std::vector<planet::vectorItems>& updatedMap){
+        externMatrix = updatedMap;
+    }
 
-    void UI::importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMaskMap)
-         : matrixMask(updatedMaskMap){}
+    void UI::importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMaskMap){
+        matrixMask = updatedMaskMap;
+    }
 
-    void UI::changeCentre(size_t x, size_t y) : x(x), y(y){}
+    void UI::changeCentre(size_t x0, size_t y0){
+        x = x0;
+        y = y0;
+    }
 }

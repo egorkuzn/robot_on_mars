@@ -3,7 +3,6 @@
 #include "item.h"
 #include <vector>
 #include <string>
-#include <map>
 #include <list>
 #include "ui.h"
 
@@ -40,6 +39,7 @@ namespace planet
     {
     public:
         data();
+        data& operator=(data& other); // необходимо 
         void send(size_t x, size_t y, Item item);
         void send(size_t x, size_t y, size_t id, robotStatus status = robotStatus::LIVE);
         uint8_t isNotFirst(size_t value, char ort);
@@ -50,7 +50,7 @@ namespace planet
         void setFocus(size_t id);
         void cmdToScanArea(size_t id);
         void addInAccumulator(size_t id, toDoType toDo, Direction where = Direction::NONE);
-        std::vector <action> collectorsTasks;
+        std::list <action> collectorsTasks;
         std::vector<Direction> takeNearestWay(size_t id, Item thing);
         bool availibleToGo(size_t x, size_t y);
         bool isUnknownPoint(size_t x, size_t y);
