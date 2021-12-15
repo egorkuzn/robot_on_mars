@@ -1,38 +1,59 @@
 #include "ui.h"
 
-#define DEFAULT_SYMB "🟥"
-
 //        setlocale(LC_CTYPE, "");
 
-
 namespace graphics{
-    void UI::window(){
-        displayedMatrix.resize(high + 1);    
-        std::string symb;    
-        size_t x0 = x - width/2; 
-        size_t y0 = y - high/2;
-        displayedMatrix[0] = statusBar;
-        for(size_t i = y0; i > 0; --i)
-            for(size_t j = 0; j < width; ++j ){                
-                if(matrixMask[y - i][x0 + j])
-                    emojiTranslator(symb, externMatrix[y - i][x0 + j]);
-                else
-                    symb = DEFAULT_SYMB;
-                displayedMatrix[i] += symb;
-            }
-        // y with robot
-        for(size_t i = y0; i <= high; ++i)
-            for(size_t j = 0; j < width; ++j ){                
-                if(matrixMask[y - i][x0 + j])
-                    emojiTranslator(symb, externMatrix[y + i][x0 + j]);
-                else
-                    symb = DEFAULT_SYMB;
-                displayedMatrix[i] += symb;
-            }
+    std::string UI::emojiTranslator(planet::Item item){
+        switch (item)
+        {
+        case planet::ROCK:
+            return "🪨";
+        case planet::BOMB:
+            return "💣";
+        case planet::APPLE:
+            return "🍏";
+        case planet::EMPTY:
+            return "🟫";
+        }
     }
 
-    void UI::windowRefresh(){
+    auto UI::safetyIndexTake(Matrix mType, size_t x0, size_t y0){
+        switch(mType){
+            case Matrix::MAP:
+                return externMatrix[y0 % externMatrix.size()][x0 % externMatrix[0].capacity()];
+            case Matrix::MASK:
+                return matrixMask[y0 % matrixMask.size()][x0 % matrixMask[0].capacity()];
+        }
+    }
 
+    bool UI::isRobotHere(size_t x0, size_t y0){
+        x0 %= externMatrix[0].capacity();
+        y0 %= externMatrix.size();
+        for(size_t id = 0; id < xyRobots.size(); ++id)
+            if(xyRobots[id][0] == y0 && xyRobots[id][1] == x0)
+                return true;
+        return false;
+    }
+
+    std::string UI::genMatrixString(size_t stringNumb){
+        std::string result;
+        size_t x0 = x - width/2;
+        for(size_t i = 0; i < width; ++i)
+            if(isRobotHere(x0 + i, stringNumb))
+                result += "🤖";
+            else if(safetyIndexTake(Matrix::MASK, stringNumb, x0 + i))
+                result += emojiTranslator(safetyIndexTake(Matrix::MAP, stringNumb, x0 + i));
+            else
+                result += "🟥";
+    }
+
+    void UI::window(){
+        if(!displayedMatrix.size())
+            displayedMatrix.resize(high + 1);    
+        size_t y0 = y - high/2;
+        displayedMatrix[0] = statusBar;
+        for(size_t i = 0; i < high; ++i)
+            displayedMatrix[i + 1] = genMatrixString(i + y0);
     }
 
     void UI::display(){
@@ -44,21 +65,21 @@ namespace graphics{
         std::cout << liveStr << std::endl;
     }
 
-    UI::UI(){
+    UI::UI( std::vector<size_t[2]>& xyRobots,
+            std::vector<std::vector<bool>>& matrixMask,
+            std::vector<planet::vectorItems>& externMatrix ) :
+                                                    xyRobots(xyRobots),
+                                                    matrixMask(matrixMask),
+                                                    externMatrix(externMatrix){
         system("clear");
         window();
     }
-
     UI::~UI(){
         system("clear");
     }
 
     UI::operator bool() const{
         return status;
-    }
-
-    void UI::clearLiveStr(){
-        liveStr = "";
     }
 
     Keys UI::reactionOnKeyboard(int ch){
@@ -84,13 +105,11 @@ namespace graphics{
         }
     }
 
-    int _kbhit() {
+    int UI::_kbhit() {
         static const int STDIN = 0;
         static bool initialized = false;
-
         int bytesWaiting;
-
-        if (! initialized) {
+        if (!initialized) {
             // Use termios to turn off line buffering
             termios term;
             tcgetattr(STDIN, &term);
@@ -99,7 +118,6 @@ namespace graphics{
             setbuf(stdin, NULL);
             initialized = true;
         }
-
         //int bytesWaiting;
         ioctl(STDIN, FIONREAD, &bytesWaiting);
         return bytesWaiting;
@@ -107,14 +125,12 @@ namespace graphics{
 
     Keys UI::getKey(){  
         int ch = 0;
-        if(_kbhit())   /// If keyboard hit
-        {
+        if(_kbhit()){  /// If keyboard hit
             ch = safety_input::getch(); /// Character
             return reactionOnKeyboard(ch);
         }
-
         return Keys::EMPTY;
-     }
+    }
 
     bool UI::isChanged(){
         return true;
@@ -124,9 +140,7 @@ namespace graphics{
     {
         clock_t time_end;
         time_end = clock() + milliseconds * CLOCKS_PER_SEC/1000;
-        while (clock() < time_end)
-        {
-        }
+        while (clock() < time_end){}
     }
 
 
@@ -160,7 +174,6 @@ namespace graphics{
         return num;
     }
 
-
     void UI::refreshStatusBar(){
         statusBar = "🍏 x" + std::to_string(appleCount) + "   🤖 x" +
          std::to_string(liveCount) + "   💀 x" + std::to_string(dieCount);
@@ -181,15 +194,7 @@ namespace graphics{
         dieCount = value;
         refreshStatusBar();
     }
-
-    void UI::importUpdatedMatrix(std::vector<planet::vectorItems>& updatedMap){
-        externMatrix = updatedMap;
-    }
-
-    void UI::importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMaskMap){
-        matrixMask = updatedMaskMap;
-    }
-
+    
     void UI::changeCentre(size_t x0, size_t y0){
         x = x0;
         y = y0;

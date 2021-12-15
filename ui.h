@@ -24,9 +24,16 @@ namespace graphics{
         EMPTY
     };
 
+    enum class Matrix{
+        MAP,
+        MASK
+    };
+
     class UI{
         public:
-            UI();
+            UI( std::vector<size_t[2]>& xyRobots,
+                std::vector<std::vector<bool>>& matrixMask,
+                std::vector<planet::vectorItems>& externMatrix );
             ~UI();
             operator bool() const;
             void display(); 
@@ -39,19 +46,15 @@ namespace graphics{
             void displayAppleCount(size_t value);
             void displayRobotCount(size_t value);
             void displayDieCount(size_t count);  
-            void importUpdatedMatrix(std::vector<planet::vectorItems>& updatedMap);
-            void importUpdatedMaskMatrix(std::vector<std::vector<bool>>& updatedMapMask); 
         private:
+            int _kbhit();
             void window();
-            void windowRefresh();
-            void clearLiveStr();
-            void emojiTranslator(std::string& symb, planet::Item item);
-            void backDel(std::string& str);
-            void frontDel(std::string& str);
             void sleepcp(int milliseconds);
             void refreshStatusBar();
-            size_t maxX();
-            size_t maxY();
+            auto safetyIndexTake(Matrix mType, size_t x0, size_t y0);
+            bool isRobotHere(size_t x0, size_t y0);
+            std::string emojiTranslator(planet::Item item);
+            std::string genMatrixString(size_t stringNumb);
             Keys reactionOnKeyboard(int ch);
             bool status = true;
             size_t high = 7;
@@ -62,6 +65,7 @@ namespace graphics{
             int x = 12;
             int y = 3;
             std::vector<std::string> displayedMatrix;
+            std::vector<size_t[2]>& xyRobots;
             std::vector<std::vector<bool>>& matrixMask;
             std::vector<planet::vectorItems>& externMatrix;
             std::string liveStr;
