@@ -72,8 +72,3 @@ namespace graphics{
             std::string statusBar;
     };
 }
-/*
-🟥 - unvisited point
-🟫 - visited point
-🤖 - robot
-*/

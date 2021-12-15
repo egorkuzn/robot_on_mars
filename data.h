@@ -2,6 +2,7 @@
 
 #include "item.h"
 #include <vector>
+#include <queue>
 #include <string>
 #include <list>
 #include "ui.h"
@@ -69,6 +70,9 @@ namespace planet
         size_t Num();
         graphics::Keys Key();        
     private:
+        std::vector<size_t[2]> matrixBFS(size_t id, Item item);
+        std::vector<size_t[2]> bombWay;
+        std::vector<size_t[2]> appleWay;
         size_t baseX;
         size_t baseY;
         size_t appleCount = 0;

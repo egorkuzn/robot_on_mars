@@ -56,24 +56,22 @@ namespace graphics{
             displayedMatrix[i + 1] = genMatrixString(i + y0);
     }
 
-    void UI::display(){
-        windowRefresh();
-        system("clear");
-        
-        for(std::string& elem : displayedMatrix)
-            std::cout << elem << std::endl;
-        std::cout << liveStr << std::endl;
-    }
-
     UI::UI( std::vector<size_t[2]>& xyRobots,
             std::vector<std::vector<bool>>& matrixMask,
             std::vector<planet::vectorItems>& externMatrix ) :
                                                     xyRobots(xyRobots),
                                                     matrixMask(matrixMask),
                                                     externMatrix(externMatrix){
+        display();
+    }
+
+    void UI::display(){
         system("clear");
         window();
+        for(std::string elem& : displayedMatrix)
+            std::cout << elem << std::endl;
     }
+
     UI::~UI(){
         system("clear");
     }

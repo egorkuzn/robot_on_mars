@@ -113,8 +113,20 @@ namespace planet{
         return !updatedMapMask[y][x];
     }
 
+    std::vector<size_t[2]> data::matrixBFS(size_t id, Item item){
+        bool found;
+        while (!found){
+           size_t v =  
+        }
+        
+    }
+
     bool data::isAnyAppleFound(size_t id){
-        //проходимся бфс 
+        appleWay = matrixBFS(id, APPLE);
+        if(appleWay.size())
+            return true;
+        else 
+            return false;
     }
 
 }
