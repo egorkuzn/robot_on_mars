@@ -70,7 +70,9 @@ namespace planet
         size_t Num();
         graphics::Keys Key();        
     private:
+        std::list<size_t> genPointsQueue(size_t x, size_t y);
         std::vector<size_t[2]> matrixBFS(size_t id, Item item);
+        size_t point(size_t coordinate [2]);
         std::vector<size_t[2]> bombWay;
         std::vector<size_t[2]> appleWay;
         size_t baseX;

@@ -113,12 +113,49 @@ namespace planet{
         return !updatedMapMask[y][x];
     }
 
-    std::vector<size_t[2]> data::matrixBFS(size_t id, Item item){
-        bool found;
-        while (!found){
-           size_t v =  
+    size_t data::point(size_t coordinate [2]){
+        return coordinate[0] * updatedMap[0].capacity() + coordinate[1];
+    }
+
+    std::list<size_t> data::genPointsQueue(size_t x, size_t y){
+        std::list<size_t> q;
+        if(updatedMapMask[y + 1][x]){
+            q.push_back(point(updatedMap[y + 1][x]));
         }
-        
+
+        if(updatedMapMask[y - 1][x]){
+            q.push_back(point(updatedMap[y - 1][x]));
+        }
+
+        if(updatedMapMask[y][x + 1]){
+            q.push_back(point(updatedMap[y][x + 1]));
+        }
+
+        if(updatedMapMask[y][x - 1]){
+            q.push_back(point(updatedMap[y][x - 1]));
+        }
+
+        return q;
+    }
+
+    std::vector<size_t[2]> data::matrixBFS(size_t id, Item item){
+        std::queue<size_t> q;
+        bool found = false;
+        q.push(point(xyRobots[id]));
+        std::vector<size_t> used();
+        while (!found && !q.empty()){
+            std::list<size_t> pointsQueue;
+            for(size_t pointIterator : pointsQueue){
+                size_t to = pointIterator;
+                if(!used[to]){
+                    used[to] = true;
+                    q.push(to);
+                    d[to] = d[v] + 1;
+                    p[to] = v;
+                }
+                
+            }
+        }        
     }
 
     bool data::isAnyAppleFound(size_t id){
