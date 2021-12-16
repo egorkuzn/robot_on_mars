@@ -17,12 +17,15 @@ namespace graphics{
         }
     }
 
-    auto UI::safetyIndexTake(Matrix mType, size_t x0, size_t y0){
+    int UI::safetyIndexTake(Matrix mType, size_t x0, size_t y0){
         switch(mType){
             case Matrix::MAP:
                 return externMatrix[y0 % externMatrix.size()][x0 % externMatrix[0].capacity()];
             case Matrix::MASK:
-                return matrixMask[y0 % matrixMask.size()][x0 % matrixMask[0].capacity()];
+                return ()matrixMask[y0 % matrixMask.size()][x0 % matrixMask[0].capacity()];
+            default:
+                //place for exception
+                return false;
         }
     }
 
@@ -68,7 +71,7 @@ namespace graphics{
     void UI::display(){
         system("clear");
         window();
-        for(std::string elem& : displayedMatrix)
+        for(std::string elem : displayedMatrix)
             std::cout << elem << std::endl;
     }
 

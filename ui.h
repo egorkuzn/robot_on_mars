@@ -51,7 +51,7 @@ namespace graphics{
             void window();
             void sleepcp(int milliseconds);
             void refreshStatusBar();
-            auto safetyIndexTake(Matrix mType, size_t x0, size_t y0);
+            int safetyIndexTake(Matrix mType, size_t x0, size_t y0);
             bool isRobotHere(size_t x0, size_t y0);
             std::string emojiTranslator(planet::Item item);
             std::string genMatrixString(size_t stringNumb);

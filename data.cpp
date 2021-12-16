@@ -119,23 +119,45 @@ namespace planet{
 
     std::list<size_t> data::genPointsQueue(size_t x, size_t y){
         std::list<size_t> q;
-        if(updatedMapMask[y + 1][x]){
+        if(updatedMapMask[y + 1][x] && (updatedMap[y + 1][x] != (BOMB||ROCK))){
             q.push_back(point(updatedMap[y + 1][x]));
         }
 
-        if(updatedMapMask[y - 1][x]){
+        if(updatedMapMask[y - 1][x] && (updatedMap[y - 1][x] != (BOMB||ROCK))){
             q.push_back(point(updatedMap[y - 1][x]));
         }
 
-        if(updatedMapMask[y][x + 1]){
+        if(updatedMapMask[y][x + 1] && (updatedMap[y][x + 1] != (BOMB||ROCK))){
             q.push_back(point(updatedMap[y][x + 1]));
         }
 
-        if(updatedMapMask[y][x - 1]){
+        if(updatedMapMask[y][x - 1] && (updatedMap[y][x - 1] != (BOMB||ROCK))){
             q.push_back(point(updatedMap[y][x - 1]));
         }
 
         return q;
+    }
+
+    Item takeItem(size_t coordinate){
+        size_t k = updatedMap[0].capacity();
+        return updatedMap[coordinate / k][coordinate % k];
+    }
+
+    bool data::foundInDistribution(size_t coordinate, Item item){
+        if(!distribution.size())
+            distribution.resize(4);
+        for(size_t elem : distribution[item])
+            if(coordinate == elem)
+                return true;
+        distribution[item].push_back(coordinate);
+        return false;
+    }
+
+    bool data::isAppleForGrab(size_t coordinate, Item item){
+        if(takeItem(coordinate) == item)
+            if(!foundInDistribution(coordinate, item))
+                return true;
+        return false;
     }
 
     std::vector<size_t[2]> data::matrixBFS(size_t id, Item item){
@@ -153,7 +175,7 @@ namespace planet{
                     d[to] = d[v] + 1;
                     p[to] = v;
                 }
-                
+                found = isAppleForGrab(to, APPLE);
             }
         }        
     }

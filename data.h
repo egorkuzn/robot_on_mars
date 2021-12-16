@@ -70,11 +70,15 @@ namespace planet
         size_t Num();
         graphics::Keys Key();        
     private:
+        Item takeItem(size_t coordinate);
         std::list<size_t> genPointsQueue(size_t x, size_t y);
         std::vector<size_t[2]> matrixBFS(size_t id, Item item);
+        bool isAppleForGrab(size_t coordinate, Item item);
+        bool foundInDistribution(size_t coordinte, Item item);
         size_t point(size_t coordinate [2]);
         std::vector<size_t[2]> bombWay;
         std::vector<size_t[2]> appleWay;
+        std::vector<std::list<size_t>> distribution; // 0 - apple distribution for collectors, 1 - bomb distribution for sappers
         size_t baseX;
         size_t baseY;
         size_t appleCount = 0;
