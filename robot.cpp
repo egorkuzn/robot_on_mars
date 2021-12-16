@@ -43,14 +43,6 @@ namespace planet{
 
         }    
     } 
-
-    Robot::Robot(const Robot& other){
-        this->x = other.x;
-        this->y = other.y;
-        this->id = other.id;
-        this->server = other.server;
-        this->ground = other.ground; // vожно реализовать через шаблон
-    }
     
     void Robot::move(Direction way){
         switch(way){

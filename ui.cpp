@@ -22,7 +22,7 @@ namespace graphics{
             case Matrix::MAP:
                 return externMatrix[y0 % externMatrix.size()][x0 % externMatrix[0].capacity()];
             case Matrix::MASK:
-                return ()matrixMask[y0 % matrixMask.size()][x0 % matrixMask[0].capacity()];
+                return matrixMask[y0 % matrixMask.size()][x0 % matrixMask[0].capacity()];
             default:
                 //place for exception
                 return false;
@@ -45,7 +45,7 @@ namespace graphics{
             if(isRobotHere(x0 + i, stringNumb))
                 result += "🤖";
             else if(safetyIndexTake(Matrix::MASK, stringNumb, x0 + i))
-                result += emojiTranslator(safetyIndexTake(Matrix::MAP, stringNumb, x0 + i));
+                result += emojiTranslator((planet::Item)safetyIndexTake(Matrix::MAP, stringNumb, x0 + i));
             else
                 result += "🟥";
     }

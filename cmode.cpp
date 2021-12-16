@@ -74,7 +74,7 @@ namespace planet{
     }
 
     void AutoMode::func(){
-        if(server.isAnyAppleFound(id))
+        if(server.isAnyFound(id, APPLE))
             collectNearestApple();
         else if(isUnknownArea())
             scan();

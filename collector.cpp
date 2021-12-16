@@ -14,7 +14,7 @@ namespace planet{
 
     void Collector::grab(){
         if(ground[y][x] == Item::APPLE){
-            server.incAppleCount(x, y);
+            server.incAppleCount();
             server.send(x, y, Item::EMPTY);
         }
     }

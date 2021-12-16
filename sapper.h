@@ -13,7 +13,7 @@ namespace planet{
         void on();
         void off();
         void changeMode();
-    private:
+    private:        
         std::vector<Direction> way;
         void work();
         bool isOn = false;

@@ -12,7 +12,6 @@ namespace planet{
             void move(Direction way);
             // void changeServer(data& new_server); // future feature
             ~Robot(){}
-            Robot(const Robot& other);
             void scan();            
             size_t x;
             size_t y;

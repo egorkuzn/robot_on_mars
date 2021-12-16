@@ -5,6 +5,7 @@
 #include <queue>
 #include <string>
 #include <list>
+#include <unordered_map>
 #include "ui.h"
 
 namespace planet
@@ -40,7 +41,7 @@ namespace planet
     {
     public:
         data();
-        data& operator=(data& other); // необходимо 
+        ~data();
         void send(size_t x, size_t y, Item item);
         void send(size_t x, size_t y, size_t id, robotStatus status = robotStatus::LIVE);
         uint8_t isNotFirst(size_t value, char ort);
@@ -55,7 +56,7 @@ namespace planet
         std::vector<Direction> takeNearestWay(size_t id, Item thing);
         bool availibleToGo(size_t x, size_t y);
         bool isUnknownPoint(size_t x, size_t y);
-        bool isAnyAppleFound(size_t id);
+        bool isAnyFound(size_t id, Item item);
         void getKey();
         int getNum();
         size_t getId();
@@ -72,10 +73,15 @@ namespace planet
     private:
         Item takeItem(size_t coordinate);
         std::list<size_t> genPointsQueue(size_t x, size_t y);
-        std::vector<size_t[2]> matrixBFS(size_t id, Item item);
+        std::vector<std::vector<std::vector<Direction>>> ways;
+        std::vector<Direction> matrixBFS(size_t id, Item item);
+        Direction toDirectionType(size_t coordinate0, size_t coordinate);
         bool isAppleForGrab(size_t coordinate, Item item);
         bool foundInDistribution(size_t coordinte, Item item);
+        size_t point(size_t x, size_t y);
         size_t point(size_t coordinate [2]);
+        size_t extractX(size_t cootdinate);
+        size_t extractY(size_t coordinate);
         std::vector<size_t[2]> bombWay;
         std::vector<size_t[2]> appleWay;
         std::vector<std::list<size_t>> distribution; // 0 - apple distribution for collectors, 1 - bomb distribution for sappers
