@@ -34,8 +34,8 @@ namespace planet{
 
     size_t data::getId(){
         if(!xyRobots.size()){
-            xyRobots[0][0] = baseY;
-            xyRobots[0][1] = baseX;
+            xyRobots[0].first = baseY;
+            xyRobots[0].second = baseX;
         }
         ++liveCount;
         console -> displayRobotCount(liveCount);
@@ -57,8 +57,8 @@ namespace planet{
     }
 
     void data::send(size_t x, size_t y, size_t id, robotStatus status){
-        xyRobots[id][0] = y + yOfFirstLanding();
-        xyRobots[id][1] = x + xOfFirstLanding();
+        xyRobots[id].first = y + yOfFirstLanding();
+        xyRobots[id].second = x + xOfFirstLanding();
         if(status == robotStatus::DIE){
             isRobotLive[id] = false;
             ++dieCount;
@@ -67,7 +67,7 @@ namespace planet{
             return;
         }
 
-        if(!updatedMapMask[xyRobots[id][0]][xyRobots[id][1]])
+        if(!updatedMapMask[xyRobots[id].first][xyRobots[id].second])
                     send(x, y, EMPTY);
         
     }
@@ -114,7 +114,7 @@ namespace planet{
     }
 
     void data::setFocus(size_t id){
-        console->changeCentre(xyRobots[id][1], xyRobots[id][0]);
+        console->changeCentre(xyRobots[id].second, xyRobots[id].first);
     }
 
     bool data::availibleToGo(size_t x, size_t y){
@@ -127,8 +127,8 @@ namespace planet{
         return !updatedMapMask[y][x];
     }
 
-    size_t data::point(size_t coordinate [2]){
-        return coordinate[0] * updatedMap[0].capacity() + coordinate[1];
+    size_t data::point(std::pair<size_t, size_t> coordinate){
+        return coordinate.first * updatedMap[0].capacity() + coordinate.second;
     }
 
     size_t data::point(size_t x, size_t y){

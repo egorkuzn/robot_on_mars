@@ -31,7 +31,7 @@ namespace graphics{
 
     class UI{
         public:
-            UI( std::vector<size_t[2]>& xyRobots,
+            UI( std::vector<std::pair<size_t, size_t>>& xyRobots,
                 std::vector<std::vector<bool>>& matrixMask,
                 std::vector<planet::vectorItems>& externMatrix );
             ~UI();
@@ -65,7 +65,7 @@ namespace graphics{
             int x = 12;
             int y = 3;
             std::vector<std::string> displayedMatrix;
-            std::vector<size_t[2]>& xyRobots;
+            std::vector<std::pair<size_t, size_t>>& xyRobots;
             std::vector<std::vector<bool>>& matrixMask;
             std::vector<planet::vectorItems>& externMatrix;
             std::string liveStr;

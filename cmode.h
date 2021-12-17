@@ -14,6 +14,7 @@ namespace planet{
             CMode(size_t& x,
                 size_t& y,
                 size_t& id,
+                size_t& idxInCollectors,
                 data& server);
             virtual void func();
         protected:
@@ -23,6 +24,7 @@ namespace planet{
             size_t& x;
             size_t& y;
             size_t& id;
+            size_t& idxInCollectors;
             data& server;
     };
 
@@ -31,6 +33,7 @@ namespace planet{
             ManualMode(size_t& x,
                     size_t& y,
                     size_t& id,
+                    size_t& idxInCollectors,
                     data& server);
             void func() override;
     };
@@ -40,6 +43,7 @@ namespace planet{
             AutoMode(size_t& x,
                     size_t& y,
                     size_t& id,
+                    size_t& idxInCollectors,
                     data& server);
             void func() override;
         private:
@@ -53,6 +57,7 @@ namespace planet{
             ScanMode(size_t& x,
                     size_t& y,
                     size_t& id,
+                    size_t& idxInCollectors,
                     data& server);
             void func() override;
     };

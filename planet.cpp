@@ -1,7 +1,10 @@
 #include "planet.h"
+#define N 1000
 
 namespace planet{
-    Planet::Planet() : collectors(ground, server), sappers(ground, server){}
+    Planet::Planet() : ground(N, vectorItems(N)),
+                       collectors(ground, server),
+                       sappers(ground, server){}
 
     void Planet::menu(void){
         if(server.Key() == graphics::Keys::U){

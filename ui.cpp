@@ -14,6 +14,8 @@ namespace graphics{
             return "🍏";
         case planet::EMPTY:
             return "🟫";
+        default:
+            return "🟫";
         }
     }
 
@@ -33,7 +35,7 @@ namespace graphics{
         x0 %= externMatrix[0].capacity();
         y0 %= externMatrix.size();
         for(size_t id = 0; id < xyRobots.size(); ++id)
-            if(xyRobots[id][0] == y0 && xyRobots[id][1] == x0)
+            if(xyRobots[id].first == y0 && xyRobots[id].second == x0)
                 return true;
         return false;
     }
@@ -48,6 +50,7 @@ namespace graphics{
                 result += emojiTranslator((planet::Item)safetyIndexTake(Matrix::MAP, stringNumb, x0 + i));
             else
                 result += "🟥";
+        return result;
     }
 
     void UI::window(){
@@ -59,7 +62,7 @@ namespace graphics{
             displayedMatrix[i + 1] = genMatrixString(i + y0);
     }
 
-    UI::UI( std::vector<size_t[2]>& xyRobots,
+    UI::UI( std::vector<std::pair<size_t, size_t>>& xyRobots,
             std::vector<std::vector<bool>>& matrixMask,
             std::vector<planet::vectorItems>& externMatrix ) :
                                                     xyRobots(xyRobots),

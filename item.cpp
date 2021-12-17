@@ -7,6 +7,49 @@ namespace planet{
         return Item((baseArr[index/4] >> (3 - index % 4) * 2) & 3);
     } 
 
+    vectorItems::~vectorItems(){
+        delete[] baseArr;
+    }
+
+    vectorItems::ItemRef::~ItemRef(){
+        delete[] vectorItemsObj;
+    }
+
+    void vectorItems::Push(void) {
+        if (sizeBaseArr == 0) {
+            baseArr = new unsigned char[1];	
+            baseArr[0] = 0;
+            ++sizeBaseArr;
+        } else {
+            unsigned char* newArr = new unsigned char[sizeBaseArr * 2];
+
+            for (size_t i = 0; i < sizeBaseArr; ++i) 
+                newArr[i] = baseArr[i];
+            
+            for (size_t i = sizeBaseArr; i < sizeBaseArr * 2; ++i) 
+                newArr[i] = 0;
+            
+            sizeBaseArr *= 2;
+            delete[] baseArr;
+            baseArr = newArr;
+        }
+    }
+
+    void vectorItems::Pop(void) {
+		if (sizeBaseArr > 1) {
+			unsigned char* newArr = new unsigned char[--sizeBaseArr];
+			
+            for (size_t i = 0; i < sizeBaseArr; ++i)
+				newArr[i] = baseArr[i];
+						
+			delete[] baseArr;
+			baseArr = newArr;
+		} else {
+			delete[] baseArr;
+			--sizeBaseArr;
+		}
+	}
+
     void vectorItems::changeItemByIndex(size_t index, Item elem){
         if (!(index < sizeVector)) 
             exit(EXIT_FAILURE);        

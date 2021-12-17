@@ -4,11 +4,11 @@ namespace planet{
     void Collector::genCMode(CModeT type){
         switch(type){
             case CModeT::AUTO:
-                mode = new ManualMode(x, y, id, server);
+                mode = new ManualMode(x, y, id, idxInCollectors, server);
             case CModeT::MAN:
-                mode = new AutoMode(x, y, id, server);
+                mode = new AutoMode(x, y, id, idxInCollectors, server);
             case CModeT::SCAN:
-                mode = new ScanMode(x, y, id, server);                        
+                mode = new ScanMode(x, y, id, idxInCollectors, server);                        
         }
     }
 
@@ -66,7 +66,7 @@ namespace planet{
             (*this)[manId].genCMode(CModeT::MAN);
         }
         else if(server.cmd() == "add"){            
-            Collector tmp(ground, server);
+            Collector tmp(ground, server, this->capacity());
             this->push_back(tmp);
         }
         else 

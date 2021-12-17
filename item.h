@@ -20,7 +20,7 @@ namespace planet{
         class ItemRef{
             public:
             ItemRef(const size_t index, vectorItems& obj);
-            ~ItemRef(){}
+            ~ItemRef();
             ItemRef& operator= (Item elem);
             operator Item();
             private:

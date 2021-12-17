@@ -4,9 +4,11 @@ namespace planet{
     CMode::CMode(size_t& x,
                 size_t& y,
                 size_t& id,
+                size_t& idxInCollectors,
                 data& server) : x(x),
                                 y(y),
                                 id(id),
+                                idxInCollectors(idxInCollectors),
                                 server(server) {}
     bool CMode::isUnknownArea(){
         return server.isUnknownPoint(x + 1, y) &&
@@ -27,14 +29,15 @@ namespace planet{
     }
 
     void CMode::scan(){
-        server.addInAccumulator(id, toDoType::SCAN);
+        server.addInAccumulator(idxInCollectors, toDoType::SCAN);
     }
 
     ManualMode::ManualMode(size_t& x,
                             size_t& y,
                             size_t& id,
+                            size_t& idxInCollectors,
                             data& server) 
-                                : CMode(x, y, id, server){
+                                : CMode(x, y, id, idxInCollectors ,server){
         server.send(x, y, id);
         server.setFocus(id);
     }
@@ -46,8 +49,9 @@ namespace planet{
     ScanMode::ScanMode(size_t& x,
                       size_t& y,
                       size_t& id,
+                      size_t& idxInCollectors,
                       data& server)
-                                : CMode(x, y, id, server){
+                                : CMode(x, y, id, idxInCollectors, server){
         server.send(x, y, id);
     }
 
@@ -61,15 +65,16 @@ namespace planet{
     AutoMode::AutoMode(size_t& x,
                       size_t& y,
                       size_t& id,
+                      size_t& idxInCollectors,
                       data& server)
-                                : CMode(x, y, id, server){
+                                : CMode(x, y, id, idxInCollectors, server){
         server.send(x, y, id);
     }
 
     void AutoMode::collectNearestApple(){
         if(!way.capacity())
             way = server.takeNearestWay(id, APPLE);
-        server.addInAccumulator(id, toDoType::MOVE, *way.end());
+        server.addInAccumulator(idxInCollectors, toDoType::MOVE, *way.end());
         way.pop_back();
     }
 

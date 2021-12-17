@@ -9,12 +9,15 @@
 namespace planet{
     class Collector: public Robot{
         public:
-            Collector(std::vector<vectorItems>& ground, data& server): Robot(ground, server){}
+            Collector(std::vector<vectorItems>& ground, data& server, size_t idx):
+                                     Robot(ground, server), idxInCollectors(idx){}
             void cmd();
             void grab();
             void refresh();            
             void genCMode(CModeT type);  
-            CMode* mode = nullptr;                  
+            CMode* mode = nullptr; 
+        private:
+            size_t idxInCollectors;                 
     };
 
     class vectorC: public std::vector<Collector>{

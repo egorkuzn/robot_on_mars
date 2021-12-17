@@ -65,7 +65,7 @@ namespace planet
         std::vector<vectorItems> updatedMap;
         std::vector<std::vector<bool>> updatedMapMask;
         std::vector<bool> isRobotLive;
-        std::vector<size_t[2]> xyRobots;
+        std::vector<std::pair<size_t, size_t>> xyRobots; // first is y, second is x. The rizon why: matrix view
         void error(char *msg);
         size_t Num();
         graphics::Keys Key();        
@@ -78,7 +78,7 @@ namespace planet
         bool isAppleForGrab(size_t coordinate, Item item);
         bool foundInDistribution(size_t coordinte, Item item);
         size_t point(size_t x, size_t y);
-        size_t point(size_t coordinate [2]);
+        size_t point(std::pair<size_t, size_t> coordinate);
         size_t extractX(size_t cootdinate);
         size_t extractY(size_t coordinate);
         std::vector<size_t[2]> bombWay;
