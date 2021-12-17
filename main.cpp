@@ -1,10 +1,7 @@
 #include "planet.h"
 
-int main(){
-    planet::Planet Mars;
-    while(true){
-        if(!Mars.getCommand())
-            break;
-    }
+using namespace planet;
+
+int main(){    
     return 0;
 }

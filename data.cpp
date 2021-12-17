@@ -39,8 +39,8 @@ namespace planet{
         }
         ++liveCount;
         console -> displayRobotCount(liveCount);
-        xyRobots.resize(xyRobots.size() + 1);
-        isRobotLive.resize(isRobotLive.size() + 1);
+        xyRobots.push_back({0, 0});
+        isRobotLive.push_back(true);
         return xyRobots.size() - 1;
     }
 
@@ -56,7 +56,7 @@ namespace planet{
         return commandLine;
     }
 
-    void data::send(size_t x, size_t y, size_t id, robotStatus status = robotStatus::LIVE){
+    void data::send(size_t x, size_t y, size_t id, robotStatus status){
         xyRobots[id][0] = y + yOfFirstLanding();
         xyRobots[id][1] = x + xOfFirstLanding();
         if(status == robotStatus::DIE){
@@ -66,16 +66,30 @@ namespace planet{
             console -> displayDieCount(dieCount);
             return;
         }
-        if(!updatedMapMask[xyRobots[id][0]][xyRobots[id][1]]){
-            updatedMap[xyRobots[id][0]][xyRobots[id][1]] = EMPTY;
-            updatedMapMask[xyRobots[id][0]][xyRobots[id][1]] = true;
-        }
+
+        if(!updatedMapMask[xyRobots[id][0]][xyRobots[id][1]])
+                    send(x, y, EMPTY);
+        
     }
 
     void data::send(size_t x, size_t y, Item item){
+        if(y > updatedMap.capacity()){
+            vectorItems itemsTmp(updatedMap[0].capacity());
+            updatedMap.push_back(itemsTmp);
+            updatedMap[y][updatedMap[0].capacity() - 1];
+            std::vector<bool> boolTmp(updatedMap[0].capacity(), false);
+            updatedMapMask.push_back(boolTmp);
+        }
+
+        if(x > updatedMapMask[0].capacity()){
+            for(auto& elem : updatedMap)
+                elem[x];
+            for(auto& elem: updatedMapMask)
+                elem.resize(x + 1, false);
+        }
+
         updatedMap[y][x] = item;
-        updatedMapMask[y][x] = true;
-        
+        updatedMapMask[y][x] = true;        
     }
 
     void data::getKey(){
@@ -90,7 +104,7 @@ namespace planet{
         console -> error(msg);        
     }
 
-    void data::addInAccumulator(size_t id, toDoType toDo, Direction where = Direction::NONE){
+    void data::addInAccumulator(size_t id, toDoType toDo, Direction where){
         action* newAction = new action;
         newAction -> toDo = toDo;
         newAction -> id = id;
@@ -123,21 +137,17 @@ namespace planet{
 
     std::list<size_t> data::genPointsQueue(size_t x, size_t y){
         std::list<size_t> q;
-        if(updatedMapMask[y + 1][x] && (updatedMap[y + 1][x] != (BOMB||ROCK))){
-            q.push_back(point(y + 1, x));
-        }
+        if(updatedMapMask[y + 1][x] && (updatedMap[y + 1][x] != (BOMB||ROCK)))
+            q.push_back(point(y + 1, x));        
 
-        if(updatedMapMask[y - 1][x] && (updatedMap[y - 1][x] != (BOMB||ROCK))){
-            q.push_back(point(y - 1, x));
-        }
+        if(updatedMapMask[y - 1][x] && (updatedMap[y - 1][x] != (BOMB||ROCK)))
+            q.push_back(point(y - 1, x));        
 
-        if(updatedMapMask[y][x + 1] && (updatedMap[y][x + 1] != (BOMB||ROCK))){
-            q.push_back(point(y, x + 1));
-        }
+        if(updatedMapMask[y][x + 1] && (updatedMap[y][x + 1] != (BOMB||ROCK)))
+            q.push_back(point(y, x + 1));        
 
-        if(updatedMapMask[y][x - 1] && (updatedMap[y][x - 1] != (BOMB||ROCK))){
-            q.push_back(point(y, x - 1));
-        }
+        if(updatedMapMask[y][x - 1] && (updatedMap[y][x - 1] != (BOMB||ROCK)))
+            q.push_back(point(y, x - 1));        
 
         return q;
     }
@@ -227,7 +237,6 @@ namespace planet{
             //cycling while no come back to the start
             for (size_t vertice = itemPoint; vertice != point(xyRobots[id]); vertice = parents[vertice])
                 path.push_back (toDirectionType(parents[vertice], vertice));
-            reverse (path.begin(), path.end());
             return path;
         }
     }

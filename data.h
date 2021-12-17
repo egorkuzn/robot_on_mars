@@ -49,7 +49,6 @@ namespace planet
         size_t xOfFirstLanding();
         void setFocus(size_t id);
         void incAppleCount();
-        void setFocus(size_t id);
         void cmdToScanArea(size_t id);
         void addInAccumulator(size_t id, toDoType toDo, Direction where = Direction::NONE);
         std::list <action> collectorsTasks;

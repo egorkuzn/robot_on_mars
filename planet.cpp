@@ -1,15 +1,15 @@
 #include "planet.h"
 
 namespace planet{
-    Planet::Planet(){}
+    Planet::Planet() : collectors(ground, server), sappers(ground, server){}
 
     void Planet::menu(void){
         if(server.Key() == graphics::Keys::U){
             server.readCmd();
             if(server.cmd() == "collector")
                 collectors.cmd();
-            else if(console.cmd() == "sapper")
-                suppers.cmd();
+            else if(server.cmd() == "sapper")
+                sappers.cmd();
             else
                 server.outBadCmd();            
         }
@@ -17,7 +17,7 @@ namespace planet{
 
     void Planet::takeRobotsStep(void){
         collectors.refresh();
-        suppers.refresh();
+        sappers.refresh();
     }    
 
     bool Planet::getCommand(void){

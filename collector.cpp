@@ -86,8 +86,8 @@ namespace planet{
     }
 
     void vectorC::refresh(){
-        for(auto [id, toDo, where] : server.collectorsTasks)
-            doAction(id, toDo, where);
+        for(auto elem : server.collectorsTasks)
+            doAction(elem.id, elem.toDo, elem.where);
         server.collectorsTasks.clear();      
         for(Collector & elem : *this)
             elem.refresh();
