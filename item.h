@@ -1,6 +1,7 @@
 #pragma once
 
-#include "cstdlib"
+#include <cstdlib>
+#include <ctime>
 
 namespace planet{
     enum Item: unsigned char{

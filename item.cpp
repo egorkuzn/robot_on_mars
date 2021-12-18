@@ -11,9 +11,7 @@ namespace planet{
         delete[] baseArr;
     }
 
-    vectorItems::ItemRef::~ItemRef(){
-        delete[] vectorItemsObj;
-    }
+    vectorItems::ItemRef::~ItemRef(){}
 
     void vectorItems::Push(void) {
         if (sizeBaseArr == 0) {
@@ -126,12 +124,6 @@ namespace planet{
         (*this)[rand() % length] = EMPTY;
     }
 
-    vectorItems::vectorItems(size_t length) : length(length){
-        (*this)[length - 1]; // firstly: filling vector by rocks
-        genTerrain(); // then gen empty places
-        genItems(); // add bombs and apples
-    }
-
     void vectorItems::genItems(void){
         size_t chances = length / 20;
         for(chances; chances > 0; --chances)
@@ -143,4 +135,11 @@ namespace planet{
         for(chances; chances > 0; --chances)
             (*this).randEmpty();
     }    
+
+    vectorItems::vectorItems(size_t length) : length(length){
+        (*this)[length - 1]; // firstly: filling vector by rocks
+        srand(time(NULL));
+        genTerrain(); // then gen empty places
+        genItems(); // add bombs and apples
+    }
 }

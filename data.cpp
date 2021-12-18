@@ -1,7 +1,8 @@
 #include "data.h"
 
 namespace planet{
-    data::data(){
+    data::data() : updatedMap(1, vectorItems(1)),
+                updatedMapMask(1, std::vector<bool> (1, false)){
         console = new graphics::UI(xyRobots, updatedMapMask, updatedMap); 
     }
 
