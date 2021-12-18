@@ -3,6 +3,6 @@
 using namespace planet;
 
 int main(){    
-    Planet planet;
+    Planet planet;    
     return 0;
 }

@@ -12,12 +12,13 @@ namespace planet{
     class Planet{
         public:
             Planet();
+            operator bool();
+        private:
             std::vector<vectorItems> ground;
             data server; 
             vectorC collectors;
             vectorS sappers;
             bool getCommand(void);
-        private:
             size_t manual = 0;
             void menu(void);   
             void takeRobotsStep(void);         

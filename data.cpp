@@ -10,6 +10,10 @@ namespace planet{
         delete console;
     }
 
+    data::operator bool(){
+        return // ошибки чекать тыры-пыры
+    }
+
     uint8_t data:: isNotFirst(size_t value, char ort){
         if(xyRobots.size())
             return 1;

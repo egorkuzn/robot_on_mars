@@ -42,6 +42,7 @@ namespace planet
     public:
         data();
         ~data();
+        operator bool();
         void send(size_t x, size_t y, Item item);
         void send(size_t x, size_t y, size_t id, robotStatus status = robotStatus::LIVE);
         uint8_t isNotFirst(size_t value, char ort);

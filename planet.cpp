@@ -6,6 +6,10 @@ namespace planet{
                        collectors(ground, server),
                        sappers(ground, server){}
 
+    Planet::operator bool(){
+        return server;
+    }
+
     void Planet::menu(void){
         if(server.Key() == graphics::Keys::U){
             server.readCmd();
