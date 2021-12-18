@@ -11,6 +11,7 @@ set(SOURCE_LIB cmode.cpp
                 data.cpp
                 getch.cpp
                 item.cpp
+                robot.cpp
                 planet.cpp
                 ui.cpp
                 sapper.cpp   )

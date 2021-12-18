@@ -25,7 +25,7 @@ namespace planet{
             server.send(x, y, id);
     }
 
-    void Robot::moveDown(){
+    void Robot::moveUp(){
         y = (y + ground.size() + 1) % ground.size();
         if(ground[y][x] == (ROCK || BOMB))
             server.send(x, y, id, robotStatus::DIE);   

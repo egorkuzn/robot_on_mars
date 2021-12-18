@@ -17,6 +17,7 @@ namespace planet{
                 size_t& idxInCollectors,
                 data& server);
             virtual void func();
+            virtual ~CMode();
         protected:
             void goInRandWay();
             bool isUnknownArea();
@@ -36,6 +37,7 @@ namespace planet{
                     size_t& idxInCollectors,
                     data& server);
             void func() override;
+            ~ManualMode() override;
     };
 
     class AutoMode: public CMode{
@@ -46,6 +48,7 @@ namespace planet{
                     size_t& idxInCollectors,
                     data& server);
             void func() override;
+            ~AutoMode() override;
         private:
             bool isAnyAppleFound();
             void collectNearestApple();
@@ -60,5 +63,6 @@ namespace planet{
                     size_t& idxInCollectors,
                     data& server);
             void func() override;
+            ~ScanMode() override;
     };
 }

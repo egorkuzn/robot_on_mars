@@ -7,7 +7,7 @@ namespace planet{
     void Sapper::work(){
         if(!way.capacity())
             way = server.takeNearestWay(id, BOMB);
-        move(*way.end());
+        move(way.back());
         way.pop_back();
     }
 

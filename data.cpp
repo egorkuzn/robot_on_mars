@@ -251,4 +251,11 @@ namespace planet{
             return false;
     }
 
+    std::vector<Direction> data::takeNearestWay(size_t id, Item item){
+        return ways[id][item];
+    }
+
+    void data::outBadCmd(){
+        console->error("Bad command was inputed");
+    }
 }

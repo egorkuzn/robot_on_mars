@@ -17,6 +17,8 @@ namespace planet{
         server.isUnknownPoint(x, y - 1);
     }
 
+    CMode::~CMode(){}
+
     void CMode::goInRandWay(){
         if(server.availibleToGo(x + 1, y))
             server.addInAccumulator(id, toDoType::MOVE, Direction::RIGHT);
@@ -42,6 +44,8 @@ namespace planet{
         server.setFocus(id);
     }
 
+    ManualMode::~ManualMode(){}
+
     void ManualMode::func(){
         return;
     }
@@ -54,6 +58,8 @@ namespace planet{
                                 : CMode(x, y, id, idxInCollectors, server){
         server.send(x, y, id);
     }
+
+    ScanMode::~ScanMode(){}
 
     void ScanMode::func(){
         if(isUnknownArea())
@@ -70,6 +76,8 @@ namespace planet{
                                 : CMode(x, y, id, idxInCollectors, server){
         server.send(x, y, id);
     }
+
+    AutoMode::~AutoMode(){}
 
     void AutoMode::collectNearestApple(){
         if(!way.capacity())
