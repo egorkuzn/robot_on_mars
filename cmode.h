@@ -16,7 +16,7 @@ namespace planet{
                 size_t& id,
                 size_t& idxInCollectors,
                 data& server);
-            virtual void func();
+            virtual void func() = 0;
             virtual ~CMode();
         protected:
             void goInRandWay();
