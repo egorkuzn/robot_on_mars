@@ -9,14 +9,15 @@
 namespace planet{
     class Collector: public Robot{
         public:
-            Collector(std::vector<vectorItems>& ground, data& server, size_t idx):
-                                     Robot(ground, server), idxInCollectors(idx){}
-            void cmd();
+            Collector(std::vector<vectorItems>& ground, data& server, size_t idx);
+            ~Collector();
+            void cmd(char* context);
             void grab();
             void refresh();            
             void genCMode(CModeT type);  
-            CMode* mode = nullptr; 
         private:
+            CModeT modeStatus = CModeT::SCAN;
+            CMode* mode = nullptr; 
             size_t idxInCollectors;                 
     };
 
@@ -24,8 +25,8 @@ namespace planet{
         public:
             vectorC(std::vector<vectorItems>& ground, planet::data& server) :
                 ground(ground), server(server){}
-            void man();
-            void cmd();
+            void man(char* context);
+            void cmd(char* context);
             void refresh();
         private:
             void doAction(size_t id, toDoType toDo, Direction where);

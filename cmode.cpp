@@ -46,9 +46,7 @@ namespace planet{
 
     ManualMode::~ManualMode() = default;
 
-    void ManualMode::func(){
-        return;
-    }
+    void ManualMode::func(){}
 
     ScanMode::ScanMode(size_t& x,
                       size_t& y,

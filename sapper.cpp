@@ -29,7 +29,7 @@ namespace planet{
     }
 
     void vectorS::cmd(){
-        server.readCmd();
+        server.readCmd("");
         if(server.cmd() == "add"){
             Sapper tmp(ground, server);
             (*this).push_back(tmp); 

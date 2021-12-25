@@ -7,14 +7,14 @@ namespace planet{
                        sappers(ground, server){}
 
     Planet::operator bool(){
-        return server;
+        return server && status;
     }
 
     void Planet::menu(void){
         if(server.Key() == graphics::Keys::U){
-            server.readCmd();
+            server.readCmd("Input \'collector\' or \'sapper\':");            
             if(server.cmd() == "collector")
-                collectors.cmd();
+                collectors.cmd("");
             else if(server.cmd() == "sapper")
                 sappers.cmd();
             else
@@ -27,13 +27,14 @@ namespace planet{
         sappers.refresh();
     }    
 
-    bool Planet::getCommand(void){
+    void Planet::getCommand(void){
         server.getKey();
-        if(server.Key() == graphics::Keys::Esc)
-            return false;
-        collectors.man();
+        if(server.Key() == graphics::Keys::Esc){
+            status = false;
+            return;
+        }
+        collectors.man("");
         menu();
         takeRobotsStep();
-        return true;
     }
 }

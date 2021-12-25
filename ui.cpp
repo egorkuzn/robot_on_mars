@@ -180,7 +180,7 @@ namespace graphics{
 
     void UI::refreshStatusBar(){
         statusBar = "🍏 x" + std::to_string(appleCount) + "   🤖 x" +
-         std::to_string(liveCount) + "   💀 x" + std::to_string(dieCount);
+            std::to_string(liveCount) + "   💀 x" + std::to_string(dieCount);
     }
 
     void UI::displayAppleCount(size_t value){

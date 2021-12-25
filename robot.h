@@ -13,8 +13,10 @@ namespace planet{
             // void changeServer(data& new_server); // future feature
             ~Robot(){}
             void scan();            
-            size_t x;
-            size_t y;
+            size_t xGround;
+            size_t yGround;
+            size_t xServer;
+            size_t yServer;
             size_t id;
             std::vector<vectorItems>& ground;
             data& server;

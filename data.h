@@ -60,7 +60,7 @@ namespace planet
         void getKey();
         int getNum();
         size_t getId();
-        void readCmd();
+        void readCmd(char* context);
         std::string cmd();
         void outBadCmd();
         std::vector<vectorItems> updatedMap;
@@ -69,7 +69,8 @@ namespace planet
         std::vector<std::pair<size_t, size_t>> xyRobots; // first is y, second is x. The rizon why: matrix view
         void error(char *msg);
         size_t Num();
-        graphics::Keys Key();        
+        graphics::Keys Key();  
+        size_t id;      
     private:
         Item takeItem(size_t coordinate);
         std::list<size_t> genPointsQueue(size_t x, size_t y);
@@ -82,15 +83,18 @@ namespace planet
         size_t point(std::pair<size_t, size_t> coordinate);
         size_t extractX(size_t cootdinate);
         size_t extractY(size_t coordinate);
+        void resizeMaps(size_t x, size_t y);
         std::vector<size_t[2]> bombWay;
         std::vector<size_t[2]> appleWay;
         std::vector<std::list<size_t>> distribution; // 0 - apple distribution for collectors, 1 - bomb distribution for sappers
-        size_t baseX;
-        size_t baseY;
+        size_t baseX = 0;
+        size_t baseY = 0;
         size_t appleCount = 0;
         size_t liveCount = 0;
         size_t dieCount = 0;
-        graphics::Keys savedKey;
+        bool isFirst = true;
+        bool status = true;
+        graphics::Keys savedKey = graphics::Keys::EMPTY;
         std::string commandLine;
         graphics::UI *console = nullptr;
     };

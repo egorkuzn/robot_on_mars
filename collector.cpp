@@ -1,14 +1,31 @@
 #include "collector.h"
 
 namespace planet{
+    Collector::Collector(std::vector<vectorItems>& ground, data& server, size_t idx):
+                            Robot(ground, server), idxInCollectors(idx){
+        genCMode(CModeT::MAN);
+    }
+
+    Collector::~Collector(){
+        delete mode;
+    }
+
     void Collector::genCMode(CModeT type){
+        if(!mode)
+            delete mode;
         switch(type){
-            case CModeT::AUTO:
-                mode = new ManualMode(x, y, id, idxInCollectors, server);
-            case CModeT::MAN:
+            case CModeT::AUTO:  
+                modeStatus = CModeT::AUTO;         
                 mode = new AutoMode(x, y, id, idxInCollectors, server);
+                break;
+            case CModeT::MAN:
+                modeStatus = CModeT::MAN;
+                mode = new ManualMode(x, y, id, idxInCollectors, server);
+                break;
             case CModeT::SCAN:
-                mode = new ScanMode(x, y, id, idxInCollectors, server);                        
+                modeStatus = CModeT::SCAN;
+                mode = new ScanMode(x, y, id, idxInCollectors, server);        
+                break;                
         }
     }
 
@@ -19,7 +36,7 @@ namespace planet{
         }
     }
 
-    void Collector::cmd(){
+    void Collector::cmd(char* context){
         switch(server.Key()){
             case graphics::Keys::Q:
                 break;
@@ -50,12 +67,13 @@ namespace planet{
         mode -> func();
     }
 
-    void vectorC::man(){
-        (*this)[manId].cmd();        
+    void vectorC::man(char* context){
+        if(capacity())
+            (*this)[manId].cmd(context);  
     }
 
-    void vectorC::cmd(){
-        server.readCmd();
+    void vectorC::cmd(char* context){
+        server.readCmd(context);
         if(server.cmd() == "auto")
             (*this)[manId].genCMode(CModeT::AUTO);
         else if(server.cmd() == "scan")
@@ -65,10 +83,8 @@ namespace planet{
             manId = server.getNum();
             (*this)[manId].genCMode(CModeT::MAN);
         }
-        else if(server.cmd() == "add"){            
-            Collector tmp(ground, server, this->capacity());
-            this->push_back(tmp);
-        }
+        else if(server.cmd() == "add")          
+            this->push_back(Collector(ground, server, this -> capacity()));        
         else 
             server.outBadCmd();
     }
@@ -89,7 +105,7 @@ namespace planet{
         for(auto elem : server.collectorsTasks)
             doAction(elem.id, elem.toDo, elem.where);
         server.collectorsTasks.clear();      
-        for(Collector & elem : *this)
+        for(Collector& elem : *this)
             elem.refresh();
     }
 }
