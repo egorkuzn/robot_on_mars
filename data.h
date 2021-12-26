@@ -40,7 +40,7 @@ namespace planet
     class data
     {
     public:
-        data();
+        data(size_t x, size_t y);
         ~data();
         operator bool();
         void send(size_t x, size_t y, Item item);
@@ -70,7 +70,6 @@ namespace planet
         void error(char *msg);
         size_t Num();
         graphics::Keys Key();  
-        size_t id;      
     private:
         Item takeItem(size_t coordinate);
         std::list<size_t> genPointsQueue(size_t x, size_t y);
@@ -83,12 +82,16 @@ namespace planet
         size_t point(std::pair<size_t, size_t> coordinate);
         size_t extractX(size_t cootdinate);
         size_t extractY(size_t coordinate);
+        size_t Y(size_t y);
+        size_t X(size_t x);
         void resizeMaps(size_t x, size_t y);
         std::vector<size_t[2]> bombWay;
         std::vector<size_t[2]> appleWay;
         std::vector<std::list<size_t>> distribution; // 0 - apple distribution for collectors, 1 - bomb distribution for sappers
         size_t baseX = 0;
         size_t baseY = 0;
+        size_t xLimit = 0;
+        size_t yLimit = 0;
         size_t appleCount = 0;
         size_t liveCount = 0;
         size_t dieCount = 0;

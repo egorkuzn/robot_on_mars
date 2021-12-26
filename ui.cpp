@@ -200,7 +200,10 @@ namespace graphics{
     }
     
     void UI::changeCentre(size_t x0, size_t y0){
-        x = x0;
-        y = y0;
+        if(x != x0 || y != y0){
+            x = x0;
+            y = y0;
+            display();
+        }
     }
 }

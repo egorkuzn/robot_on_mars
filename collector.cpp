@@ -3,7 +3,6 @@
 namespace planet{
     Collector::Collector(std::vector<vectorItems>& ground, data& server, size_t idx):
                             Robot(ground, server), idxInCollectors(idx){
-        genCMode(CModeT::MAN);
     }
 
     Collector::~Collector(){
@@ -16,15 +15,15 @@ namespace planet{
         switch(type){
             case CModeT::AUTO:  
                 modeStatus = CModeT::AUTO;         
-                mode = new AutoMode(xServer, yServer, id, idxInCollectors, server);
+                mode = new AutoMode(id, idxInCollectors, server);
                 break;
             case CModeT::MAN:
                 modeStatus = CModeT::MAN;
-                mode = new ManualMode(xServer, yServer, id, idxInCollectors, server);
+                mode = new ManualMode(id, idxInCollectors, server);
                 break;
             case CModeT::SCAN:
                 modeStatus = CModeT::SCAN;
-                mode = new ScanMode(xServer, yServer, id, idxInCollectors, server);        
+                mode = new ScanMode(id, idxInCollectors, server);        
                 break;                
         }
     }
@@ -83,8 +82,10 @@ namespace planet{
             manId = server.getNum();
             (*this)[manId].genCMode(CModeT::MAN);
         }
-        else if(server.cmd() == "add")          
-            this->push_back(Collector(ground, server, this -> capacity()));        
+        else if(server.cmd() == "add"){    
+            this->push_back(Collector(ground, server, this -> capacity()));    
+            this->back().genCMode(CModeT::MAN);
+        }    
         else 
             server.outBadCmd();
     }

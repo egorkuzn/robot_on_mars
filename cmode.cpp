@@ -1,8 +1,8 @@
 #include "cmode.h"
 
 namespace planet{
-    CMode::CMode(size_t& id,
-                size_t& idxInCollectors,
+    CMode::CMode(size_t id,
+                size_t idxInCollectors,
                 data& server) : id(id),
                                 idxInCollectors(idxInCollectors),
                                 server(server) {}
@@ -31,8 +31,8 @@ namespace planet{
         server.addInAccumulator(idxInCollectors, toDoType::SCAN);
     }
 
-    ManualMode::ManualMode(size_t& id,
-                            size_t& idxInCollectors,
+    ManualMode::ManualMode(size_t id,
+                            size_t idxInCollectors,
                             data& server) 
                                 : CMode(id, idxInCollectors ,server){
         server.setFocus(id);
@@ -40,10 +40,12 @@ namespace planet{
 
     ManualMode::~ManualMode() = default;
 
-    void ManualMode::func(){}
+    void ManualMode::func(){
+        server.setFocus(id);
+    }
 
-    ScanMode::ScanMode(size_t& id,
-                      size_t& idxInCollectors,
+    ScanMode::ScanMode(size_t id,
+                      size_t idxInCollectors,
                       data& server)
                                 : CMode(id, idxInCollectors, server){}
 
@@ -56,8 +58,8 @@ namespace planet{
             goInRandWay();        
     }
 
-    AutoMode::AutoMode(size_t& id,
-                      size_t& idxInCollectors,
+    AutoMode::AutoMode(size_t id,
+                      size_t idxInCollectors,
                       data& server)
                                 : CMode(id, idxInCollectors, server){}
 

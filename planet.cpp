@@ -3,6 +3,7 @@
 
 namespace planet{
     Planet::Planet() : ground(N, vectorItems(N)),
+                       server(N, N),
                        collectors(ground, server),
                        sappers(ground, server){}
 
@@ -17,8 +18,10 @@ namespace planet{
                 collectors.cmd("\'auto\'|\'scan\'|\'switch\'|\'add\'");
             else if(server.cmd() == "sapper")
                 sappers.cmd("\'add\'|\'change mode\'");
-            else
-                server.outBadCmd();            
+            else{
+                server.outBadCmd();  
+                status = false;
+            }          
         }
     }
 

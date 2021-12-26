@@ -1,14 +1,23 @@
 #include "data.h"
 
 namespace planet{
-    data::data() : updatedMap(2, vectorItems(2)),
+    data::data(size_t x, size_t y) : updatedMap(2, vectorItems(2)),
                 updatedMapMask(2, std::vector<bool> (2, false)){
+        xLimit = x;
+        yLimit = y;
         console = new graphics::UI(xyRobots, updatedMapMask, updatedMap); 
-        id = rand();
     }
 
     data::~data(){
         delete console;
+    }
+
+    size_t data::Y(size_t y){
+        return (y + yLimit) % yLimit;
+    }
+
+    size_t data::X(size_t x){
+        return (x + xLimit) % xLimit;
     }
 
     data::operator bool(){
@@ -32,14 +41,14 @@ namespace planet{
 
     size_t data::xFromFirstLanding(size_t x){
         if(!isFirst)
-            return x - baseX;
+            return X(x - baseX);
         baseX = x;
         return 0;
     }
 
     size_t data::yFromFirstLanding(size_t y){
         if(!isFirst)
-            return y - baseY;
+            return Y(y -baseY);
         baseY = y;
         return 0;
     }
@@ -48,7 +57,7 @@ namespace planet{
         ++liveCount;
         console -> displayRobotCount(liveCount);
         isRobotLive.push_back(true);
-        return xyRobots.size() - 1;
+        return xyRobots.size();
     }
 
     int data::getNum(){
@@ -80,10 +89,14 @@ namespace planet{
     }
 
     void data::send(size_t x, size_t y, size_t id, robotStatus status){
-        if(!xyRobots.size())
-            xyRobots.resize(1);
+        x = X(x);
+        y = Y(y);
+
+        if(!(xyRobots.size() > id))
+            xyRobots.resize(id + 1);
         xyRobots[id].first = y;
-        xyRobots[id].second = x;        
+        xyRobots[id].second = x;  
+
         if(status == robotStatus::DIE){
             isRobotLive[id] = false;
             ++dieCount;
@@ -100,6 +113,9 @@ namespace planet{
     }
 
     void data::send(size_t x, size_t y, Item item){
+        x = X(x);
+        y = Y(y);
+
         resizeMaps(x, y);
 
         updatedMap[y][x] = item;
@@ -134,6 +150,7 @@ namespace planet{
     bool data::availibleToGo(size_t id, Direction where){
         size_t x = xyRobots[id].second;
         size_t y = xyRobots[id].first;
+
         switch (where)
         {
         case Direction::UP:
@@ -151,6 +168,7 @@ namespace planet{
         default:
             break;
         }        
+
         return updatedMap[y][x] != (ROCK||BOMB);
     }
 
@@ -168,17 +186,17 @@ namespace planet{
 
     std::list<size_t> data::genPointsQueue(size_t x, size_t y){
         std::list<size_t> q;
-        if(updatedMapMask[y + 1][x] && (updatedMap[y + 1][x] != (BOMB||ROCK)))
-            q.push_back(point(y + 1, x));        
+        if(updatedMapMask[Y(y + 1)][x] && (updatedMap[Y(y + 1)][x] != (BOMB||ROCK)))
+            q.push_back(point(Y(y + 1), x));        
 
-        if(updatedMapMask[y - 1][x] && (updatedMap[y - 1][x] != (BOMB||ROCK)))
-            q.push_back(point(y - 1, x));        
+        if(updatedMapMask[Y(y - 1)][x] && (updatedMap[Y(y - 1)][x] != (BOMB||ROCK)))
+            q.push_back(point(Y(y - 1), x));        
 
-        if(updatedMapMask[y][x + 1] && (updatedMap[y][x + 1] != (BOMB||ROCK)))
-            q.push_back(point(y, x + 1));        
+        if(updatedMapMask[y][X(x + 1)] && (updatedMap[y][X(x + 1)] != (BOMB||ROCK)))
+            q.push_back(point(y, X(x + 1)));        
 
-        if(updatedMapMask[y][x - 1] && (updatedMap[y][x - 1] != (BOMB||ROCK)))
-            q.push_back(point(y, x - 1));        
+        if(updatedMapMask[y][X(x - 1)] && (updatedMap[y][X(x - 1)] != (BOMB||ROCK)))
+            q.push_back(point(y, X(x - 1)));        
 
         return q;
     }
@@ -191,9 +209,11 @@ namespace planet{
     bool data::foundInDistribution(size_t coordinate, Item item){
         if(!distribution.size())
             distribution.resize(4);
+
         for(size_t elem : distribution[item])
             if(coordinate == elem)
                 return true;
+                
         distribution[item].push_back(coordinate);
         return false;
     }

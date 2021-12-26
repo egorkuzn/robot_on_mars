@@ -21,6 +21,8 @@ namespace planet{
             std::vector<vectorItems>& ground;
             data& server;
         private:
+            size_t X(size_t x);
+            size_t Y(size_t y);
             void moveUp();
             void moveDown();
             void moveLeft();
