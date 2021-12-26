@@ -31,14 +31,14 @@ namespace planet{
     }
 
     size_t data::xFromFirstLanding(size_t x){
-        if(!isFirst){
+        if(!isFirst)
             return x - baseX;
         baseX = x;
         return 0;
     }
 
     size_t data::yFromFirstLanding(size_t y){
-        if(!isFirst){
+        if(!isFirst)
             return y - baseY;
         baseY = y;
         return 0;

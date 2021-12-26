@@ -2,35 +2,39 @@
 
 namespace planet{
     void Robot::moveRight(){
-        x = (x + 1) % ground[0].capacity();
-        if(ground[y][x] == (ROCK || BOMB))
-            server.send(x, y, id, robotStatus::DIE);   
+        xGround = (xGround + ground[0].capacity() + 1) % ground[0].capacity();
+        xServer = (xServer + ground[0].capacity() + 1) % ground[0].capacity();
+        if(ground[yGround][xGround] == (ROCK || BOMB))
+            server.send(xServer, yServer, id, robotStatus::DIE);   
         else
-            server.send(x, y, id);
+            server.send(xServer, yServer, id);
     }
 
     void Robot::moveLeft(){
-        x = (x + ground[0].capacity() - 1) % ground[0].capacity();
-        if(ground[y][x] == (ROCK || BOMB))
-            server.send(x, y, id, robotStatus::DIE);   
+        xGround = (xGround + ground[0].capacity() - 1) % ground[0].capacity();
+        xServer = (xServer + ground[0].capacity() - 1) % ground[0].capacity();
+        if(ground[yGround][xGround] == (ROCK || BOMB))
+            server.send(xServer, yServer, id, robotStatus::DIE);   
         else
-            server.send(x, y, id);
+            server.send(xServer, yServer, id);
     }
 
     void Robot::moveDown(){
-        y = (y + ground.size() - 1) % ground.size();
-        if(ground[y][x] == (ROCK || BOMB))
-            server.send(x, y, id, robotStatus::DIE);   
+        yGround = (yGround + ground.size() - 1) % ground.size();
+        yServer = (yServer + ground.size() - 1) % ground.size();
+        if(ground[yGround][xGround] == (ROCK || BOMB))
+            server.send(xServer, yServer, id, robotStatus::DIE);   
         else
-            server.send(x, y, id);
+            server.send(xServer, yServer, id);
     }
 
     void Robot::moveUp(){
-        y = (y + ground.size() + 1) % ground.size();
-        if(ground[y][x] == (ROCK || BOMB))
-            server.send(x, y, id, robotStatus::DIE);   
+        yGround = (yGround + ground.size() + 1) % ground.size();
+        yServer = (yServer + ground.size() + 1) % ground.size();
+        if(ground[yGround][xGround] == (ROCK || BOMB))
+            server.send(xServer, yServer, id, robotStatus::DIE);   
         else
-            server.send(x, y, id);
+            server.send(xServer, yServer, id);
     }
 
     Robot::Robot(std::vector<vectorItems>& ground, data& server) : ground(ground), server(server){
@@ -62,9 +66,9 @@ namespace planet{
     }
 
     void Robot::scan(){   
-        server.send(x + 1, y, ground[y][x + 1]);
-        server.send(x - 1, y, ground[y][x - 1]);
-        server.send(x, y + 1, ground[y + 1][x]);
-        server.send(x, y - 1, ground[y - 1][x]);
+        server.send(xServer + 1, yServer, ground[yGround][xGround + 1]);
+        server.send(xServer - 1, yServer, ground[yGround][xGround - 1]);
+        server.send(xServer, yServer + 1, ground[yGround + 1][xGround]);
+        server.send(xServer, yServer - 1, ground[yGround - 1][xGround]);
     }
 }

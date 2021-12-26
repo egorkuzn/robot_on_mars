@@ -46,8 +46,8 @@ namespace planet
         void send(size_t x, size_t y, Item item);
         void send(size_t x, size_t y, size_t id, robotStatus status = robotStatus::LIVE);
         uint8_t isNotFirst(size_t value, char ort);
-        size_t yOfFirstLanding();
-        size_t xOfFirstLanding();
+        size_t yFromFirstLanding(size_t y);
+        size_t xFromFirstLanding(size_t x);
         void setFocus(size_t id);
         void incAppleCount();
         void cmdToScanArea(size_t id);

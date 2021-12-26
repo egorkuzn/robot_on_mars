@@ -10,6 +10,7 @@ namespace planet{
                                 id(id),
                                 idxInCollectors(idxInCollectors),
                                 server(server) {}
+                                
     bool CMode::isUnknownArea(){
         return server.isUnknownPoint(x + 1, y) &&
         server.isUnknownPoint(x - 1, y) &&

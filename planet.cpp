@@ -12,11 +12,11 @@ namespace planet{
 
     void Planet::menu(void){
         if(server.Key() == graphics::Keys::U){
-            server.readCmd("Input \'collector\' or \'sapper\':");            
+            server.readCmd("Input \'collector\' or \'sapper\'");            
             if(server.cmd() == "collector")
-                collectors.cmd("");
+                collectors.cmd("\'auto\'|\'scan\'|\'switch\'|\'add\'");
             else if(server.cmd() == "sapper")
-                sappers.cmd();
+                sappers.cmd("\'add\'|\'change mode\'");
             else
                 server.outBadCmd();            
         }

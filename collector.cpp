@@ -16,23 +16,23 @@ namespace planet{
         switch(type){
             case CModeT::AUTO:  
                 modeStatus = CModeT::AUTO;         
-                mode = new AutoMode(x, y, id, idxInCollectors, server);
+                mode = new AutoMode(xServer, yServer, id, idxInCollectors, server);
                 break;
             case CModeT::MAN:
                 modeStatus = CModeT::MAN;
-                mode = new ManualMode(x, y, id, idxInCollectors, server);
+                mode = new ManualMode(xServer, yServer, id, idxInCollectors, server);
                 break;
             case CModeT::SCAN:
                 modeStatus = CModeT::SCAN;
-                mode = new ScanMode(x, y, id, idxInCollectors, server);        
+                mode = new ScanMode(xServer, yServer, id, idxInCollectors, server);        
                 break;                
         }
     }
 
     void Collector::grab(){
-        if(ground[y][x] == Item::APPLE){
+        if(ground[yGround][xGround] == Item::APPLE){
             server.incAppleCount();
-            server.send(x, y, Item::EMPTY);
+            server.send(xServer, yServer, Item::EMPTY);
         }
     }
 

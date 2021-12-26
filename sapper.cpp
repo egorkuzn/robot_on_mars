@@ -28,11 +28,10 @@ namespace planet{
         isOn = !isOn; 
     }
 
-    void vectorS::cmd(){
-        server.readCmd("");
+    void vectorS::cmd(char* context){
+        server.readCmd(context);
         if(server.cmd() == "add"){
-            Sapper tmp(ground, server);
-            (*this).push_back(tmp); 
+            (*this).push_back(Sapper(ground, server)); 
         }
         else if(server.cmd() == "change mode")
             (*this)[server.getNum()].changeMode();

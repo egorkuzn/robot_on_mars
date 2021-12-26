@@ -23,7 +23,7 @@ namespace planet{
         public:
             vectorS(std::vector<vectorItems>& ground, planet::data& server) : 
                 ground(ground), server(server){}
-            void cmd();
+            void cmd(char* context);
             void refresh();
         private:
             std::vector<vectorItems>& ground;
