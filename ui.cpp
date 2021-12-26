@@ -42,7 +42,7 @@ namespace graphics{
 
     std::string UI::genMatrixString(size_t stringNumb){
         std::string result;
-        size_t x0 = x - width/2;
+        size_t x0 = (x - width / 2) % externMatrix[0].capacity();
         for(size_t i = 0; i < width; ++i)
             if(isRobotHere(x0 + i, stringNumb))
                 result += "🤖";
@@ -54,9 +54,8 @@ namespace graphics{
     }
 
     void UI::window(){
-        if(!displayedMatrix.size())
-            displayedMatrix.resize(high + 1);    
-        size_t y0 = y - high/2;
+        displayedMatrix.resize(high + 1);   
+        size_t y0 = (y - high / 2) % externMatrix.size();
         displayedMatrix[0] = statusBar;
         for(size_t i = 0; i < high; ++i)
             displayedMatrix[i + 1] = genMatrixString(i + y0);
@@ -200,9 +199,10 @@ namespace graphics{
     }
     
     void UI::changeCentre(size_t x0, size_t y0){
-        if(x != x0 || y != y0){
+        if(x != x0 || y != y0 || mapChanged){
             x = x0;
-            y = y0;
+            y = y0;   
+            mapChanged = false;         
             display();
         }
     }

@@ -91,7 +91,7 @@ namespace planet{
     void data::send(size_t x, size_t y, size_t id, robotStatus status){
         x = X(x);
         y = Y(y);
-
+        console -> mapChanged = true;
         if(!(xyRobots.size() > id))
             xyRobots.resize(id + 1);
         xyRobots[id].first = y;
@@ -119,6 +119,10 @@ namespace planet{
         resizeMaps(x, y);
 
         updatedMap[y][x] = item;
+
+        if(!updatedMapMask[y][x])
+            console -> mapChanged = true;
+
         updatedMapMask[y][x] = true;        
     }
 

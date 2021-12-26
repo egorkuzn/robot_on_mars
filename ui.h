@@ -46,6 +46,7 @@ namespace graphics{
             void displayAppleCount(size_t value);
             void displayRobotCount(size_t value);
             void displayDieCount(size_t count);  
+            bool mapChanged = false;
         private:
             int _kbhit();
             void window();
