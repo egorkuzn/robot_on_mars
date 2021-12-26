@@ -5,6 +5,7 @@
 #include "robot.h"
 #include "cmode.h"
 #include "data.h"
+#include <map>
 
 namespace planet{
     class Collector: public Robot{
@@ -29,8 +30,11 @@ namespace planet{
             void cmd(char* context);
             void refresh();
         private:
+            void add();
+            bool vectorCheck();
             void doAction(size_t id, toDoType toDo, Direction where);
             std::vector<vectorItems>& ground;
+            std::map<size_t, size_t> serverId;
             planet::data& server;
             size_t manId = 0;
     };

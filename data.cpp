@@ -80,11 +80,13 @@ namespace planet{
             updatedMapMask.push_back(boolTmp);
         }
 
-        if(!(updatedMap[0].capacity() > x)){
+        while(!(updatedMapMask[0].size() > x)){
             for(auto& elem : updatedMap)
-                elem[x];
-            for(auto& elem: updatedMapMask)
-                elem.resize(x + 1, false);
+                elem[x];            
+
+            for(auto& elem: updatedMapMask)             
+                elem.push_back(false);
+            
         }
     }
 

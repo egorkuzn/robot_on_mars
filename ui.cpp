@@ -70,8 +70,9 @@ namespace graphics{
         display();
     }
 
-    void UI::display(){
+    void UI::display() noexcept{
         system("clear");
+        displayedMatrix.clear();
         window();
         for(std::string elem : displayedMatrix)
             std::cout << elem << std::endl;
@@ -199,11 +200,11 @@ namespace graphics{
     }
     
     void UI::changeCentre(size_t x0, size_t y0){
-        if(x != x0 || y != y0 || mapChanged){
-            x = x0;
+/*         if(x != x0 || y != y0 || mapChanged){
+ */            x = x0;
             y = y0;   
             mapChanged = false;         
             display();
-        }
-    }
+/*         }
+ */    }
 }

@@ -67,12 +67,40 @@ namespace planet{
     }
 
     void vectorC::man(char* context){
-        if(capacity())
-            (*this)[manId].cmd(context);  
+        if(serverId.size())
+            if(server.isRobotLive[serverId[manId]])
+                (*this)[manId].cmd(context);  
+            else
+                serverId.erase(manId);
+            
+    }
+
+    void vectorC::add(){
+        manId = this -> size();
+        this->push_back(Collector(ground, server, this -> size()));                
+        this->back().genCMode(CModeT::MAN);
+        serverId.insert({manId, this->back().id});        
+    }
+
+    bool vectorC::vectorCheck(){
+        if(!serverId.contains(manId)){
+            if(!serverId.size()){
+               if(server.cmd() == "add")
+                    add();
+            } else
+                manId = serverId.begin()->first;
+            return false;
+        }
+        
+        return true;
     }
 
     void vectorC::cmd(char* context){
         server.readCmd(context);
+
+        if(!vectorCheck())
+            return;
+
         if(server.cmd() == "auto")
             (*this)[manId].genCMode(CModeT::AUTO);
         else if(server.cmd() == "scan")
@@ -82,10 +110,8 @@ namespace planet{
             manId = server.getNum();
             (*this)[manId].genCMode(CModeT::MAN);
         }
-        else if(server.cmd() == "add"){    
-            this->push_back(Collector(ground, server, this -> capacity()));    
-            this->back().genCMode(CModeT::MAN);
-        }    
+        else if(server.cmd() == "add")
+            add();
         else 
             server.outBadCmd();
     }
@@ -106,7 +132,8 @@ namespace planet{
         for(auto elem : server.collectorsTasks)
             doAction(elem.id, elem.toDo, elem.where);
         server.collectorsTasks.clear();      
-        for(Collector& elem : *this)
-            elem.refresh();
+        for(size_t i = 0; i < this -> size(); ++i)
+            if(serverId.contains(i))
+                (*this)[i].refresh();
     }
 }

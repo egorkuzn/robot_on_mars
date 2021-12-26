@@ -36,7 +36,7 @@ namespace graphics{
                 std::vector<planet::vectorItems>& externMatrix );
             ~UI();
             operator bool() const;
-            void display(); 
+            void display() noexcept; 
             bool isChanged();
             Keys getKey();
             std::string readCmd(char* constex = nullptr);
