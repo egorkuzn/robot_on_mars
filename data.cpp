@@ -111,7 +111,8 @@ namespace planet{
         
         if(!updatedMapMask[xyRobots[id].first][xyRobots[id].second])
                     send(x, y, EMPTY);
-        
+        delete console;
+        console = new graphics::UI(xyRobots, updatedMapMask, updatedMap); 
     }
 
     void data::send(size_t x, size_t y, Item item){
@@ -125,7 +126,9 @@ namespace planet{
         if(!updatedMapMask[y][x])
             console -> mapChanged = true;
 
-        updatedMapMask[y][x] = true;        
+        updatedMapMask[y][x] = true; 
+        delete console;
+        console = new graphics::UI(xyRobots, updatedMapMask, updatedMap); 
     }
 
     void data::getKey(){
