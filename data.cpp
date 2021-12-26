@@ -80,6 +80,8 @@ namespace planet{
     }
 
     void data::send(size_t x, size_t y, size_t id, robotStatus status){
+        if(!xyRobots.size())
+            xyRobots.resize(1);
         xyRobots[id].first = y;
         xyRobots[id].second = x;        
         if(status == robotStatus::DIE){
@@ -129,14 +131,31 @@ namespace planet{
         console->changeCentre(xyRobots[id].second, xyRobots[id].first);
     }
 
-    bool data::availibleToGo(size_t x, size_t y){
-        bool result = updatedMap[y][x] != (ROCK || BOMB);
-        result &= updatedMapMask[y][x];
-        return result;
+    bool data::availibleToGo(size_t id, Direction where){
+        size_t x = xyRobots[id].second;
+        size_t y = xyRobots[id].first;
+        switch (where)
+        {
+        case Direction::UP:
+            ++y;
+            break;
+        case Direction::DOWN:
+            --y;
+            break;
+        case Direction::LEFT:
+            --x;
+            break;
+        case Direction::RIGHT:
+            ++x;
+            break;
+        default:
+            break;
+        }        
+        return updatedMap[y][x] != (ROCK||BOMB);
     }
 
-    bool data::isUnknownPoint(size_t x, size_t y){
-        return !updatedMapMask[y][x];
+    bool data::isUnknownPoint(size_t id, Direction where){
+        return !updatedMapMask[xyRobots[id].first][xyRobots[id].second];
     }
 
     size_t data::point(std::pair<size_t, size_t> coordinate){

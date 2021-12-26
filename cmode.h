@@ -11,9 +11,7 @@ namespace planet{
 
     class CMode{
         public:
-            CMode(size_t& x,
-                size_t& y,
-                size_t& id,
+            CMode(size_t& id,
                 size_t& idxInCollectors,
                 data& server);
             virtual void func() = 0;
@@ -22,8 +20,6 @@ namespace planet{
             void goInRandWay();
             bool isUnknownArea();
             void scan();
-            size_t& x;
-            size_t& y;
             size_t& id;
             size_t& idxInCollectors;
             data& server;
@@ -31,9 +27,7 @@ namespace planet{
 
     class ManualMode: public CMode{
         public:
-            ManualMode(size_t& x,
-                    size_t& y,
-                    size_t& id,
+            ManualMode(size_t& id,
                     size_t& idxInCollectors,
                     data& server);
             void func() override;
@@ -42,9 +36,7 @@ namespace planet{
 
     class AutoMode: public CMode{
         public:
-            AutoMode(size_t& x,
-                    size_t& y,
-                    size_t& id,
+            AutoMode(size_t& id,
                     size_t& idxInCollectors,
                     data& server);
             void func() override;
@@ -57,9 +49,7 @@ namespace planet{
 
     class ScanMode: public CMode{
         public:
-            ScanMode(size_t& x,
-                    size_t& y,
-                    size_t& id,
+            ScanMode(size_t& id,
                     size_t& idxInCollectors,
                     data& server);
             void func() override;

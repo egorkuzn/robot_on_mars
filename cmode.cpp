@@ -1,33 +1,29 @@
 #include "cmode.h"
 
 namespace planet{
-    CMode::CMode(size_t& x,
-                size_t& y,
-                size_t& id,
+    CMode::CMode(size_t& id,
                 size_t& idxInCollectors,
-                data& server) : x(x),
-                                y(y),
-                                id(id),
+                data& server) : id(id),
                                 idxInCollectors(idxInCollectors),
                                 server(server) {}
-                                
+    
     bool CMode::isUnknownArea(){
-        return server.isUnknownPoint(x + 1, y) &&
-        server.isUnknownPoint(x - 1, y) &&
-        server.isUnknownPoint(x, y + 1) &&
-        server.isUnknownPoint(x, y - 1);
+        return server.isUnknownPoint(id, Direction::UP) &&
+        server.isUnknownPoint(id, Direction::DOWN) &&
+        server.isUnknownPoint(id, Direction::LEFT) &&
+        server.isUnknownPoint(id, Direction::RIGHT);
     }
 
     CMode::~CMode() = default;
 
     void CMode::goInRandWay(){
-        if(server.availibleToGo(x + 1, y))
+        if(server.availibleToGo(id, Direction::RIGHT))
             server.addInAccumulator(id, toDoType::MOVE, Direction::RIGHT);
-        else if(server.availibleToGo(x, y + 1))
+        else if(server.availibleToGo(id, Direction::UP))
             server.addInAccumulator(id, toDoType::MOVE, Direction::UP);
-        else if(server.availibleToGo(x - 1, y))
+        else if(server.availibleToGo(id, Direction::LEFT))
             server.addInAccumulator(id, toDoType::MOVE, Direction::LEFT);
-        else if(server.availibleToGo(x, y - 1))
+        else if(server.availibleToGo(id, Direction::DOWN))
             server.addInAccumulator(id, toDoType::MOVE, Direction::DOWN);
     }
 
@@ -35,13 +31,10 @@ namespace planet{
         server.addInAccumulator(idxInCollectors, toDoType::SCAN);
     }
 
-    ManualMode::ManualMode(size_t& x,
-                            size_t& y,
-                            size_t& id,
+    ManualMode::ManualMode(size_t& id,
                             size_t& idxInCollectors,
                             data& server) 
-                                : CMode(x, y, id, idxInCollectors ,server){
-        server.send(x, y, id);
+                                : CMode(id, idxInCollectors ,server){
         server.setFocus(id);
     }
 
@@ -49,14 +42,10 @@ namespace planet{
 
     void ManualMode::func(){}
 
-    ScanMode::ScanMode(size_t& x,
-                      size_t& y,
-                      size_t& id,
+    ScanMode::ScanMode(size_t& id,
                       size_t& idxInCollectors,
                       data& server)
-                                : CMode(x, y, id, idxInCollectors, server){
-        server.send(x, y, id);
-    }
+                                : CMode(id, idxInCollectors, server){}
 
     ScanMode::~ScanMode() = default;
 
@@ -67,14 +56,10 @@ namespace planet{
             goInRandWay();        
     }
 
-    AutoMode::AutoMode(size_t& x,
-                      size_t& y,
-                      size_t& id,
+    AutoMode::AutoMode(size_t& id,
                       size_t& idxInCollectors,
                       data& server)
-                                : CMode(x, y, id, idxInCollectors, server){
-        server.send(x, y, id);
-    }
+                                : CMode(id, idxInCollectors, server){}
 
     AutoMode::~AutoMode() = default;
 

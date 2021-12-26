@@ -54,8 +54,8 @@ namespace planet
         void addInAccumulator(size_t id, toDoType toDo, Direction where = Direction::NONE);
         std::list <action> collectorsTasks;
         std::vector<Direction> takeNearestWay(size_t id, Item thing);
-        bool availibleToGo(size_t x, size_t y);
-        bool isUnknownPoint(size_t x, size_t y);
+        bool availibleToGo(size_t id, Direction where);
+        bool isUnknownPoint(size_t id, Direction where);
         bool isAnyFound(size_t id, Item item);
         void getKey();
         int getNum();
