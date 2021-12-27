@@ -7,7 +7,7 @@ namespace graphics{
         switch (item)
         {
         case planet::ROCK:
-            return "🪨";
+            return "🪨 ";
         case planet::BOMB:
             return "💣";
         case planet::APPLE:
@@ -22,9 +22,9 @@ namespace graphics{
     int UI::safetyIndexTake(Matrix mType, size_t x0, size_t y0){
         switch(mType){
             case Matrix::MAP:
-                return externMatrix[y0 % externMatrix.size()][x0 % externMatrix[0].capacity()];
+                return externMatrix[Y(y0)][X(x0)];
             case Matrix::MASK:
-                return matrixMask[y0 % matrixMask.size()][x0 % matrixMask[0].capacity()];
+                return matrixMask[Y(y0)][X(x0)];
             default:
                 //place for exception
                 return false;
@@ -32,22 +32,30 @@ namespace graphics{
     }
 
     bool UI::isRobotHere(size_t x0, size_t y0){
-        x0 %= externMatrix[0].capacity();
-        y0 %= externMatrix.size();
+        X(x0);
+        Y(y0);
         for(size_t id = 0; id < xyRobots.size(); ++id)
             if(xyRobots[id].first == y0 && xyRobots[id].second == x0)
                 return true;
         return false;
     }
 
+    size_t UI::X(size_t x0){
+        return (x0 + x_limit)% x_limit;
+    }
+
+    size_t UI::Y(size_t y0){
+        return (y0 + y_limit)% y_limit;
+    }
+
     std::string UI::genMatrixString(size_t stringNumb){
         std::string result;
-        size_t x0 = (x - width / 2) % externMatrix[0].capacity();
+        size_t x0 = X(x - width / 2);
         for(size_t i = 0; i < width; ++i)
-            if(isRobotHere(x0 + i, stringNumb))
+            if(isRobotHere(X(x0 + i), stringNumb))
                 result += "🤖";
-            else if(safetyIndexTake(Matrix::MASK, stringNumb, x0 + i))
-                result += emojiTranslator((planet::Item)safetyIndexTake(Matrix::MAP, stringNumb, x0 + i));
+            else if(safetyIndexTake(Matrix::MASK, stringNumb, X(x0 + i)))
+                result += emojiTranslator((planet::Item)safetyIndexTake(Matrix::MAP, stringNumb, X(x0 + i)));
             else
                 result += "🟥";
         return result;
@@ -55,19 +63,21 @@ namespace graphics{
 
     void UI::window(){
         displayedMatrix.resize(high + 1);   
-        size_t y0 = (y - high / 2) % externMatrix.size();
+        size_t y0 = Y(y - size_t(high / 2));
         displayedMatrix[0] = statusBar;
         for(size_t i = 0; i < high; ++i)
-            displayedMatrix[i + 1] = genMatrixString(i + y0);
+            displayedMatrix[i + 1] = genMatrixString(Y(i + y0));
     }
 
     UI::UI( std::vector<std::pair<size_t, size_t>>& xyRobots,
             std::vector<std::vector<bool>>& matrixMask,
-            std::vector<planet::vectorItems>& externMatrix ) :
+            std::vector<planet::vectorItems>& externMatrix,
+            size_t x_limit, size_t y_limit ) :
                                                     xyRobots(xyRobots),
                                                     matrixMask(matrixMask),
-                                                    externMatrix(externMatrix){
-        display();
+                                                    externMatrix(externMatrix),
+                                                    x_limit(x_limit),
+                                                    y_limit(y_limit){
     }
 
     void UI::display() noexcept{
@@ -200,11 +210,19 @@ namespace graphics{
     }
     
     void UI::changeCentre(size_t x0, size_t y0){
-/*         if(x != x0 || y != y0 || mapChanged){
- */            x = x0;
-            y = y0;   
-            mapChanged = false;         
+        if(x != x0 || y != y0){
+            x = x0;
+            y = y0;
             display();
-/*         }
- */    }
+        }
+    }
+
+    void UI::mapUpdate(std::vector<std::pair<size_t, size_t>>& _xyRobots,
+                std::vector<std::vector<bool>>& _matrixMask,
+                std::vector<planet::vectorItems>& _externMatrix){
+        xyRobots = _xyRobots;
+        externMatrix = _externMatrix;
+        matrixMask = _matrixMask;
+        display();
+    }
 }

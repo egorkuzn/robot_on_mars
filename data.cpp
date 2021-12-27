@@ -1,15 +1,39 @@
 #include "data.h"
 
-namespace planet{
+namespace planet{    
+    void data::resizeMaps(size_t y, size_t x){
+        while (!(updatedMap.size() > y)){
+            vectorItems itemsTmp(updatedMap[0].capacity());
+            updatedMap.push_back(itemsTmp);
+            std::vector<bool> boolTmp(updatedMap[0].capacity(), false);
+            updatedMapMask.push_back(boolTmp);
+        }
+
+        while(!(updatedMapMask[0].size() > x)){
+            for(auto& elem : updatedMap)
+                elem[x];            
+
+            for(auto& elem: updatedMapMask)             
+                elem.push_back(false);
+            
+        }
+    }
+
+
     data::data(size_t x, size_t y) : updatedMap(2, vectorItems(2)),
-                updatedMapMask(2, std::vector<bool> (2, false)){
+                updatedMapMask(2, std::vector<bool> (2, false)),
+                console (graphics::UI(xyRobots, updatedMapMask, updatedMap, x, y)) 
+    {
         xLimit = x;
         yLimit = y;
-        console = new graphics::UI(xyRobots, updatedMapMask, updatedMap); 
+        resizeMaps(yLimit, xLimit);
     }
 
     data::~data(){
-        delete console;
+    }
+
+    void data::mapViewUpdate(){
+        console.mapUpdate(xyRobots, updatedMapMask, updatedMap);
     }
 
     size_t data::Y(size_t y){
@@ -36,7 +60,7 @@ namespace planet{
 
     void data::incAppleCount(){
         ++appleCount;
-        console -> displayAppleCount(appleCount);
+        console.displayAppleCount(appleCount);
     }
 
     size_t data::xFromFirstLanding(size_t x){
@@ -55,45 +79,26 @@ namespace planet{
 
     size_t data::getId(){
         ++liveCount;
-        console -> displayRobotCount(liveCount);
+        console.displayRobotCount(liveCount);
         isRobotLive.push_back(true);
         return xyRobots.size();
     }
 
     int data::getNum(){
-        return console -> getNum();
+        return console.getNum();
     }
 
     void data::readCmd(char* context){
-        commandLine = console -> readCmd(context);
+        commandLine = console.readCmd(context);
     }
 
     std::string data::cmd(){
         return commandLine;
     }
 
-    void data::resizeMaps(size_t y, size_t x){
-        while (!(updatedMap.size() > y)){
-            vectorItems itemsTmp(updatedMap[0].capacity());
-            updatedMap.push_back(itemsTmp);
-            std::vector<bool> boolTmp(updatedMap[0].capacity(), false);
-            updatedMapMask.push_back(boolTmp);
-        }
-
-        while(!(updatedMapMask[0].size() > x)){
-            for(auto& elem : updatedMap)
-                elem[x];            
-
-            for(auto& elem: updatedMapMask)             
-                elem.push_back(false);
-            
-        }
-    }
-
     void data::send(size_t x, size_t y, size_t id, robotStatus status){
         x = X(x);
         y = Y(y);
-        console -> mapChanged = true;
         if(!(xyRobots.size() > id))
             xyRobots.resize(id + 1);
         xyRobots[id].first = y;
@@ -103,7 +108,7 @@ namespace planet{
             isRobotLive[id] = false;
             ++dieCount;
             --liveCount;
-            console -> displayDieCount(dieCount);
+            console.displayDieCount(dieCount);
             return;
         }
 
@@ -111,8 +116,8 @@ namespace planet{
         
         if(!updatedMapMask[xyRobots[id].first][xyRobots[id].second])
                     send(x, y, EMPTY);
-        delete console;
-        console = new graphics::UI(xyRobots, updatedMapMask, updatedMap); 
+
+        mapViewUpdate();            
     }
 
     void data::send(size_t x, size_t y, Item item){
@@ -124,15 +129,13 @@ namespace planet{
         updatedMap[y][x] = item;
 
         if(!updatedMapMask[y][x])
-            console -> mapChanged = true;
-
-        updatedMapMask[y][x] = true; 
-        delete console;
-        console = new graphics::UI(xyRobots, updatedMapMask, updatedMap); 
+            updatedMapMask[y][x] = true; 
+        
+        mapViewUpdate();            
     }
 
     void data::getKey(){
-        savedKey = console -> getKey();
+        savedKey = console.getKey();
     }
 
     graphics::Keys data::Key(){        
@@ -140,20 +143,20 @@ namespace planet{
     }
 
     void data::error(char* msg){
-        console -> error(msg);        
+        console.error(msg);        
     }
 
     void data::addInAccumulator(size_t id, toDoType toDo, Direction where){
         action* newAction = new action;
-        newAction -> toDo = toDo;
-        newAction -> id = id;
-        newAction -> where = where;
+        newAction->toDo = toDo;
+        newAction->id = id;
+        newAction->where = where;
         collectorsTasks.push_back(*newAction);
         delete newAction;
     }
 
     void data::setFocus(size_t id){
-        console->changeCentre(xyRobots[id].second, xyRobots[id].first);
+        console.changeCentre(xyRobots[id].second, xyRobots[id].first);
     }
 
     bool data::availibleToGo(size_t id, Direction where){
@@ -316,6 +319,6 @@ namespace planet{
     }
 
     void data::outBadCmd(){
-        console->error("Bad command was inputed");
+        console.error("Bad command was inputed");
     }
 }

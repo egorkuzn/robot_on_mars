@@ -33,7 +33,9 @@ namespace graphics{
         public:
             UI( std::vector<std::pair<size_t, size_t>>& xyRobots,
                 std::vector<std::vector<bool>>& matrixMask,
-                std::vector<planet::vectorItems>& externMatrix );
+                std::vector<planet::vectorItems>& externMatrix,
+                size_t x_limit, size_t y_limit
+                 );
             ~UI();
             operator bool() const;
             void display() noexcept; 
@@ -46,12 +48,17 @@ namespace graphics{
             void displayAppleCount(size_t value);
             void displayRobotCount(size_t value);
             void displayDieCount(size_t count);  
+            void mapUpdate(std::vector<std::pair<size_t, size_t>>& _xyRobots,
+                std::vector<std::vector<bool>>& _matrixMask,
+                std::vector<planet::vectorItems>& _externMatrix);
             bool mapChanged = false;
         private:
             int _kbhit();
             void window();
             void sleepcp(int milliseconds);
             void refreshStatusBar();
+            size_t X(size_t x0);
+            size_t Y(size_t y0);
             int safetyIndexTake(Matrix mType, size_t x0, size_t y0);
             bool isRobotHere(size_t x0, size_t y0);
             std::string emojiTranslator(planet::Item item);
@@ -59,10 +66,12 @@ namespace graphics{
             Keys reactionOnKeyboard(int ch);
             bool status = true;
             size_t high = 7;
-            size_t width = 25;
+            size_t width = 24;
             size_t appleCount = 0;
             size_t liveCount = 0;
             size_t dieCount = 0;
+            size_t x_limit = 0;
+            size_t y_limit = 0;
             int x = 12;
             int y = 3;
             std::vector<std::string> displayedMatrix;

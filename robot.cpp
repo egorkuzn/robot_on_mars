@@ -51,11 +51,10 @@ namespace planet{
         xServer = server.xFromFirstLanding(xGround);
         yServer = server.yFromFirstLanding(yGround);
         id = server.getId();
+        server.send(xServer, yServer, id);
         server.send(xServer, yServer, ground[yGround][xGround]);
         if(ground[yGround][xGround] == (ROCK || BOMB))
             server.send(xServer, yServer, id, robotStatus::DIE);  
-        else
-            server.send(xServer, yServer, id);
     } 
     
     void Robot::move(Direction way){

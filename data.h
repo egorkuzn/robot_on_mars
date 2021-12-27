@@ -85,6 +85,7 @@ namespace planet
         size_t Y(size_t y);
         size_t X(size_t x);
         void resizeMaps(size_t x, size_t y);
+        void mapViewUpdate();
         std::vector<size_t[2]> bombWay;
         std::vector<size_t[2]> appleWay;
         std::vector<std::list<size_t>> distribution; // 0 - apple distribution for collectors, 1 - bomb distribution for sappers
@@ -99,6 +100,6 @@ namespace planet
         bool status = true;
         graphics::Keys savedKey = graphics::Keys::EMPTY;
         std::string commandLine;
-        graphics::UI *console = nullptr;
+        graphics::UI console;
     };
 }
