@@ -30,14 +30,14 @@ namespace planet{
     }
 
     void Robot::moveDown(){
-        yGround = Y(yGround - 1);
-        yServer = yServer - 1;
+        yGround = Y(yGround + 1);
+        yServer = yServer + 1;
         confirmServerStep();
     }
 
     void Robot::moveUp(){
-        yGround = Y(yGround + 1);
-        yServer = yServer + 1;
+        yGround = Y(yGround - 1);
+        yServer = yServer - 1;
         confirmServerStep();
     }
 
