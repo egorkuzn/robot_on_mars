@@ -5,15 +5,13 @@ namespace planet{
                             Robot(ground, server), idxInCollectors(idx){
     }
 
-    Collector::~Collector(){
-        // some times deletes, when it's already deleted
-        if(!mode)
-            delete mode;
-    }
+    Collector::~Collector() = default;
 
     void Collector::genCMode(CModeT type){
-        if(!mode)
+        if(mode){
             delete mode;
+            mode = nullptr;
+        }
         switch(type){
             case CModeT::AUTO:  
                 modeStatus = CModeT::AUTO;         
@@ -34,6 +32,7 @@ namespace planet{
         if(ground[yGround][xGround] == Item::APPLE){
             server.incAppleCount();
             server.send(xServer, yServer, Item::EMPTY);
+            ground[yGround][xGround] = Item::EMPTY;
         }
     }
 
@@ -78,6 +77,8 @@ namespace planet{
     }
 
     void vectorC::add(){
+        if(this -> size())
+            (*this)[manId].genCMode(CModeT::SCAN);
         manId = this -> size();
         this->push_back(Collector(ground, server, this -> size()));                
         this->back().genCMode(CModeT::MAN);

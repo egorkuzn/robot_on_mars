@@ -55,7 +55,7 @@ namespace planet{
         if(isUnknownArea())
             scan();        
         else
-            goInRandWay();        
+            goInRandWay();    
     }
 
     AutoMode::AutoMode(size_t id,

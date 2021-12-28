@@ -42,15 +42,14 @@ namespace planet{
     }
 
     Robot::Robot(std::vector<vectorItems>& ground, data& server) : ground(ground), server(server){
-        xGround = rand() % ground.size();
-        yGround = rand() % ground[0].capacity();
+        srand(time(NULL));
+        xGround = size_t(rand()) % ground.size();
+        yGround = size_t(rand()) % ground[0].capacity();
         xServer = server.xFromFirstLanding(xGround);
         yServer = server.yFromFirstLanding(yGround);
         id = server.getId();
-        server.send(xServer, yServer, id);
         server.send(xServer, yServer, ground[yGround][xGround]);
-        if(ground[yGround][xGround] == (ROCK || BOMB))
-            server.send(xServer, yServer, id, robotStatus::DIE);  
+        confirmServerStep();
     } 
     
     void Robot::move(Direction way){

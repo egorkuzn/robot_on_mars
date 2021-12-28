@@ -24,6 +24,7 @@ namespace planet{
                 updatedMapMask(2, std::vector<bool> (2, false)),
                 console (graphics::UI(xyRobots, updatedMapMask, updatedMap, x, y)) 
     {
+        isFirst = true;
         xLimit = x;
         yLimit = y;
         resizeMaps(yLimit, xLimit);
@@ -33,7 +34,11 @@ namespace planet{
     }
 
     void data::mapViewUpdate(){
-        console.mapUpdate(xyRobots, updatedMapMask, updatedMap);
+        if(necessary){
+            console.mapUpdate(xyRobots, updatedMapMask, updatedMap);
+            necessary = false;
+        }
+
     }
 
     size_t data::Y(size_t y){
@@ -74,6 +79,7 @@ namespace planet{
         if(!isFirst)
             return Y(y -baseY);
         baseY = y;
+        isFirst = false;
         return 0;
     }
 
@@ -99,7 +105,7 @@ namespace planet{
     void data::send(size_t x, size_t y, size_t id, robotStatus status){
         x = X(x);
         y = Y(y);
-        if(!(xyRobots.size() > id))
+        while(!(xyRobots.size() > id))
             xyRobots.resize(id + 1);
         xyRobots[id].first = y;
         xyRobots[id].second = x;  
@@ -117,7 +123,7 @@ namespace planet{
         if(!updatedMapMask[xyRobots[id].first][xyRobots[id].second])
                     send(x, y, EMPTY);
 
-        mapViewUpdate();            
+        necessary = true;
     }
 
     void data::send(size_t x, size_t y, Item item){
@@ -131,7 +137,7 @@ namespace planet{
         if(!updatedMapMask[y][x])
             updatedMapMask[y][x] = true; 
         
-        mapViewUpdate();            
+        necessary = true;
     }
 
     void data::getKey(){
@@ -160,8 +166,8 @@ namespace planet{
     }
 
     bool data::isSafePoint(size_t x, size_t y){
-        if(updatedMap[y][x] == ROCK ||
-           updatedMap[y][x] == BOMB)
+        if(updatedMap[Y(y)][X(x)] == ROCK ||
+           updatedMap[Y(y)][X(x)] == BOMB)
             return false;
         else 
             return true;
@@ -174,10 +180,10 @@ namespace planet{
         switch (where)
         {
         case Direction::UP:
-            ++y;
+            --y;
             break;
         case Direction::DOWN:
-            --y;
+            ++y;
             break;
         case Direction::LEFT:
             --x;
@@ -258,12 +264,12 @@ namespace planet{
             if(coordinate - coordinate0 == 1)
                 return Direction::RIGHT;
             else
-                return Direction::UP;
+                return Direction::DOWN;
         } else if (coordinate < coordinate0){
             if(coordinate0 - coordinate == 1)
                 return Direction::LEFT;
             else
-                return Direction::DOWN;
+                return Direction::UP;
         } else
             return Direction::NONE;
     }
