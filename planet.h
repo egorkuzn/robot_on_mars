@@ -16,6 +16,7 @@ namespace planet{
             operator bool();
         private:
             std::vector<vectorItems> ground;
+            std::vector<vectorItems> genGround(size_t high, size_t width);
             data server; 
             vectorC collectors;
             vectorS sappers;

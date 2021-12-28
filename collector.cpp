@@ -7,7 +7,8 @@ namespace planet{
 
     Collector::~Collector(){
         // some times deletes, when it's already deleted
-        delete mode;
+        if(!mode)
+            delete mode;
     }
 
     void Collector::genCMode(CModeT type){

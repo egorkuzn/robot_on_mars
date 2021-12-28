@@ -137,9 +137,11 @@ namespace planet{
     }    
 
     vectorItems::vectorItems(size_t length) : length(length){
-        (*this)[length - 1]; // firstly: filling vector by rocks
-        srand(time(NULL));
-        genTerrain(); // then gen empty places
-        genItems(); // add bombs and apples
+        if(length > 0){
+            (*this)[length - 1]; // firstly: filling vector by rocks
+            srand(time(NULL));
+            genTerrain(); // then gen empty places
+            genItems(); // add bombs and apples
+        }
     }
 }

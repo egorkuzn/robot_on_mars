@@ -2,7 +2,19 @@
 #define N 1000
 
 namespace planet{
-    Planet::Planet() : ground(N, vectorItems(N)),
+    std::vector<vectorItems> Planet::genGround(size_t high, size_t width){
+        vectorItems tmp = vectorItems(high * width);
+        std::vector<vectorItems> result;
+        for(size_t i = 0; i < high; ++i){
+            result.push_back(vectorItems(size_t(0)));
+            for(size_t j = 0; j < width; ++j)
+                result[i].push_back(tmp[i * width + j]);
+        }
+
+        return result;
+    }
+
+    Planet::Planet() : ground(genGround(N, N)),
                        server(N, N),
                        collectors(ground, server),
                        sappers(ground, server){}
