@@ -78,6 +78,7 @@ namespace planet
         Direction toDirectionType(size_t coordinate0, size_t coordinate);
         bool isAppleForGrab(size_t coordinate, Item item);
         bool foundInDistribution(size_t coordinte, Item item);
+        bool isSafePoint(size_t x, size_t y);
         size_t point(size_t x, size_t y);
         size_t point(std::pair<size_t, size_t> coordinate);
         size_t extractX(size_t cootdinate);

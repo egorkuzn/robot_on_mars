@@ -27,5 +27,6 @@ namespace planet{
             void moveDown();
             void moveLeft();
             void moveRight();
+            void confirmServerStep();
     };
 }

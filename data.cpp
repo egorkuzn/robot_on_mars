@@ -124,7 +124,7 @@ namespace planet{
         x = X(x);
         y = Y(y);
 
-        resizeMaps(x, y);
+        resizeMaps(y, x);
 
         updatedMap[y][x] = item;
 
@@ -159,6 +159,14 @@ namespace planet{
         console.changeCentre(xyRobots[id].second, xyRobots[id].first);
     }
 
+    bool data::isSafePoint(size_t x, size_t y){
+        if(updatedMap[y][x] == ROCK ||
+           updatedMap[y][x] == BOMB)
+            return false;
+        else 
+            return true;
+    }
+
     bool data::availibleToGo(size_t id, Direction where){
         size_t x = xyRobots[id].second;
         size_t y = xyRobots[id].first;
@@ -181,7 +189,7 @@ namespace planet{
             break;
         }        
 
-        return updatedMap[y][x] != (ROCK||BOMB);
+        return isSafePoint(x, y);
     }
 
     bool data::isUnknownPoint(size_t id, Direction where){
@@ -198,16 +206,16 @@ namespace planet{
 
     std::list<size_t> data::genPointsQueue(size_t x, size_t y){
         std::list<size_t> q;
-        if(updatedMapMask[Y(y + 1)][x] && (updatedMap[Y(y + 1)][x] != (BOMB||ROCK)))
+        if(updatedMapMask[Y(y + 1)][x] && (isSafePoint(Y(y + 1), x)))
             q.push_back(point(Y(y + 1), x));        
 
-        if(updatedMapMask[Y(y - 1)][x] && (updatedMap[Y(y - 1)][x] != (BOMB||ROCK)))
+        if(updatedMapMask[Y(y - 1)][x] && (isSafePoint(Y(y - 1), x)))
             q.push_back(point(Y(y - 1), x));        
 
-        if(updatedMapMask[y][X(x + 1)] && (updatedMap[y][X(x + 1)] != (BOMB||ROCK)))
+        if(updatedMapMask[y][X(x + 1)] && (isSafePoint(y, X(x + 1))))
             q.push_back(point(y, X(x + 1)));        
 
-        if(updatedMapMask[y][X(x - 1)] && (updatedMap[y][X(x - 1)] != (BOMB||ROCK)))
+        if(updatedMapMask[y][X(x - 1)] && (isSafePoint(y, X(x - 1))))
             q.push_back(point(y, X(x - 1)));        
 
         return q;

@@ -54,8 +54,8 @@ namespace graphics{
         for(size_t i = 0; i < width; ++i)
             if(isRobotHere(X(x0 + i), stringNumb))
                 result += "🤖";
-            else if(safetyIndexTake(Matrix::MASK, stringNumb, X(x0 + i)))
-                result += emojiTranslator((planet::Item)safetyIndexTake(Matrix::MAP, stringNumb, X(x0 + i)));
+            else if(safetyIndexTake(Matrix::MASK, X(x0 + i), stringNumb))
+                result += emojiTranslator((planet::Item)safetyIndexTake(Matrix::MAP, X(x0 + i), stringNumb));
             else
                 result += "🟥";
         return result;
@@ -112,6 +112,8 @@ namespace graphics{
                 return Keys::F;
             case 'u':
                 return Keys::U;
+            case 'w':
+                return Keys::W;
             case 27:
                 return Keys::Esc;
             default:

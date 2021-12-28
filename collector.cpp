@@ -6,6 +6,7 @@ namespace planet{
     }
 
     Collector::~Collector(){
+        // some times deletes, when it's already deleted
         delete mode;
     }
 

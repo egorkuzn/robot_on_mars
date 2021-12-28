@@ -9,40 +9,36 @@ namespace planet{
         return (y + ground.size()) % ground.size();
     }
 
-    void Robot::moveRight(){
-        xGround = X(xGround + 1);
-        xServer = xServer + 1;
-        if(ground[yGround][xGround] == (ROCK || BOMB))
+    void Robot::confirmServerStep(){
+        if(ground[yGround][xGround] == ROCK ||
+                        ground[yGround][xGround] == BOMB)
             server.send(xServer, yServer, id, robotStatus::DIE);   
         else
             server.send(xServer, yServer, id);
+    }
+
+    void Robot::moveRight(){
+        xGround = X(xGround + 1);
+        xServer = xServer + 1;
+        confirmServerStep();
     }
 
     void Robot::moveLeft(){
         xGround = X(xGround - 1);
         xServer = xServer - 1;
-        if(ground[yGround][xGround] == (ROCK || BOMB))
-            server.send(xServer, yServer, id, robotStatus::DIE);   
-        else
-            server.send(xServer, yServer, id);
+        confirmServerStep();
     }
 
     void Robot::moveDown(){
         yGround = Y(yGround - 1);
         yServer = yServer - 1;
-        if(ground[yGround][xGround] == (ROCK || BOMB))
-            server.send(xServer, yServer, id, robotStatus::DIE);   
-        else
-            server.send(xServer, yServer, id);
+        confirmServerStep();
     }
 
     void Robot::moveUp(){
         yGround = Y(yGround + 1);
         yServer = yServer + 1;
-        if(ground[yGround][xGround] == (ROCK || BOMB))
-            server.send(xServer, yServer, id, robotStatus::DIE);   
-        else
-            server.send(xServer, yServer, id);
+        confirmServerStep();
     }
 
     Robot::Robot(std::vector<vectorItems>& ground, data& server) : ground(ground), server(server){
