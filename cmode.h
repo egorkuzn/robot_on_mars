@@ -18,6 +18,7 @@ namespace planet{
             virtual ~CMode();
         protected:
             void goInRandWay();
+            Direction randWay();
             bool isUnknownArea();
             void scan();
             size_t id;

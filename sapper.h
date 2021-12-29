@@ -16,7 +16,7 @@ namespace planet{
     private:        
         std::vector<Direction> way;
         void work();
-        bool isOn = false;
+        bool isOn = true;
     };
      
     class vectorS: public std::vector<Sapper>{

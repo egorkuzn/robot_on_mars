@@ -5,10 +5,14 @@ namespace planet{
                                 planet::data& server): Robot(ground, server){}
 
     void Sapper::work(){
-        if(!way.capacity())
+        if(server.isAnyFound(id, BOMB) && !way.capacity()){            
             way = server.takeNearestWay(id, BOMB);
-        move(way.back());
-        way.pop_back();
+        }
+
+        if(way.capacity()){
+            move(way.back());
+            way.pop_back();
+        }
     }
 
     void Sapper::on(){

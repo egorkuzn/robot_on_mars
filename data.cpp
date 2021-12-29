@@ -198,16 +198,36 @@ namespace planet{
         return isSafePoint(x, y);
     }
 
-    bool data::isUnknownPoint(size_t id, Direction where){        
-        return !availibleToGo(id, where);
+    bool data::isUnknownPoint(size_t id, Direction where){ 
+        size_t x = xyRobots[id].second;
+        size_t y = xyRobots[id].first;
+
+        switch (where){
+            case Direction::UP:
+                --y;
+                break;
+            case Direction::DOWN:
+                ++y;
+                break;
+            case Direction::LEFT:
+                --x;
+                break;
+            case Direction::RIGHT:
+                ++x;
+                break;
+            default:
+                break;
+        }   
+
+        return !updatedMapMask[Y(y)][X(x)];
     }
 
     size_t data::point(std::pair<size_t, size_t> coordinate){
-        return coordinate.first * updatedMap[0].capacity() + coordinate.second;
+        return Y(coordinate.first) * xLimit + X(coordinate.second);
     }
 
     size_t data::point(size_t x, size_t y){
-        return y * updatedMap[0].capacity() + x;
+        return Y(y) * xLimit + X(x);
     }
 
     std::list<size_t> data::genPointsQueue(size_t x, size_t y){
@@ -225,11 +245,6 @@ namespace planet{
             q.push_back(point(Y(y), X(x - 1)));        
 
         return q;
-    }
-
-    Item data::takeItem(size_t coordinate){
-        size_t k = updatedMap[0].capacity();
-        return updatedMap[coordinate / k][coordinate % k];
     }
 
     bool data::foundInDistribution(size_t coordinate, Item item){
@@ -252,12 +267,17 @@ namespace planet{
     }
 
     size_t data::extractX(size_t coordinate){
-        return coordinate % updatedMap[0].capacity();
+        return coordinate % xLimit;
     }
 
     size_t data::extractY(size_t coordinate){
-        return coordinate / updatedMap[0].capacity();
+        return coordinate / xLimit;
     }
+    
+    Item data::takeItem(size_t coordinate){
+        return updatedMap[extractY(coordinate)][extractX(coordinate)];
+    }
+
 
     Direction data::toDirectionType(size_t coordinate0, size_t coordinate){
         if(coordinate > coordinate0){
@@ -276,7 +296,7 @@ namespace planet{
 
     std::vector<Direction> data::matrixBFS(size_t id, Item item){
         std::queue<size_t> q;
-        size_t __capacity = updatedMap.capacity() * updatedMap[0].capacity();
+        size_t __capacity = updatedMap.size() * updatedMap[0].capacity();
         std::vector<bool> used(__capacity);
         std::vector<size_t> destination(__capacity), parents(__capacity);
         size_t itemPoint;
@@ -319,10 +339,16 @@ namespace planet{
     }
 
     bool data::isAnyFound(size_t id, Item item){
-        if(!ways[id][item].capacity())
-            ways[id][item] = matrixBFS(id, item);             
+        // init ways
+        while(!(ways.size() > id)){
+            std::vector<Direction> _tmp = {Direction::NONE};
+            std::vector<std::vector<Direction>> tmp(4, _tmp);             
+            ways.push_back(tmp);
+        }
         
-        if(!ways[id][item].capacity())
+        ways[id][item] = matrixBFS(id, item);             
+        
+        if(!ways[id][item].size())
             return true;
         else 
             return false;

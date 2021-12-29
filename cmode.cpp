@@ -16,15 +16,33 @@ namespace planet{
 
     CMode::~CMode() = default;
 
+    Direction CMode::randWay(){
+        Direction where;
+        u_char randCount = rand() % 4;
+        switch (randCount)
+        {
+        case 0:
+            return Direction::UP;   
+        case 1:
+            return Direction::DOWN;
+        case 2:
+            return Direction::LEFT;
+        case 3:
+            return Direction::RIGHT;
+        default:
+            return Direction::NONE;     
+        }
+    }
+
     void CMode::goInRandWay(){
-        if(server.availibleToGo(id, Direction::RIGHT))
-            server.addInAccumulator(id, toDoType::MOVE, Direction::RIGHT);
-        else if(server.availibleToGo(id, Direction::UP))
-            server.addInAccumulator(id, toDoType::MOVE, Direction::UP);
-        else if(server.availibleToGo(id, Direction::LEFT))
-            server.addInAccumulator(id, toDoType::MOVE, Direction::LEFT);
-        else if(server.availibleToGo(id, Direction::DOWN))
-            server.addInAccumulator(id, toDoType::MOVE, Direction::DOWN);
+        Direction where = randWay();
+        for(u_char i = 0; i < 4; ++i)
+            if(server.availibleToGo(id, where)){
+                server.addInAccumulator(id, toDoType::MOVE, where);
+                break;
+            }
+            else
+                where = randWay();        
     }
 
     void CMode::scan(){
@@ -68,8 +86,10 @@ namespace planet{
     void AutoMode::collectNearestApple(){
         if(!way.capacity())
             way = server.takeNearestWay(id, APPLE);
-        server.addInAccumulator(idxInCollectors, toDoType::MOVE, *way.end());
-        way.pop_back();
+        if(way.capacity()){  
+            server.addInAccumulator(idxInCollectors, toDoType::MOVE, way.back());
+            way.pop_back();
+        }
     }
 
     void AutoMode::func(){
