@@ -5,7 +5,8 @@ namespace planet{
                                 planet::data& server): Robot(ground, server){}
 
     void Sapper::work(){
-        if(server.isAnyFound(id, BOMB) && !way.capacity()){            
+        if(!way.capacity()){ 
+            server.isAnyFound(id, BOMB);           
             way = server.takeNearestWay(id, BOMB);
         }
 
@@ -35,7 +36,7 @@ namespace planet{
     void vectorS::cmd(char* context){
         server.readCmd(context);
         if(server.cmd() == "add"){
-            (*this).push_back(Sapper(ground, server)); 
+            this->push_back(Sapper(ground, server)); 
         }
         else if(server.cmd() == "change mode")
             (*this)[server.getNum()].changeMode();
