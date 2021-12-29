@@ -8,9 +8,9 @@ namespace planet{
                                 server(server) {}
     
     bool CMode::isUnknownArea(){
-        return server.isUnknownPoint(id, Direction::UP) &&
-        server.isUnknownPoint(id, Direction::DOWN) &&
-        server.isUnknownPoint(id, Direction::LEFT) &&
+        return server.isUnknownPoint(id, Direction::UP) ||
+        server.isUnknownPoint(id, Direction::DOWN) ||
+        server.isUnknownPoint(id, Direction::LEFT) ||
         server.isUnknownPoint(id, Direction::RIGHT);
     }
 

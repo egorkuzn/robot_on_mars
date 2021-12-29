@@ -198,8 +198,8 @@ namespace planet{
         return isSafePoint(x, y);
     }
 
-    bool data::isUnknownPoint(size_t id, Direction where){
-        return !updatedMapMask[xyRobots[id].first][xyRobots[id].second];
+    bool data::isUnknownPoint(size_t id, Direction where){        
+        return !availibleToGo(id, where);
     }
 
     size_t data::point(std::pair<size_t, size_t> coordinate){
@@ -212,17 +212,17 @@ namespace planet{
 
     std::list<size_t> data::genPointsQueue(size_t x, size_t y){
         std::list<size_t> q;
-        if(updatedMapMask[Y(y + 1)][x] && (isSafePoint(Y(y + 1), x)))
+        if(updatedMapMask[Y(y + 1)][X(x)] && (isSafePoint(Y(y + 1), x)))
             q.push_back(point(Y(y + 1), x));        
 
-        if(updatedMapMask[Y(y - 1)][x] && (isSafePoint(Y(y - 1), x)))
+        if(updatedMapMask[Y(y - 1)][X(x)] && (isSafePoint(Y(y - 1), x)))
             q.push_back(point(Y(y - 1), x));        
 
-        if(updatedMapMask[y][X(x + 1)] && (isSafePoint(y, X(x + 1))))
+        if(updatedMapMask[Y(y)][X(x + 1)] && (isSafePoint(y, X(x + 1))))
             q.push_back(point(y, X(x + 1)));        
 
-        if(updatedMapMask[y][X(x - 1)] && (isSafePoint(y, X(x - 1))))
-            q.push_back(point(y, X(x - 1)));        
+        if(updatedMapMask[Y(y)][X(x - 1)] && (isSafePoint(y, X(x - 1))))
+            q.push_back(point(Y(y), X(x - 1)));        
 
         return q;
     }
