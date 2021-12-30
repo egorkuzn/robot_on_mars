@@ -7,6 +7,24 @@ namespace planet{
 
     Collector::~Collector() = default;
 
+    void vectorC::updateServerId(){
+        for(size_t i = 0; i < serverId.size(); ++i)
+            if(!server.isRobotLive[serverId[i].serverId])
+                serverId[i].isLive = false;
+    }
+
+    void Collector::dieIfBomb(){
+        if(ground[yGround][xGround] == BOMB)
+            server.send(xServer, yServer, id, robotStatus::DIE);
+    }
+
+    void Collector::scan(){   
+        server.send(xServer + 1, yServer, ground[Y(yGround)][X(xGround + 1)]);
+        server.send(xServer - 1, yServer, ground[Y(yGround)][X(xGround - 1)]);
+        server.send(xServer, yServer + 1, ground[Y(yGround + 1)][X(xGround)]);
+        server.send(xServer, yServer - 1, ground[Y(yGround - 1)][X(xGround)]);
+    }
+
     void Collector::genCMode(CModeT type){
         if(mode){
             delete mode;
@@ -47,7 +65,7 @@ namespace planet{
                 this->move(Direction::DOWN);
                 break;
             case graphics::Keys::A:
-                this->move(Direction::LEFT);
+                this->move(Direction::LEFT);                
                 break;
             case graphics::Keys::D:
                 this->move(Direction::RIGHT);
@@ -61,44 +79,59 @@ namespace planet{
             default:
                 break;
         }
+        dieIfBomb();
     }
 
     void Collector::refresh(){
         mode -> func();
+        dieIfBomb();
     }
 
     void vectorC::man(char* context){
-        if(serverId.size())
-            if(server.isRobotLive[serverId[manId]])
-                (*this)[manId].cmd(context);  
-            else
-                serverId.erase(manId);
-            
+        if(serverId.size() && serverId[manId].isLive){
+            (*this)[manId].cmd(context); 
+            (*this)[manId].dieIfBomb();
+        } 
     }
 
     void vectorC::add(){
         if(this -> size())
-            (*this)[manId].genCMode(CModeT::SCAN);
+            (*this)[manId].genCMode(CModeT::AUTO);
         manId = this -> size();
         this->push_back(Collector(ground, server, this -> size()));                
         this->back().genCMode(CModeT::MAN);
-        serverId.insert({manId, this->back().id});        
+        serverId.push_back({this->back().id, true}); 
+        this->back().dieIfBomb();
+    }
+
+    size_t vectorC::firstLive(){
+        for(size_t i = 0; i < serverId.size(); ++i)
+            if(serverId[i].isLive)
+                return i;
+        return 0;
     }
 
     bool vectorC::vectorCheck(){
-        if(!serverId.contains(manId)){
-            if(!serverId.size()){
-               if(server.cmd() == "add")
-                    add();
-            } else
-                manId = serverId.begin()->first;
+        if(serverId.size() == 0){
+            if(server.cmd() == "add")
+                add();
             return false;
         }
         
+        if(!serverId[manId].isLive){
+            if(server.cmd() == "add")
+                add();
+            else 
+                manId = firstLive();
+            return false;
+        }
+
         return true;
     }
 
     void vectorC::cmd(char* context){
+        updateServerId();
+
         server.readCmd(context);
 
         if(!vectorCheck())
@@ -114,29 +147,41 @@ namespace planet{
             (*this)[manId].genCMode(CModeT::MAN);
         }
         else if(server.cmd() == "add")
-            add();
-        else 
-            server.outBadCmd();
+            add();        
+    }
+
+    void vectorC::takeIndexFromId(size_t& id){
+        for(size_t i = 0; i < serverId.size(); ++i)
+            if(serverId[i].serverId == id){
+                id = i;        
+                break;
+            }
     }
 
     void vectorC::doAction(size_t id, toDoType toDo, Direction where){
+        takeIndexFromId(id);
         switch (toDo)
         {
         case toDoType::MOVE :
             (*this)[id].move(where);
+            break;
         case toDoType::GRAB :
             (*this)[id].grab();
+            break;
         case toDoType::SCAN :
             (*this)[id].scan();
+            break;
         }
+        (*this)[id].dieIfBomb();
     }
 
     void vectorC::refresh(){
         for(auto elem : server.collectorsTasks)
             doAction(elem.id, elem.toDo, elem.where);
-        server.collectorsTasks.clear();      
+        server.collectorsTasks.clear();  
+        updateServerId();    
         for(size_t i = 0; i < this -> size(); ++i)
-            if(serverId.contains(i))
+            if(serverId[i].isLive)
                 (*this)[i].refresh();
     }
 }

@@ -5,10 +5,10 @@
 
 namespace planet{
     enum Item: unsigned char{
-        EMPTY,
         APPLE,
         BOMB,
-        ROCK
+        ROCK,
+        EMPTY
     };
 
     class vectorItems{

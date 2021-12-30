@@ -12,7 +12,6 @@ namespace planet{
             void move(Direction way);
             // void changeServer(data& new_server); // future feature
             ~Robot(){}
-            void scan();            
             size_t xGround;
             size_t yGround;
             size_t xServer;
@@ -20,9 +19,10 @@ namespace planet{
             size_t id;
             std::vector<vectorItems>& ground;
             data& server;
-        private:
+        protected:
             size_t X(size_t x);
             size_t Y(size_t y);
+        private:
             void moveUp();
             void moveDown();
             void moveLeft();

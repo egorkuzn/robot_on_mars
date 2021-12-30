@@ -13,6 +13,8 @@ namespace planet{
         if(way.capacity()){
             move(way.back());
             way.pop_back();
+            if(ground[yGround][xGround] == BOMB)
+                ground[yGround][xGround] = EMPTY;
         }
     }
 
@@ -25,7 +27,7 @@ namespace planet{
     }
 
     void Sapper::func(){
-        if(isOn)
+        if(server.isRobotLive[id] && isOn)
             work();
     }
 
@@ -36,7 +38,7 @@ namespace planet{
     void vectorS::cmd(char* context){
         server.readCmd(context);
         if(server.cmd() == "add"){
-            this->push_back(Sapper(ground, server)); 
+            this->push_back(Sapper(ground, server));
         }
         else if(server.cmd() == "change mode")
             (*this)[server.getNum()].changeMode();

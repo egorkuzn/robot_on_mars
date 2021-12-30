@@ -79,25 +79,36 @@ namespace planet{
     AutoMode::AutoMode(size_t id,
                       size_t idxInCollectors,
                       data& server)
-                                : CMode(id, idxInCollectors, server){}
+                                : CMode(id, idxInCollectors, server){
+        way.resize(4);
+    }
 
     AutoMode::~AutoMode() = default;
 
-    void AutoMode::collectNearestApple(){
-        if(!way.capacity())
-            way = server.takeNearestWay(id, APPLE);
-        if(way.capacity()){  
-            server.addInAccumulator(idxInCollectors, toDoType::MOVE, way.back());
-            way.pop_back();
+    void AutoMode::collectNearest(Item item){
+        if(!way[item].size())
+            way[item] = server.takeNearestWay(id, APPLE);
+        if(way[item].size()){  
+            server.addInAccumulator(idxInCollectors, toDoType::MOVE, way[item].back());
+            way[item].pop_back();
         }
     }
 
+    bool AutoMode::stadingOnApple(){
+        return server.updatedMap[server.xyRobots[id].first]
+                                [server.xyRobots[id].second] == APPLE;
+    }
+
     void AutoMode::func(){
+        if(stadingOnApple())
+            server.addInAccumulator(id, toDoType::GRAB);
         if(server.isAnyFound(id, APPLE))
-            collectNearestApple();
+            collectNearest(APPLE);
+        else if(server.isAnyFound(id, EMPTY))
+            collectNearest(EMPTY);
         else if(isUnknownArea())
-            scan();
-        else
-            goInRandWay();
+            scan();       
+
+        server.mapViewUpdate();     
     }
 }

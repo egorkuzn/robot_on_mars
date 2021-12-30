@@ -10,8 +10,9 @@ namespace planet{
     }
 
     void Robot::confirmServerStep(){
-        if(ground[yGround][xGround] == ROCK ||
-                        ground[yGround][xGround] == BOMB)
+        if(ground[yGround][xGround] == BOMB)
+            ground[yGround][xGround] = EMPTY;
+        if(ground[yGround][xGround] == ROCK)
             server.send(xServer, yServer, id, robotStatus::DIE);   
         else
             server.send(xServer, yServer, id);
@@ -45,6 +46,11 @@ namespace planet{
         srand(time(NULL));
         xGround = size_t(rand()) % ground.size();
         yGround = size_t(rand()) % ground[0].capacity();
+        while (ground[yGround][xGround] == ROCK)
+        {
+            xGround = size_t(rand()) % ground.size();
+            yGround = size_t(rand()) % ground[0].capacity();
+        }        
         xServer = server.xFromFirstLanding(xGround);
         yServer = server.yFromFirstLanding(yGround);
         id = server.getId();
@@ -69,10 +75,4 @@ namespace planet{
         }
     }
 
-    void Robot::scan(){   
-        server.send(xServer + 1, yServer, ground[Y(yGround)][X(xGround + 1)]);
-        server.send(xServer - 1, yServer, ground[Y(yGround)][X(xGround - 1)]);
-        server.send(xServer, yServer + 1, ground[Y(yGround + 1)][X(xGround)]);
-        server.send(xServer, yServer - 1, ground[Y(yGround - 1)][X(xGround)]);
-    }
 }

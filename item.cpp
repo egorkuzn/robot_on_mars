@@ -117,7 +117,7 @@ namespace planet{
     }
 
     void vectorItems::randItem(){        
-        (*this)[rand() % length] = Item(rand() % 2 + 1);
+        (*this)[rand() % length] = Item(rand() % 2);
     }
 
     void vectorItems::randEmpty(){

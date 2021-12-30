@@ -165,15 +165,15 @@ namespace planet{
         console.changeCentre(xyRobots[id].second, xyRobots[id].first);
     }
 
-    bool data::isSafePoint(size_t x, size_t y){
+    bool data::isSafePoint(size_t y, size_t x, bool bombIgnore){
         if(updatedMap[Y(y)][X(x)] == ROCK ||
-           updatedMap[Y(y)][X(x)] == BOMB)
+           (updatedMap[Y(y)][X(x)] == BOMB && !bombIgnore))
             return false;
         else 
             return true;
     }
 
-    bool data::availibleToGo(size_t id, Direction where){
+    bool data::availibleToGo(size_t id, Direction where, bool bombIgnore){
         size_t x = xyRobots[id].second;
         size_t y = xyRobots[id].first;
 
@@ -195,7 +195,7 @@ namespace planet{
             break;
         }        
 
-        return isSafePoint(x, y);
+        return isSafePoint(y, x, bombIgnore);
     }
 
     bool data::isUnknownPoint(size_t id, Direction where){ 
@@ -226,22 +226,22 @@ namespace planet{
         return Y(coordinate.first) * xLimit + X(coordinate.second);
     }
 
-    size_t data::point(size_t x, size_t y){
+    size_t data::point(size_t y, size_t x){
         return Y(y) * xLimit + X(x);
     }
 
-    std::list<size_t> data::genPointsQueue(size_t x, size_t y){
+    std::list<size_t> data::genPointsQueue(size_t x, size_t y, bool bombIgnore){
         std::list<size_t> q;
-        if(updatedMapMask[Y(y + 1)][X(x)] && (isSafePoint(Y(y + 1), x)))
+        if(updatedMapMask[Y(y + 1)][X(x)] && (isSafePoint(Y(y + 1), x, bombIgnore)))
             q.push_back(point(Y(y + 1), x));        
 
-        if(updatedMapMask[Y(y - 1)][X(x)] && (isSafePoint(Y(y - 1), x)))
+        if(updatedMapMask[Y(y - 1)][X(x)] && (isSafePoint(Y(y - 1), x, bombIgnore)))
             q.push_back(point(Y(y - 1), x));        
 
-        if(updatedMapMask[Y(y)][X(x + 1)] && (isSafePoint(y, X(x + 1))))
+        if(updatedMapMask[Y(y)][X(x + 1)] && (isSafePoint(y, X(x + 1), bombIgnore)))
             q.push_back(point(y, X(x + 1)));        
 
-        if(updatedMapMask[Y(y)][X(x - 1)] && (isSafePoint(y, X(x - 1))))
+        if(updatedMapMask[Y(y)][X(x - 1)] && (isSafePoint(y, X(x - 1), bombIgnore)))
             q.push_back(point(Y(y), X(x - 1)));        
 
         return q;
@@ -259,9 +259,10 @@ namespace planet{
         return false;
     }
 
-    bool data::isAppleForGrab(size_t coordinate, Item item){
-        if(takeItem(coordinate) == item)
-            if(!foundInDistribution(coordinate, item))
+    bool data::isForGrab(size_t coordinate, Item item){
+        Item res = takeItem(coordinate);
+        if(res == item || (item == EMPTY && res == APPLE))
+            //if(!foundInDistribution(coordinate, item))
                 return true;
         return false;
     }
@@ -280,34 +281,43 @@ namespace planet{
 
 
     Direction data::toDirectionType(size_t coordinate0, size_t coordinate){
-        if(coordinate > coordinate0){
-            if(coordinate - coordinate0 == 1)
-                return Direction::RIGHT;
-            else
-                return Direction::DOWN;
-        } else if (coordinate < coordinate0){
-            if(coordinate0 - coordinate == 1)
-                return Direction::LEFT;
-            else
-                return Direction::UP;
-        } else
-            return Direction::NONE;
+        size_t x0 = extractX(coordinate0);
+        size_t y0 = extractY(coordinate0);
+        size_t x = extractX(coordinate);
+        size_t y = extractY(coordinate);
+        if(y > y0)
+            return Direction::DOWN;
+        
+        if(y < y0)
+            return Direction::UP;
+
+        if(x > x0)
+            return Direction::RIGHT;
+
+        if(x < x0)
+            return Direction::LEFT;
+
+        return Direction::NONE;
     }
 
-    std::vector<Direction> data::matrixBFS(size_t id, Item item){
+    void data::matrixBFS(size_t id, Item item){
+        bool bombIgnore = false;
+        if(item == BOMB)
+            bombIgnore = true;
         std::queue<size_t> q;
-        size_t __capacity = updatedMap.size() * updatedMap[0].capacity();
+        size_t __capacity = xLimit * yLimit;
         std::vector<bool> used(__capacity);
         std::vector<size_t> destination(__capacity), parents(__capacity);
-        size_t itemPoint;
+        size_t itemPoint = -1;
         bool found = false;
+        bool found_finally = false;
         used[point(xyRobots[id])] = true;
         q.push(point(xyRobots[id]));
         //        
         while (!found && !q.empty()){
             size_t vertice = q.front();
             q.pop();
-            std::list<size_t> pointsQueue = genPointsQueue(extractX(vertice), extractY(vertice));
+            std::list<size_t> pointsQueue = genPointsQueue(extractX(vertice), extractY(vertice), bombIgnore);
 
             for(size_t pointIterator : pointsQueue){
                 size_t to = pointIterator;
@@ -317,38 +327,39 @@ namespace planet{
                     q.push(to);
                     destination[to] = destination[vertice] + 1;
                     parents[to] = vertice;
+                    found = isForGrab(to, item);
+                    if(found){
+                        itemPoint = to;
+                        break;
+                    }
                 }  
-
-                found = isAppleForGrab(to, APPLE);
-
-                if(found)
-                    itemPoint = to;
             }
+            if(found)
+                break;
         }   
 
-        std::vector<Direction> path; // output path to item
-
-        if (!used[itemPoint])
-            return path;// nothing
+        if (itemPoint == -1 || !used[itemPoint])
+            return;// nothing
         else {
             //cycling while no come back to the start
-            for (size_t vertice = itemPoint; vertice != point(xyRobots[id]); vertice = parents[vertice])
-                path.push_back (toDirectionType(parents[vertice], vertice));
-            return path;
+            for (size_t vertice = itemPoint; vertice != point(xyRobots[id]); vertice = parents[vertice]){
+                (ways[id][item]).push_back(toDirectionType(parents[vertice], vertice));
+            }
+            return;
         }
     }
 
     bool data::isAnyFound(size_t id, Item item){
         // init ways
         while(!(ways.size() > id)){
-            std::vector<Direction> _tmp = {Direction::NONE};
-            std::vector<std::vector<Direction>> tmp(4, _tmp);             
-            ways.push_back(tmp);
+            ways.resize(ways.size() + 1);
+            while (!(ways.back().size() > item))
+                ways.back().resize(ways.back().size() + 1);
         }
+
+        matrixBFS(id, item);             
         
-        ways[id][item] = matrixBFS(id, item);             
-        
-        if(!ways[id][item].size())
+        if(ways[id][item].capacity())
             return true;
         else 
             return false;

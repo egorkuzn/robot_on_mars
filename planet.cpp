@@ -1,5 +1,5 @@
 #include "planet.h"
-#define N 30
+#define N 7
 
 namespace planet{
     std::vector<vectorItems> Planet::genGround(size_t high, size_t width){
