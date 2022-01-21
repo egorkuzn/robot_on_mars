@@ -3,19 +3,38 @@
 namespace planet{
     Sapper::Sapper(std::vector<vectorItems>& ground,
                                 planet::data& server): Robot(ground, server){}
-
-    void Sapper::work(){
-        if(!way.capacity()){ 
-            server.isAnyFound(id, BOMB);           
-            way = server.takeNearestWay(id, BOMB);
+    
+    Direction Sapper::randWay(){
+        Direction where;
+        u_char randCount = rand() % 4;
+        switch (randCount)
+        {
+        case 0:
+            return Direction::UP;   
+        case 1:
+            return Direction::DOWN;
+        case 2:
+            return Direction::LEFT;
+        case 3:
+            return Direction::RIGHT;
+        default:
+            return Direction::NONE;     
         }
+    }
 
-        if(way.capacity()){
-            move(way.back());
-            way.pop_back();
-            if(ground[yGround][xGround] == BOMB)
-                ground[yGround][xGround] = EMPTY;
-        }
+    void Sapper::goInRandWay(){
+        Direction where = randWay();
+        for(u_char i = 0; i < 4; ++i)
+            if(server.availibleToGo(id, where, true)){
+                move(where);
+                break;
+            }
+            else
+                where = randWay();        
+    }
+
+    void Sapper::work(){            
+        goInRandWay();
     }
 
     void Sapper::on(){

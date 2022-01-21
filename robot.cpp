@@ -10,8 +10,10 @@ namespace planet{
     }
 
     void Robot::confirmServerStep(){
-        if(ground[yGround][xGround] == BOMB)
+        if(ground[yGround][xGround] == BOMB){
             ground[yGround][xGround] = EMPTY;
+            server.updatedMap[Y(yServer)][X(xServer)] = EMPTY;
+        }
         if(ground[yGround][xGround] == ROCK)
             server.send(xServer, yServer, id, robotStatus::DIE);   
         else

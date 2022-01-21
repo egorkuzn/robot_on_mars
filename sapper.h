@@ -16,6 +16,8 @@ namespace planet{
     private:        
         std::vector<Direction> way;
         void work();
+        void goInRandWay();
+        Direction randWay();
         bool isOn = true;
     };
      

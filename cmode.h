@@ -43,7 +43,7 @@ namespace planet{
             void func() override;
             ~AutoMode() override;
         private:
-            bool stadingOnApple();
+            bool standingOnApple();
             bool isAnyAppleFound();
             void collectNearest(Item item);
             std::vector<std::vector<Direction>> way;

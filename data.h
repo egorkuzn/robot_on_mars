@@ -71,10 +71,10 @@ namespace planet
         void error(char *msg);
         size_t Num();
         graphics::Keys Key();  
+        std::vector<std::vector<std::vector<Direction>>> ways;
     private:
         Item takeItem(size_t coordinate);
         std::list<size_t> genPointsQueue(size_t x, size_t y, bool bombIgnore = false);
-        std::vector<std::vector<std::vector<Direction>>> ways;
         void matrixBFS(size_t id, Item item);
         Direction toDirectionType(size_t coordinate0, size_t coordinate);
         bool isForGrab(size_t coordinate, Item item);

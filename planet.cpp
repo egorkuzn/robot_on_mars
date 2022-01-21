@@ -1,5 +1,5 @@
 #include "planet.h"
-#define N 7
+#define N 25
 
 namespace planet{
     std::vector<vectorItems> Planet::genGround(size_t high, size_t width){
@@ -47,7 +47,6 @@ namespace planet{
         collectors.man("");
         menu();
         takeRobotsStep();
-        // we needed to set some time balance
         server.mapViewUpdate();
     }
 }

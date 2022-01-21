@@ -22,6 +22,7 @@ namespace planet{
             vectorS sappers;
             bool status = true;
             size_t manual = 0;
+            size_t timer = 0;
             void menu(void);   
             void takeRobotsStep(void);         
     };
